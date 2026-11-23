@@ -1,0 +1,216 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:equipmentresource:screwdriver",
+      "idShort": "screwdriver",
+      "description": [
+        {
+          "language": "en",
+          "text": "Robotic screwdriver \u2014 Infraflex equipment resource"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Type",
+        "globalAssetId": "urn:asset:infraflex:equipmentresource:screwdriver"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:equipmentresource:screwdriver:sm:resourcesubmodel"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:equipmentresource:screwdriver:sm:technicaldata"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#EquipmentResource"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:equipmentresource:screwdriver:sm:resourcesubmodel",
+      "idShort": "ResourceSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#EquipmentResource"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ResourceName",
+          "valueType": "xs:string",
+          "value": "Screw Driver"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ResourceIdentifier",
+          "valueType": "xs:string",
+          "value": "RES_TOOL_SCREWDRIVER"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ResourceType",
+          "valueType": "xs:string",
+          "value": "Equipment"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "AvailableQuantity",
+          "valueType": "xs:double",
+          "value": "1.0"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "UnitOfMeasure",
+          "valueType": "xs:string",
+          "value": "unit"
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Characteristics",
+          "description": [
+            {
+              "language": "en",
+              "text": "Characteristics of this Resource (sc:hasCharacteristic)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_Torque",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_screwdriver_torque"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              }
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:equipmentresource:screwdriver:sm:technicaldata",
+      "idShort": "technicaldata",
+      "kind": "Template",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://w3id.org/fm/infraflex#ScrewDriver"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "ScrewDriverProperties",
+          "description": [
+            {
+              "language": "en",
+              "text": "Torque and screw dimensions"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "ScrewDriverMaxTorque",
+              "valueType": "xs:decimal",
+              "value": "8.5",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#screwDriverMaxTorque"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "Nm"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "idShort": "ScrewDriverScrewMaxLength",
+              "valueType": "xs:decimal",
+              "value": "25.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#screwDriverScrewMaxLength"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "mm"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

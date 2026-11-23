@@ -1,0 +1,18 @@
+# BaSyx runtime AAS load directory (populated from AAS/)
+basyx-setup/aas/*.json
+basyx-setup/aas/*.aasx
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Runtime outputs
+*.log
+kg_export.ttl

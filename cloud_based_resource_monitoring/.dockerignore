@@ -1,0 +1,13 @@
+.venv/
+.git/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+mqtt/
+process_mining/
+docs/
+sql_queries/
+basyx-setup/
+

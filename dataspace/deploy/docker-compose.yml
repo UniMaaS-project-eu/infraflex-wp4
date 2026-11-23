@@ -1,0 +1,1551 @@
+name: unimaas-unified
+
+services:
+  # ============================================================================
+  # SECTION 1: INFRAFLEX & ECLIPSE BASYX STACK (unimaas-infraflex)
+  # ============================================================================
+  aas-env:
+    image: eclipsebasyx/aas-environment:2.0.0-SNAPSHOT
+    container_name: aas-env
+    environment:
+      - SERVER_PORT=8081
+      - BASYX_EXTERNALURL=http://${EXTERNAL_HOST:-localhost}:${AAS_ENV_PORT:-8081}
+    volumes:
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/aas:/application/aas
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/basyx/aas-env.properties:/application/application.properties
+    ports:
+      - "${AAS_ENV_PORT:-8081}:8081"
+    restart: unless-stopped
+    networks:
+      - edc-network
+    depends_on:
+      aas-registry:
+        condition: service_healthy
+      sm-registry:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      mosquitto:
+        condition: service_healthy
+
+  aas-registry:
+    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-SNAPSHOT
+    container_name: aas-registry
+    ports:
+      - "${AAS_REGISTRY_PORT:-8082}:8080"
+    environment:
+      - SERVER_PORT=8080
+    volumes:
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/basyx/aas-registry.yml:/workspace/config/application.yml
+    restart: unless-stopped
+    networks:
+      - edc-network
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  sm-registry:
+    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-SNAPSHOT
+    container_name: sm-registry
+    ports:
+      - "${SM_REGISTRY_PORT:-8083}:8080"
+    environment:
+      - SERVER_PORT=8080
+    volumes:
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/basyx/sm-registry.yml:/workspace/config/application.yml
+    restart: unless-stopped
+    networks:
+      - edc-network
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  aas-discovery:
+    image: eclipsebasyx/aas-discovery:2.0.0-SNAPSHOT
+    container_name: aas-discovery
+    environment:
+      - SERVER_PORT=8081
+    volumes:
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/basyx/aas-discovery.properties:/application/application.properties
+    ports:
+      - "${AAS_DISCOVERY_PORT:-8084}:8081"
+    restart: unless-stopped
+    networks:
+      - edc-network
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  mongo:
+    image: mongo:5.0.10
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoAdmin
+      MONGO_INITDB_ROOT_PASSWORD: mongoPassword
+    restart: unless-stopped
+    networks:
+      - edc-network
+    healthcheck:
+      test: mongo
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0.15
+    container_name: mosquitto
+    ports:
+      - "${MOSQUITTO_PORT:-1883}:1883"
+    volumes:
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/mosquitto:/mosquitto
+    restart: unless-stopped
+    networks:
+      - edc-network
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - mosquitto_sub -p 1883 -t 'topic' -C 1 -E -i probe -W 3
+      interval: 5s
+      timeout: 10s
+      start_period: 1s
+      retries: 3
+
+  aas-web-ui:
+    image: eclipsebasyx/aas-gui:SNAPSHOT
+    container_name: aas-ui
+    ports:
+      - "${AAS_UI_PORT:-3000}:3000"
+    environment:
+      AAS_REGISTRY_PATH: http://${EXTERNAL_HOST:-localhost}:${AAS_REGISTRY_PORT:-8082}/shell-descriptors
+      SUBMODEL_REGISTRY_PATH: http://${EXTERNAL_HOST:-localhost}:${SM_REGISTRY_PORT:-8083}/submodel-descriptors
+      AAS_REPO_PATH: http://${EXTERNAL_HOST:-localhost}:${AAS_ENV_PORT:-8081}/shells
+      SUBMODEL_REPO_PATH: http://${EXTERNAL_HOST:-localhost}:${AAS_ENV_PORT:-8081}/submodels
+      CD_REPO_PATH: http://${EXTERNAL_HOST:-localhost}:${AAS_ENV_PORT:-8081}/concept-descriptions
+      AAS_DISCOVERY_PATH: http://${EXTERNAL_HOST:-localhost}:${AAS_DISCOVERY_PORT:-8084}/lookup/shells
+      DASHBOARD_SERVICE_PATH: http://${EXTERNAL_HOST:-localhost}:${DASHBOARD_API_PORT:-8085}/api/elements
+    restart: unless-stopped
+    networks:
+      - edc-network
+    depends_on:
+      aas-env:
+        condition: service_healthy
+
+  dashboard-api:
+    image: aaronzi/basyx-dashboard-api:SNAPSHOT_02
+    container_name: dashboard-api
+    environment:
+      - BASYX_EXTERNALURL=http://${EXTERNAL_HOST:-localhost}:${DASHBOARD_API_PORT:-8085}
+    ports:
+      - "${DASHBOARD_API_PORT:-8085}:8085"
+    volumes:
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/basyx/aas-dashboard.yml:/application.yml
+    restart: unless-stopped
+    networks:
+      - edc-network
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  infraflex-graphdb:
+    image: ontotext/graphdb:10.8.0
+    container_name: infraflex-graphdb
+    hostname: infraflex-graphdb
+    ports:
+      - "${INFRAFLEX_GRAPHDB_PORT:-7201}:7200"
+    environment:
+      GDB_JAVA_OPTS: "-Xmx2g"
+    volumes:
+      - infraflex_graphdb_data:/opt/graphdb/home
+    restart: unless-stopped
+    networks:
+      edc-network:
+        aliases:
+          - infraflex-graphdb
+          - graphdb
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - curl -f -s http://localhost:7200/rest/repositories || exit 1
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  redpanda:
+    image: redpandadata/redpanda:latest
+    container_name: redpanda
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr internal://redpanda:9092,external://${EXTERNAL_HOST:-localhost}:${REDPANDA_KAFKA_PORT:-19092}
+      - --pandaproxy-addr internal://0.0.0.0:8083,external://0.0.0.0:18083
+      - --advertise-pandaproxy-addr internal://redpanda:8083,external://${EXTERNAL_HOST:-localhost}:${REDPANDA_PROXY_PORT:-18083}
+      - --smp 1
+      - --memory 512M
+      - --mode dev-container
+      - --default-log-level=warn
+    ports:
+      - "${REDPANDA_KAFKA_PORT:-19092}:19092"
+      - "${REDPANDA_PROXY_PORT:-18083}:18083"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - rpk cluster health | grep -E 'Healthy:.+true' || exit 1
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - edc-network
+
+  unimaas-infraflex:
+    build:
+      context: ${REPOS_DIR:-./repos}/unimaas-infraflex
+      dockerfile: Dockerfile
+    container_name: unimaas-infraflex
+    environment:
+      MQTT_HOST: mosquitto
+      MQTT_PORT: 1883
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+      BASYX_AAS_REPO: http://aas-env:8081
+      BASYX_SUBMODEL_REPO: http://aas-env:8081
+      BASYX_AAS_REGISTRY: http://aas-registry:8080
+      GRAPHDB_URL: http://infraflex-graphdb:7200
+      GRAPHDB_REPOSITORY: ${INFRAFLEX_GRAPHDB_REPO:-infraflex}
+    volumes:
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/unimaas_infraflex:/app/unimaas_infraflex
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/scripts:/app/scripts
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/AAS:/app/AAS
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/ontologies:/app/ontologies
+    restart: unless-stopped
+    networks:
+      - edc-network
+    depends_on:
+      aas-env:
+        condition: service_healthy
+      infraflex-graphdb:
+        condition: service_healthy
+      redpanda:
+        condition: service_healthy
+      mosquitto:
+        condition: service_healthy
+
+  infraplay:
+    build:
+      context: ${REPOS_DIR:-./repos}/unimaas-infraflex
+      dockerfile: Dockerfile
+    container_name: infraplay
+    working_dir: /app
+    entrypoint: ["python", "-m", "infraplay", "web", "--host", "0.0.0.0", "--port", "8090"]
+    environment:
+      MQTT_HOST: mosquitto
+      MQTT_PORT: 1883
+      BASYX_AAS_REPO: http://aas-env:8081
+    ports:
+      - "${INFRAPLAY_PORT:-8090}:8090"
+    volumes:
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/infraplay:/app/infraplay
+      - ${REPOS_DIR:-./repos}/unimaas-infraflex/AAS:/app/AAS
+    restart: unless-stopped
+    networks:
+      - edc-network
+    depends_on:
+      aas-env:
+        condition: service_healthy
+      mosquitto:
+        condition: service_healthy
+
+  # ============================================================================
+  # SECTION 2: DATASPACE IDENTITY, DIRECTORY & VC ISSUER (ed-node & ids-mvd-dms)
+  # ============================================================================
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.5
+    container_name: keycloak
+    hostname: keycloak
+    networks:
+      - edc-network
+    ports:
+      - "${KEYCLOAK_PORT:-5080}:8080"
+      - "${KEYCLOAK_HTTPS_PORT:-5443}:8443"
+    restart: unless-stopped
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+      - ${REPOS_DIR:-./repos}/ids-mvd-dms/keycloak/realm-import:/opt/keycloak/data/import:ro
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:-admin}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-admin}
+    command:
+      - start-dev
+      - --import-realm
+
+  mock-registry:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node/tests/mock-registry
+      dockerfile: Dockerfile
+    hostname: mock-registry
+    container_name: mock-registry
+    ports:
+      - "${MOCKREGISTRY_EXPOSED_PORT:-8089}:8080"
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/tests/mock-registry/contexts:/app/contexts:ro
+    networks:
+      - edc-network
+    restart: unless-stopped
+    environment:
+      - CONTEXT_URL=${CONTEXT_URL:-http://mock-registry:8080/main/context/2411}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  issuerservicevc:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: tests/issuerservice-vc/Dockerfile
+    image: unimaas/issuerservice-vc:1.0
+    hostname: issuerservicevc
+    container_name: issuerservicevc
+    restart: unless-stopped
+    environment:
+      - ISSUER_DID=${UNIMAAS_ISSUERSERVICEVC_DID:-did:web:edc-proxy-issuerservicevc%3A80:issuerservicevc}
+      - VC_CONTEXT_URL=${VC_CONTEXT_URL:-http://mock-registry:8080/main/context/2411}
+      - EXPIRY_DAYS=${EXPIRY_DAYS:-365}
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/tests/issuerservice-vc/assets/keysPrivPub/${ISSUERSERVICEVC_INSTANCE_NAME:-issuerservicevc}/${ISSUERSERVICEVC_INSTANCE_NAME:-issuerservicevc}_private.pem:/app/keys/issuer_private.pem:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:9090/api/v1/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    networks:
+      edc-network:
+        aliases:
+          - issuerservicevc
+
+  edc-proxy-issuerservicevc:
+    image: nginx:alpine
+    hostname: edc-proxy-issuerservicevc
+    container_name: edc-proxy-issuerservicevc
+    ports:
+      - "${ISSUERSERVICEVC_EXPOSED_PORT:-7000}:80"
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/tests/issuerservice-vc/nginx/nginx-${ISSUERSERVICEVC_INSTANCE_NAME:-issuerservicevc}.conf:/etc/nginx/nginx.conf:ro
+      - ${REPOS_DIR:-./repos}/ed-node/tests/issuerservice-vc/assets/dids/${ISSUERSERVICEVC_INSTANCE_NAME:-issuerservicevc}/:/var/www/${ISSUERSERVICEVC_INSTANCE_NAME:-issuerservicevc}/:ro
+    networks:
+      edc-network:
+        aliases:
+          - edc-proxy-issuerservicevc
+          - proxy-issuerservicevc
+    restart: unless-stopped
+    depends_on:
+      issuerservicevc:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ============================================================================
+  # SECTION 3A: ED-NODE CONNECTOR1 STACK (Provider 1 - Port 9876, 7190-7195, 8190-8195)
+  # ============================================================================
+  edc-proxy-connector1:
+    image: nginx:alpine
+    hostname: edc-proxy-connector1
+    container_name: edc-proxy-connector1
+    ports:
+      - "${CONNECTOR1_NGINX_PORT:-9876}:80"
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/nginx/nginx-connector1.conf:/etc/nginx/nginx.conf:ro
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/dids/:/var/www/:ro
+    networks:
+      edc-network:
+        aliases:
+          - edc-proxy-connector1
+          - proxy-connector1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  edc-postgres-connector1:
+    image: postgres:15-alpine
+    hostname: edc-postgres-connector1
+    container_name: edc-postgres-connector1
+    networks:
+      edc-network:
+        aliases:
+          - edc-postgres-connector1
+    restart: unless-stopped
+    volumes:
+      - edc_postgres_data_connector1:/var/lib/postgresql/data
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/postgresql-init/01-init-edc-all.sql:/docker-entrypoint-initdb.d/01-init-edc-all.sql:ro
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/postgresql-init/02-init-vault-all.sql:/docker-entrypoint-initdb.d/02-init-vault-all.sql:ro
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/postgresql-init/03-init-identityhub-all.sql:/docker-entrypoint-initdb.d/03-init-identityhub-all.sql:ro
+    environment:
+      POSTGRES_DB: edc
+      POSTGRES_USER: edc_user
+      POSTGRES_PASSWORD: edc_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U edc_user -d edc"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  edc-vault-connector1:
+    image: hashicorp/vault:1.15
+    hostname: edc-vault-connector1
+    container_name: edc-vault-connector1
+    networks:
+      edc-network:
+        aliases:
+          - edc-vault-connector1
+    restart: unless-stopped
+    depends_on:
+      edc-postgres-connector1:
+        condition: service_healthy
+    environment:
+      VAULT_SKIP_VERIFY: "true"
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/vault/connector1/vault-connector1-config.json:/vault/custom/local.json
+      - vault_init_data_connector1:/vault
+    cap_add:
+      - IPC_LOCK
+    command: "server -config=/vault/custom/local.json"
+    healthcheck:
+      test: ["CMD-SHELL", "vault status -address=http://127.0.0.1:8200 2>&1 | grep -E '(Sealed.*false|Initialized.*true)' || echo 'Vault not ready'"]
+      interval: 10s
+      timeout: 35s
+      retries: 30
+      start_period: 20s
+
+  edc-vault-init-connector1:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/vault-init/Dockerfile.vault-init
+    image: unimaas/vault-init:1.0
+    hostname: edc-vault-init-connector1
+    container_name: edc-vault-init-connector1
+    depends_on:
+      edc-vault-connector1:
+        condition: service_healthy
+      edc-postgres-connector1:
+        condition: service_healthy
+    networks:
+      edc-network:
+        aliases:
+          - edc-vault-init-connector1
+    restart: "no"
+    entrypoint: sh /vault/vault-init.sh http://edc-vault-connector1:8200 ${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1} edc-postgres-connector1:5432
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/vault-init/vault-init.sh:/vault/vault-init.sh
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/keysPrivPub/connector1/connector1_private.pem:/vault/keys/private-key.pem
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/keysPrivPub/connector1/connector1_public.pem:/vault/keys/certificate.pem
+      - vault_init_data_connector1:/vault
+
+  edc-vault-autounseal-connector1:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/vault-autounseal/Dockerfile.vault-autounseal
+    image: unimaas/vault-autounseal:1.0
+    hostname: edc-vault-autounseal-connector1
+    container_name: edc-vault-autounseal-connector1
+    depends_on:
+      edc-vault-connector1:
+        condition: service_started
+      edc-vault-init-connector1:
+        condition: service_completed_successfully
+    networks:
+      edc-network:
+        aliases:
+          - edc-vault-autounseal-connector1
+    restart: unless-stopped
+    environment:
+      - VAULT_ADDR=http://edc-vault-connector1:8200
+      - CHECK_INTERVAL=10
+    volumes:
+      - vault_init_data_connector1:/vault:ro
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep -v grep | grep -q autounseal.sh || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  ih-connector1:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/identity-hub/src/main/docker/Dockerfile_identityhub
+    image: unimaas/edc-identityhub:1.0
+    hostname: edc-ih-connector1
+    container_name: edc-ih-connector1
+    ports:
+      - "7190:7090"
+      - "7191:7091"
+      - "7192:7092"
+      - "7193:7093"
+      - "7194:7094"
+      - "7195:7095"
+    networks:
+      edc-network:
+        aliases:
+          - edc-ih-connector1
+          - ih-connector1
+    restart: unless-stopped
+    depends_on:
+      edc-postgres-connector1:
+        condition: service_healthy
+      edc-vault-connector1:
+        condition: service_healthy
+      edc-vault-init-connector1:
+        condition: service_completed_successfully
+      edc-proxy-issuerservicevc:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    volumes:
+      - ./scripts/ih-entrypoint.sh:/app/entrypoint.sh:ro
+      - vault_init_data_connector1:/vault-token:ro
+      - vault_init_data_connector1:/vault-identityhub-token:ro
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:-admin}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      - UNIMAAS_OIDC_IDP_REALM=${UNIMAAS_OIDC_IDP_REALM:-unimaas}
+      - EDC_HOSTNAME=edc-ih-connector1
+      - EDC_IAM_ISSUER_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
+      - EDC_IAM_DID_WEB_USE_HTTPS=false
+      - EDC_IH_IAM_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
+      - EDC_PARTICIPANT_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
+      - EDC_IH_API_SUPERUSER_KEY=${IH_API_KEY:-c3VwZXItdXNlcg==.c3VwZXItc2VjcmV0LWtleQo=}
+      - EDC_IAM_STS_OAUTH_CLIENT_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
+      - EDC_IAM_STS_OAUTH_CLIENT_SECRET_ALIAS=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}-sts-client-secret
+      - EDC_LOG_LEVEL=DEBUG
+      - EDC_WEB_REST_CORS_ENABLED=true
+      - EDC_MONITOR_LEVEL=DEBUG
+      - EDC_VAULT_HASHICORP_URL=http://edc-vault-connector1:8200
+      - EDC_VAULT_CERTIFICATE_RESOLVER_ENABLED=true
+      - EDC_VAULT_PRIVATEKEY_RESOLVER_ENABLED=true
+      - UNIMAAS_ISSUERSERVICEVC_PROTOCOL=${UNIMAAS_ISSUERSERVICEVC_PROTOCOL:-http}
+      - UNIMAAS_ISSUERSERVICEVC_HOST=${UNIMAAS_ISSUERSERVICEVC_HOST:-edc-proxy-issuerservicevc}
+      - UNIMAAS_ISSUERSERVICEVC_PORT=${UNIMAAS_ISSUERSERVICEVC_PORT:-80}
+      - UNIMAAS_ISSUERSERVICEVC_PATH=${UNIMAAS_ISSUERSERVICEVC_PATH:-/api/v1/issue-credential}
+      - UNIMAAS_ISSUERSERVICEVC_DID=${UNIMAAS_ISSUERSERVICEVC_DID:-did:web:edc-proxy-issuerservicevc%3A80:issuerservicevc}
+      - GAIAX_ISSUERSERVICEVC_PORT=${GAIAX_ISSUERSERVICEVC_PORT:-80}
+      - GAIAX_ISSUERSERVICEVC_PATH=${GAIAX_ISSUERSERVICEVC_PATH:-/api/v1/issue-gaiax-credential-jwt}
+      - UNIMAAS_OIDC_IDP_PROTOCOL=${UNIMAAS_OIDC_IDP_PROTOCOL:-http}
+      - UNIMAAS_OIDC_IDP_HOST=${UNIMAAS_OIDC_IDP_HOST:-keycloak}
+      - UNIMAAS_OIDC_IDP_PORT=${UNIMAAS_OIDC_IDP_PORT:-8080}
+      - UNIMAAS_OIDC_IDP_PATH=${UNIMAAS_OIDC_IDP_PATH:-/realms/unimaas/protocol/openid-connect/token}
+      - UNIMAAS_OIDC_IDP_CLIENT_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
+      - UNIMAAS_OIDC_IDP_CLIENT_SECRET=${CONNECTOR1_OIDC_SECRET:-connector1-secret}
+      - UNIMAAS_CREDENTIALS_MEMBERSHIP_DUPLICATE_STRATEGY=${UNIMAAS_CREDENTIALS_MEMBERSHIP_DUPLICATE_STRATEGY:-REPLACE_ALWAYS}
+      - UNIMAAS_CREDENTIALS_DATAPROCESSOR_DUPLICATE_STRATEGY=${UNIMAAS_CREDENTIALS_DATAPROCESSOR_DUPLICATE_STRATEGY:-REPLACE_ALWAYS}
+      - UNIMAAS_CREDENTIALS_GAIAX_DUPLICATE_STRATEGY=${UNIMAAS_CREDENTIALS_GAIAX_DUPLICATE_STRATEGY:-REPLACE_ALWAYS}
+      - UNIMAAS_CREDENTIALS_RENEWAL_ENABLED=${UNIMAAS_CREDENTIALS_RENEWAL_ENABLED:-true}
+      - UNIMAAS_CREDENTIALS_RENEWAL_CHECK_INTERVAL_MINUTES=${UNIMAAS_CREDENTIALS_RENEWAL_CHECK_INTERVAL_MINUTES:-1440}
+      - UNIMAAS_CREDENTIALS_RENEWAL_EXPIRY_THRESHOLD_DAYS=${UNIMAAS_CREDENTIALS_RENEWAL_EXPIRY_THRESHOLD_DAYS:-30}
+      - EDC_DATASOURCE_DEFAULT_NAME=default
+      - EDC_DATASOURCE_DEFAULT_URL=jdbc:postgresql://edc-postgres-connector1:5432/identityhub
+      - EDC_DATASOURCE_DEFAULT_USER=identityhub_user
+      - EDC_DATASOURCE_DEFAULT_PASSWORD=identityhub_password
+      - EDC_DATASOURCE_IDENTITYHUB_NAME=identityhub
+      - EDC_DATASOURCE_IDENTITYHUB_URL=jdbc:postgresql://edc-postgres-connector1:5432/identityhub
+      - EDC_DATASOURCE_IDENTITYHUB_USER=identityhub_user
+      - EDC_DATASOURCE_IDENTITYHUB_PASSWORD=identityhub_password
+      - EDC_SQL_SCHEMA_AUTOCREATE=true
+      - EDC_SQL_POOL_CONNECTIONS_MAX=10
+      - EDC_SQL_POOL_CONNECTIONS_MIN=3
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:7090/api/check/health || curl -s http://127.0.0.1:7090/ >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+  edc-ih-seed-connector1:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/identityhub-seed/Dockerfile.identityhub-seed-participant
+    image: unimaas/identityhub-seed-participant:1.0
+    hostname: edc-ih-seed-connector1
+    container_name: edc-ih-seed-connector1
+    networks:
+      edc-network:
+        aliases:
+          - edc-ih-seed-connector1
+    restart: "no"
+    depends_on:
+      ih-connector1:
+        condition: service_healthy
+    volumes:
+      - ./scripts/ih-seed-entrypoint.sh:/identityhub/identityhub-seed.sh:ro
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/keysPrivPub/connector1/connector1_public.pem:/vault/keys/certificate.pem
+    environment:
+      - PARTICIPANT_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
+      - PARTICIPANT_PROTOCOL=${NGINX_PROTOCOL:-http}
+      - PARTICIPANT_HOST=edc-proxy-connector1
+      - PARTICIPANT_CALLBACK_PORT=80
+      - PARTICIPANT_IH_HOST=edc-ih-connector1
+      - PARTICIPANT_IH_API_KEY=${IH_API_KEY:-c3VwZXItdXNlcg==.c3VwZXItc2VjcmV0LWtleQo=}
+      - PARTICIPANT_IH_API_PORT=7090
+      - PARTICIPANT_IH_CREDENTIALS_PORT=80
+      - PARTICIPANT_IH_IDENTITY_PORT=7092
+
+  connector1:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/connector/src/main/docker/Dockerfile_connector
+    image: unimaas/edc-connector:1.0
+    hostname: edc-connector-connector1
+    container_name: edc-connector-connector1
+    ports:
+      - "8190:8080"
+      - "8191:8081"
+      - "8192:8082"
+      - "8193:8083"
+      - "8194:8084"
+      - "8195:8085"
+      - "11002:11001"
+    networks:
+      edc-network:
+        aliases:
+          - connector1
+          - edc-connector-connector1
+    restart: unless-stopped
+    depends_on:
+      edc-postgres-connector1:
+        condition: service_healthy
+      edc-vault-connector1:
+        condition: service_healthy
+      ih-connector1:
+        condition: service_healthy
+      edc-ih-seed-connector1:
+        condition: service_completed_successfully
+    volumes:
+      - vault_init_data_connector1:/vault-token:ro
+    environment:
+      - EDC_HOSTNAME=edc-connector-connector1
+      - EDC_IAM_ISSUER_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
+      - EDC_IAM_DID_WEB_USE_HTTPS=false
+      - EDC_PARTICIPANT_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
+      - EDC_IH_API_SUPERUSER_KEY=${CONNECTOR_IH_API_KEY:-c3VwZXItdXNlcg==.c3VwZXItc2VjcmV0LWtleQo=}
+      - EDC_DSP_CALLBACK_ADDRESS=${NGINX_PROTOCOL:-http}://edc-proxy-connector1:80/api/dsp
+      - EDC_IAM_STS_OAUTH_CLIENT_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
+      - EDC_IAM_STS_OAUTH_CLIENT_SECRET_ALIAS=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}-sts-client-secret
+      - EDC_IAM_STS_OAUTH_TOKEN_URL=http://edc-ih-connector1:7095/api/sts/token
+      - EDC_IAM_IDENTITYHUB_URL=http://edc-ih-connector1:7093
+      - EDC_IAM_IDENTITYHUB_DID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
+      - EDC_DATAPLANE_API_PUBLIC_BASEURL=http://connector1:9091/public
+      - EDC_DATAPLANE_SIGNALING_API_URL=http://connector1:9092/api/signaling
+      - EDC_DATAPLANE_TOKEN_VALIDATION_ENDPOINT=http://connector1:8083/api/control/v3/dataplane/token
+      - EDC_CONTROLPLANE_VALIDATION_ENDPOINT=http://connector1:8083/api/control/v3/dataplane/token
+      - EDC_DATAPLANE_PROXY_PUBLIC_ENDPOINT=http://connector1:11001/api/public
+      - EDC_DATAPLANE_API_INSTANCE_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
+      - EDC_DPF_SELECTOR_URL=http://connector1:8083/api/control/v3/dataplanes
+      - EDC_LOG_LEVEL=DEBUG
+      - EDC_WEB_REST_CORS_ENABLED=true
+      - EDC_MONITOR_LEVEL=DEBUG
+      - UNIMAAS_ISSUERSERVICEVC_DID=${UNIMAAS_ISSUERSERVICEVC_DID:-did:web:edc-proxy-issuerservicevc%3A80:issuerservicevc}
+      - UNIMAAS_MOCKREGISTRY_CONTEXT_URL=${MOCKREGISTRY_CONTEXT_URL:-http://mock-registry:8080/main/context/2411}
+      - UNIMAAS_ENABLE_EXTRA_VP_CATALOGREQUEST=${CONNECTOR_UNIMAAS_ENABLE_EXTRA_VP_CATALOGREQUEST:-true}
+      - EDC_VAULT_HASHICORP_URL=http://edc-vault-connector1:8200
+      - XACML_VALIDATION_ENABLED=${XACML_VALIDATION_ENABLED:-false}
+      - XACML_PDP_ENDPOINT=${XACML_PDP_ENDPOINT:-http://localhost:9092/pdp/verdict}
+      - XACML_DOMAIN=${XACML_DOMAIN:-unimaas}
+      - EDC_VAULT_CERTIFICATE_RESOLVER_ENABLED=true
+      - EDC_VAULT_PRIVATEKEY_RESOLVER_ENABLED=true
+      - EDC_DATASOURCE_DEFAULT_NAME=default
+      - EDC_DATASOURCE_DEFAULT_URL=jdbc:postgresql://edc-postgres-connector1:5432/edc
+      - EDC_DATASOURCE_DEFAULT_USER=edc_user
+      - EDC_DATASOURCE_DEFAULT_PASSWORD=edc_password
+      - EDC_DATASOURCE_ASSET_NAME=asset
+      - EDC_DATASOURCE_ASSET_URL=jdbc:postgresql://edc-postgres-connector1:5432/edc
+      - EDC_DATASOURCE_ASSET_USER=edc_user
+      - EDC_DATASOURCE_ASSET_PASSWORD=edc_password
+      - EDC_DATASOURCE_CONTRACTDEFINITION_NAME=contractdefinition
+      - EDC_DATASOURCE_CONTRACTDEFINITION_URL=jdbc:postgresql://edc-postgres-connector1:5432/edc
+      - EDC_DATASOURCE_CONTRACTDEFINITION_USER=edc_user
+      - EDC_DATASOURCE_CONTRACTDEFINITION_PASSWORD=edc_password
+      - EDC_DATASOURCE_POLICY_NAME=policy
+      - EDC_DATASOURCE_POLICY_URL=jdbc:postgresql://edc-postgres-connector1:5432/edc
+      - EDC_DATASOURCE_POLICY_USER=edc_user
+      - EDC_DATASOURCE_POLICY_PASSWORD=edc_password
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_NAME=contractnegotiation
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_URL=jdbc:postgresql://edc-postgres-connector1:5432/edc
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_USER=edc_user
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_PASSWORD=edc_password
+      - EDC_DATASOURCE_TRANSFERPROCESS_NAME=transferprocess
+      - EDC_DATASOURCE_TRANSFERPROCESS_URL=jdbc:postgresql://edc-postgres-connector1:5432/edc
+      - EDC_DATASOURCE_TRANSFERPROCESS_USER=edc_user
+      - EDC_DATASOURCE_TRANSFERPROCESS_PASSWORD=edc_password
+      - EDC_SQL_SCHEMA_AUTOCREATE=true
+      - EDC_SQL_POOL_CONNECTIONS_MAX=10
+      - EDC_SQL_POOL_CONNECTIONS_MIN=3
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:8080/api/check/health || curl -s http://127.0.0.1:8080/ >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+  # ============================================================================
+  # SECTION 3B: ED-NODE CONNECTOR2 STACK (Provider 2 - Port 9877, 7290-7295, 8290-8295)
+  # ============================================================================
+  edc-proxy-connector2:
+    image: nginx:alpine
+    hostname: edc-proxy-connector2
+    container_name: edc-proxy-connector2
+    ports:
+      - "${CONNECTOR2_NGINX_PORT:-9877}:80"
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/nginx/nginx-connector2.conf:/etc/nginx/nginx.conf:ro
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/dids/:/var/www/:ro
+    networks:
+      edc-network:
+        aliases:
+          - edc-proxy-connector2
+          - proxy-connector2
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  edc-postgres-connector2:
+    image: postgres:15-alpine
+    hostname: edc-postgres-connector2
+    container_name: edc-postgres-connector2
+    networks:
+      edc-network:
+        aliases:
+          - edc-postgres-connector2
+    restart: unless-stopped
+    volumes:
+      - edc_postgres_data_connector2:/var/lib/postgresql/data
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/postgresql-init/01-init-edc-all.sql:/docker-entrypoint-initdb.d/01-init-edc-all.sql:ro
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/postgresql-init/02-init-vault-all.sql:/docker-entrypoint-initdb.d/02-init-vault-all.sql:ro
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/postgresql-init/03-init-identityhub-all.sql:/docker-entrypoint-initdb.d/03-init-identityhub-all.sql:ro
+    environment:
+      POSTGRES_DB: edc
+      POSTGRES_USER: edc_user
+      POSTGRES_PASSWORD: edc_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U edc_user -d edc"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  edc-vault-connector2:
+    image: hashicorp/vault:1.15
+    hostname: edc-vault-connector2
+    container_name: edc-vault-connector2
+    networks:
+      edc-network:
+        aliases:
+          - edc-vault-connector2
+    restart: unless-stopped
+    depends_on:
+      edc-postgres-connector2:
+        condition: service_healthy
+    environment:
+      VAULT_SKIP_VERIFY: "true"
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/vault/connector2/vault-connector2-config.json:/vault/custom/local.json
+      - vault_init_data_connector2:/vault
+    cap_add:
+      - IPC_LOCK
+    command: "server -config=/vault/custom/local.json"
+    healthcheck:
+      test: ["CMD-SHELL", "vault status -address=http://127.0.0.1:8200 2>&1 | grep -E '(Sealed.*false|Initialized.*true)' || echo 'Vault not ready'"]
+      interval: 10s
+      timeout: 35s
+      retries: 30
+      start_period: 20s
+
+  edc-vault-init-connector2:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/vault-init/Dockerfile.vault-init
+    image: unimaas/vault-init:1.0
+    hostname: edc-vault-init-connector2
+    container_name: edc-vault-init-connector2
+    depends_on:
+      edc-vault-connector2:
+        condition: service_healthy
+      edc-postgres-connector2:
+        condition: service_healthy
+    networks:
+      edc-network:
+        aliases:
+          - edc-vault-init-connector2
+    restart: "no"
+    entrypoint: sh /vault/vault-init.sh http://edc-vault-connector2:8200 ${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2} edc-postgres-connector2:5432
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/vault-init/vault-init.sh:/vault/vault-init.sh
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/keysPrivPub/connector2/connector2_private.pem:/vault/keys/private-key.pem
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/keysPrivPub/connector2/connector2_public.pem:/vault/keys/certificate.pem
+      - vault_init_data_connector2:/vault
+
+  edc-vault-autounseal-connector2:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/vault-autounseal/Dockerfile.vault-autounseal
+    image: unimaas/vault-autounseal:1.0
+    hostname: edc-vault-autounseal-connector2
+    container_name: edc-vault-autounseal-connector2
+    depends_on:
+      edc-vault-connector2:
+        condition: service_started
+      edc-vault-init-connector2:
+        condition: service_completed_successfully
+    networks:
+      edc-network:
+        aliases:
+          - edc-vault-autounseal-connector2
+    restart: unless-stopped
+    environment:
+      - VAULT_ADDR=http://edc-vault-connector2:8200
+      - CHECK_INTERVAL=10
+    volumes:
+      - vault_init_data_connector2:/vault:ro
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep -v grep | grep -q autounseal.sh || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  ih-connector2:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/identity-hub/src/main/docker/Dockerfile_identityhub
+    image: unimaas/edc-identityhub:1.0
+    hostname: edc-ih-connector2
+    container_name: edc-ih-connector2
+    ports:
+      - "7290:7090"
+      - "7291:7091"
+      - "7292:7092"
+      - "7293:7093"
+      - "7294:7094"
+      - "7295:7095"
+    networks:
+      edc-network:
+        aliases:
+          - edc-ih-connector2
+          - ih-connector2
+    restart: unless-stopped
+    depends_on:
+      edc-postgres-connector2:
+        condition: service_healthy
+      edc-vault-connector2:
+        condition: service_healthy
+      edc-vault-init-connector2:
+        condition: service_completed_successfully
+      edc-proxy-issuerservicevc:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    volumes:
+      - ./scripts/ih-entrypoint.sh:/app/entrypoint.sh:ro
+      - vault_init_data_connector2:/vault-token:ro
+      - vault_init_data_connector2:/vault-identityhub-token:ro
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:-admin}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      - UNIMAAS_OIDC_IDP_REALM=${UNIMAAS_OIDC_IDP_REALM:-unimaas}
+      - EDC_HOSTNAME=edc-ih-connector2
+      - EDC_IAM_ISSUER_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
+      - EDC_IAM_DID_WEB_USE_HTTPS=false
+      - EDC_IH_IAM_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
+      - EDC_PARTICIPANT_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
+      - EDC_IH_API_SUPERUSER_KEY=${IH_API_KEY:-c3VwZXItdXNlcg==.c3VwZXItc2VjcmV0LWtleQo=}
+      - EDC_IAM_STS_OAUTH_CLIENT_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
+      - EDC_IAM_STS_OAUTH_CLIENT_SECRET_ALIAS=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}-sts-client-secret
+      - EDC_LOG_LEVEL=DEBUG
+      - EDC_WEB_REST_CORS_ENABLED=true
+      - EDC_MONITOR_LEVEL=DEBUG
+      - EDC_VAULT_HASHICORP_URL=http://edc-vault-connector2:8200
+      - EDC_VAULT_CERTIFICATE_RESOLVER_ENABLED=true
+      - EDC_VAULT_PRIVATEKEY_RESOLVER_ENABLED=true
+      - UNIMAAS_ISSUERSERVICEVC_PROTOCOL=${UNIMAAS_ISSUERSERVICEVC_PROTOCOL:-http}
+      - UNIMAAS_ISSUERSERVICEVC_HOST=${UNIMAAS_ISSUERSERVICEVC_HOST:-edc-proxy-issuerservicevc}
+      - UNIMAAS_ISSUERSERVICEVC_PORT=${UNIMAAS_ISSUERSERVICEVC_PORT:-80}
+      - UNIMAAS_ISSUERSERVICEVC_PATH=${UNIMAAS_ISSUERSERVICEVC_PATH:-/api/v1/issue-credential}
+      - UNIMAAS_ISSUERSERVICEVC_DID=${UNIMAAS_ISSUERSERVICEVC_DID:-did:web:edc-proxy-issuerservicevc%3A80:issuerservicevc}
+      - GAIAX_ISSUERSERVICEVC_PORT=${GAIAX_ISSUERSERVICEVC_PORT:-80}
+      - GAIAX_ISSUERSERVICEVC_PATH=${GAIAX_ISSUERSERVICEVC_PATH:-/api/v1/issue-gaiax-credential-jwt}
+      - UNIMAAS_OIDC_IDP_PROTOCOL=${UNIMAAS_OIDC_IDP_PROTOCOL:-http}
+      - UNIMAAS_OIDC_IDP_HOST=${UNIMAAS_OIDC_IDP_HOST:-keycloak}
+      - UNIMAAS_OIDC_IDP_PORT=${UNIMAAS_OIDC_IDP_PORT:-8080}
+      - UNIMAAS_OIDC_IDP_PATH=${UNIMAAS_OIDC_IDP_PATH:-/realms/unimaas/protocol/openid-connect/token}
+      - UNIMAAS_OIDC_IDP_CLIENT_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
+      - UNIMAAS_OIDC_IDP_CLIENT_SECRET=${CONNECTOR2_OIDC_SECRET:-connector2-secret}
+      - UNIMAAS_CREDENTIALS_MEMBERSHIP_DUPLICATE_STRATEGY=${UNIMAAS_CREDENTIALS_MEMBERSHIP_DUPLICATE_STRATEGY:-REPLACE_ALWAYS}
+      - UNIMAAS_CREDENTIALS_DATAPROCESSOR_DUPLICATE_STRATEGY=${UNIMAAS_CREDENTIALS_DATAPROCESSOR_DUPLICATE_STRATEGY:-REPLACE_ALWAYS}
+      - UNIMAAS_CREDENTIALS_GAIAX_DUPLICATE_STRATEGY=${UNIMAAS_CREDENTIALS_GAIAX_DUPLICATE_STRATEGY:-REPLACE_ALWAYS}
+      - UNIMAAS_CREDENTIALS_RENEWAL_ENABLED=${UNIMAAS_CREDENTIALS_RENEWAL_ENABLED:-true}
+      - UNIMAAS_CREDENTIALS_RENEWAL_CHECK_INTERVAL_MINUTES=${UNIMAAS_CREDENTIALS_RENEWAL_CHECK_INTERVAL_MINUTES:-1440}
+      - UNIMAAS_CREDENTIALS_RENEWAL_EXPIRY_THRESHOLD_DAYS=${UNIMAAS_CREDENTIALS_RENEWAL_EXPIRY_THRESHOLD_DAYS:-30}
+      - EDC_DATASOURCE_DEFAULT_NAME=default
+      - EDC_DATASOURCE_DEFAULT_URL=jdbc:postgresql://edc-postgres-connector2:5432/identityhub
+      - EDC_DATASOURCE_DEFAULT_USER=identityhub_user
+      - EDC_DATASOURCE_DEFAULT_PASSWORD=identityhub_password
+      - EDC_DATASOURCE_IDENTITYHUB_NAME=identityhub
+      - EDC_DATASOURCE_IDENTITYHUB_URL=jdbc:postgresql://edc-postgres-connector2:5432/identityhub
+      - EDC_DATASOURCE_IDENTITYHUB_USER=identityhub_user
+      - EDC_DATASOURCE_IDENTITYHUB_PASSWORD=identityhub_password
+      - EDC_SQL_SCHEMA_AUTOCREATE=true
+      - EDC_SQL_POOL_CONNECTIONS_MAX=10
+      - EDC_SQL_POOL_CONNECTIONS_MIN=3
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:7090/api/check/health || curl -s http://127.0.0.1:7090/ >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+  edc-ih-seed-connector2:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/identityhub-seed/Dockerfile.identityhub-seed-participant
+    image: unimaas/identityhub-seed-participant:1.0
+    hostname: edc-ih-seed-connector2
+    container_name: edc-ih-seed-connector2
+    networks:
+      edc-network:
+        aliases:
+          - edc-ih-seed-connector2
+    restart: "no"
+    depends_on:
+      ih-connector2:
+        condition: service_healthy
+    volumes:
+      - ./scripts/ih-seed-entrypoint.sh:/identityhub/identityhub-seed.sh:ro
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/keysPrivPub/connector2/connector2_public.pem:/vault/keys/certificate.pem
+    environment:
+      - PARTICIPANT_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
+      - PARTICIPANT_PROTOCOL=${NGINX_PROTOCOL:-http}
+      - PARTICIPANT_HOST=edc-proxy-connector2
+      - PARTICIPANT_CALLBACK_PORT=80
+      - PARTICIPANT_IH_HOST=edc-ih-connector2
+      - PARTICIPANT_IH_API_KEY=${IH_API_KEY:-c3VwZXItdXNlcg==.c3VwZXItc2VjcmV0LWtleQo=}
+      - PARTICIPANT_IH_API_PORT=7090
+      - PARTICIPANT_IH_CREDENTIALS_PORT=80
+      - PARTICIPANT_IH_IDENTITY_PORT=7092
+
+  connector2:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/connector/src/main/docker/Dockerfile_connector
+    image: unimaas/edc-connector:1.0
+    hostname: edc-connector-connector2
+    container_name: edc-connector-connector2
+    ports:
+      - "8290:8080"
+      - "8291:8081"
+      - "8292:8082"
+      - "8293:8083"
+      - "8294:8084"
+      - "8295:8085"
+      - "12002:11001"
+    networks:
+      edc-network:
+        aliases:
+          - connector2
+          - edc-connector-connector2
+    restart: unless-stopped
+    depends_on:
+      edc-postgres-connector2:
+        condition: service_healthy
+      edc-vault-connector2:
+        condition: service_healthy
+      ih-connector2:
+        condition: service_healthy
+      edc-ih-seed-connector2:
+        condition: service_completed_successfully
+    volumes:
+      - vault_init_data_connector2:/vault-token:ro
+    environment:
+      - EDC_HOSTNAME=edc-connector-connector2
+      - EDC_IAM_ISSUER_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
+      - EDC_IAM_DID_WEB_USE_HTTPS=false
+      - EDC_PARTICIPANT_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
+      - EDC_IH_API_SUPERUSER_KEY=${CONNECTOR_IH_API_KEY:-c3VwZXItdXNlcg==.c3VwZXItc2VjcmV0LWtleQo=}
+      - EDC_DSP_CALLBACK_ADDRESS=${NGINX_PROTOCOL:-http}://edc-proxy-connector2:80/api/dsp
+      - EDC_IAM_STS_OAUTH_CLIENT_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
+      - EDC_IAM_STS_OAUTH_CLIENT_SECRET_ALIAS=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}-sts-client-secret
+      - EDC_IAM_STS_OAUTH_TOKEN_URL=http://edc-ih-connector2:7095/api/sts/token
+      - EDC_IAM_IDENTITYHUB_URL=http://edc-ih-connector2:7093
+      - EDC_IAM_IDENTITYHUB_DID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
+      - EDC_DATAPLANE_API_PUBLIC_BASEURL=http://connector2:9091/public
+      - EDC_DATAPLANE_SIGNALING_API_URL=http://connector2:9092/api/signaling
+      - EDC_DATAPLANE_TOKEN_VALIDATION_ENDPOINT=http://connector2:8083/api/control/v3/dataplane/token
+      - EDC_CONTROLPLANE_VALIDATION_ENDPOINT=http://connector2:8083/api/control/v3/dataplane/token
+      - EDC_DATAPLANE_PROXY_PUBLIC_ENDPOINT=http://connector2:11001/api/public
+      - EDC_DATAPLANE_API_INSTANCE_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
+      - EDC_DPF_SELECTOR_URL=http://connector2:8083/api/control/v3/dataplanes
+      - EDC_LOG_LEVEL=DEBUG
+      - EDC_WEB_REST_CORS_ENABLED=true
+      - EDC_MONITOR_LEVEL=DEBUG
+      - UNIMAAS_ISSUERSERVICEVC_DID=${UNIMAAS_ISSUERSERVICEVC_DID:-did:web:edc-proxy-issuerservicevc%3A80:issuerservicevc}
+      - UNIMAAS_MOCKREGISTRY_CONTEXT_URL=${MOCKREGISTRY_CONTEXT_URL:-http://mock-registry:8080/main/context/2411}
+      - UNIMAAS_ENABLE_EXTRA_VP_CATALOGREQUEST=${CONNECTOR_UNIMAAS_ENABLE_EXTRA_VP_CATALOGREQUEST:-true}
+      - EDC_VAULT_HASHICORP_URL=http://edc-vault-connector2:8200
+      - XACML_VALIDATION_ENABLED=${XACML_VALIDATION_ENABLED:-false}
+      - XACML_PDP_ENDPOINT=${XACML_PDP_ENDPOINT:-http://localhost:9092/pdp/verdict}
+      - XACML_DOMAIN=${XACML_DOMAIN:-unimaas}
+      - EDC_VAULT_CERTIFICATE_RESOLVER_ENABLED=true
+      - EDC_VAULT_PRIVATEKEY_RESOLVER_ENABLED=true
+      - EDC_DATASOURCE_DEFAULT_NAME=default
+      - EDC_DATASOURCE_DEFAULT_URL=jdbc:postgresql://edc-postgres-connector2:5432/edc
+      - EDC_DATASOURCE_DEFAULT_USER=edc_user
+      - EDC_DATASOURCE_DEFAULT_PASSWORD=edc_password
+      - EDC_DATASOURCE_ASSET_NAME=asset
+      - EDC_DATASOURCE_ASSET_URL=jdbc:postgresql://edc-postgres-connector2:5432/edc
+      - EDC_DATASOURCE_ASSET_USER=edc_user
+      - EDC_DATASOURCE_ASSET_PASSWORD=edc_password
+      - EDC_DATASOURCE_CONTRACTDEFINITION_NAME=contractdefinition
+      - EDC_DATASOURCE_CONTRACTDEFINITION_URL=jdbc:postgresql://edc-postgres-connector2:5432/edc
+      - EDC_DATASOURCE_CONTRACTDEFINITION_USER=edc_user
+      - EDC_DATASOURCE_CONTRACTDEFINITION_PASSWORD=edc_password
+      - EDC_DATASOURCE_POLICY_NAME=policy
+      - EDC_DATASOURCE_POLICY_URL=jdbc:postgresql://edc-postgres-connector2:5432/edc
+      - EDC_DATASOURCE_POLICY_USER=edc_user
+      - EDC_DATASOURCE_POLICY_PASSWORD=edc_password
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_NAME=contractnegotiation
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_URL=jdbc:postgresql://edc-postgres-connector2:5432/edc
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_USER=edc_user
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_PASSWORD=edc_password
+      - EDC_DATASOURCE_TRANSFERPROCESS_NAME=transferprocess
+      - EDC_DATASOURCE_TRANSFERPROCESS_URL=jdbc:postgresql://edc-postgres-connector2:5432/edc
+      - EDC_DATASOURCE_TRANSFERPROCESS_USER=edc_user
+      - EDC_DATASOURCE_TRANSFERPROCESS_PASSWORD=edc_password
+      - EDC_SQL_SCHEMA_AUTOCREATE=true
+      - EDC_SQL_POOL_CONNECTIONS_MAX=10
+      - EDC_SQL_POOL_CONNECTIONS_MIN=3
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:8080/api/check/health || curl -s http://127.0.0.1:8080/ >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+  # ============================================================================
+  # SECTION 3C: ED-NODE CONNECTORCP STACK (Central Platform Consumer - Port 9878, 7090-7095, 8390-8395)
+  # ============================================================================
+  edc-proxy:
+    image: nginx:alpine
+    hostname: edc-proxy-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    container_name: edc-proxy-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    ports:
+      - "${CONNECTORCP_NGINX_PORT:-9878}:80"
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/nginx/nginx-${ED_NODE_INSTANCE_NAME:-connectorcp}.conf:/etc/nginx/nginx.conf:ro
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/dids/:/var/www/:ro
+    networks:
+      edc-network:
+        aliases:
+          - edc-proxy-${ED_NODE_INSTANCE_NAME:-connectorcp}
+          - proxy-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  edc-postgres-connector:
+    image: postgres:15-alpine
+    hostname: edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    container_name: edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    networks:
+      edc-network:
+        aliases:
+          - edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    restart: unless-stopped
+    volumes:
+      - edc_postgres_data:/var/lib/postgresql/data
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/postgresql-init/01-init-edc-all.sql:/docker-entrypoint-initdb.d/01-init-edc-all.sql:ro
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/postgresql-init/02-init-vault-all.sql:/docker-entrypoint-initdb.d/02-init-vault-all.sql:ro
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/postgresql-init/03-init-identityhub-all.sql:/docker-entrypoint-initdb.d/03-init-identityhub-all.sql:ro
+    environment:
+      POSTGRES_DB: edc
+      POSTGRES_USER: edc_user
+      POSTGRES_PASSWORD: edc_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U edc_user -d edc"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  edc-vault-connector:
+    image: hashicorp/vault:1.15
+    hostname: edc-vault-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    container_name: edc-vault-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    networks:
+      edc-network:
+        aliases:
+          - edc-vault-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    restart: unless-stopped
+    depends_on:
+      edc-postgres-connector:
+        condition: service_healthy
+    environment:
+      VAULT_SKIP_VERIFY: "true"
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/vault/${ED_NODE_INSTANCE_NAME:-connectorcp}/vault-${ED_NODE_INSTANCE_NAME:-connectorcp}-config.json:/vault/custom/local.json
+      - vault_init_data:/vault
+    cap_add:
+      - IPC_LOCK
+    command: "server -config=/vault/custom/local.json"
+    healthcheck:
+      test: ["CMD-SHELL", "vault status -address=http://127.0.0.1:8200 2>&1 | grep -E '(Sealed.*false|Initialized.*true)' || echo 'Vault not ready'"]
+      interval: 10s
+      timeout: 35s
+      retries: 30
+      start_period: 20s
+
+  edc-vault-init-connector:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/vault-init/Dockerfile.vault-init
+    image: unimaas/vault-init:1.0
+    hostname: edc-vault-init-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    container_name: edc-vault-init-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    depends_on:
+      edc-vault-connector:
+        condition: service_healthy
+      edc-postgres-connector:
+        condition: service_healthy
+    networks:
+      edc-network:
+        aliases:
+          - edc-vault-init-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    restart: "no"
+    entrypoint: sh /vault/vault-init.sh http://edc-vault-${ED_NODE_INSTANCE_NAME:-connectorcp}:8200 ${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp} edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}:5432
+    volumes:
+      - ${REPOS_DIR:-./repos}/ed-node/launchers/vault-init/vault-init.sh:/vault/vault-init.sh
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/keysPrivPub/${ED_NODE_INSTANCE_NAME:-connectorcp}/${ED_NODE_INSTANCE_NAME:-connectorcp}_private.pem:/vault/keys/private-key.pem
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/keysPrivPub/${ED_NODE_INSTANCE_NAME:-connectorcp}/${ED_NODE_INSTANCE_NAME:-connectorcp}_public.pem:/vault/keys/certificate.pem
+      - vault_init_data:/vault
+
+  edc-vault-autounseal:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/vault-autounseal/Dockerfile.vault-autounseal
+    image: unimaas/vault-autounseal:1.0
+    hostname: edc-vault-autounseal-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    container_name: edc-vault-autounseal-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    depends_on:
+      edc-vault-connector:
+        condition: service_started
+      edc-vault-init-connector:
+        condition: service_completed_successfully
+    networks:
+      edc-network:
+        aliases:
+          - edc-vault-autounseal-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    restart: unless-stopped
+    environment:
+      - VAULT_ADDR=http://edc-vault-${ED_NODE_INSTANCE_NAME:-connectorcp}:8200
+      - CHECK_INTERVAL=10
+    volumes:
+      - vault_init_data:/vault:ro
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep -v grep | grep -q autounseal.sh || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  ih-connector:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/identity-hub/src/main/docker/Dockerfile_identityhub
+    image: unimaas/edc-identityhub:1.0
+    hostname: edc-ih-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    container_name: edc-ih-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    ports:
+      - "7090:7090"
+      - "7091:7091"
+      - "7092:7092"
+      - "7093:7093"
+      - "7094:7094"
+      - "7095:7095"
+    networks:
+      edc-network:
+        aliases:
+          - edc-ih-${ED_NODE_INSTANCE_NAME:-connectorcp}
+          - ih-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    restart: unless-stopped
+    depends_on:
+      edc-postgres-connector:
+        condition: service_healthy
+      edc-vault-connector:
+        condition: service_healthy
+      edc-vault-init-connector:
+        condition: service_completed_successfully
+      edc-proxy-issuerservicevc:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    volumes:
+      - ./scripts/ih-entrypoint.sh:/app/entrypoint.sh:ro
+      - vault_init_data:/vault-token:ro
+      - vault_init_data:/vault-identityhub-token:ro
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN:-admin}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      - UNIMAAS_OIDC_IDP_REALM=${UNIMAAS_OIDC_IDP_REALM:-unimaas}
+      - EDC_HOSTNAME=${IH_HOST:-edc-ih-connectorcp}
+      - EDC_IAM_ISSUER_ID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - EDC_IAM_DID_WEB_USE_HTTPS=false
+      - EDC_IH_IAM_ID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - EDC_PARTICIPANT_ID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - EDC_IH_API_SUPERUSER_KEY=${IH_API_KEY:-c3VwZXItdXNlcg==.c3VwZXItc2VjcmV0LWtleQo=}
+      - EDC_IAM_STS_OAUTH_CLIENT_ID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - EDC_IAM_STS_OAUTH_CLIENT_SECRET_ALIAS=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}-sts-client-secret
+      - EDC_LOG_LEVEL=DEBUG
+      - EDC_WEB_REST_CORS_ENABLED=true
+      - EDC_MONITOR_LEVEL=DEBUG
+      - EDC_VAULT_HASHICORP_URL=http://edc-vault-${ED_NODE_INSTANCE_NAME:-connectorcp}:8200
+      - EDC_VAULT_CERTIFICATE_RESOLVER_ENABLED=true
+      - EDC_VAULT_PRIVATEKEY_RESOLVER_ENABLED=true
+      - UNIMAAS_ISSUERSERVICEVC_PROTOCOL=${UNIMAAS_ISSUERSERVICEVC_PROTOCOL:-http}
+      - UNIMAAS_ISSUERSERVICEVC_HOST=${UNIMAAS_ISSUERSERVICEVC_HOST:-edc-proxy-issuerservicevc}
+      - UNIMAAS_ISSUERSERVICEVC_PORT=${UNIMAAS_ISSUERSERVICEVC_PORT:-80}
+      - UNIMAAS_ISSUERSERVICEVC_PATH=${UNIMAAS_ISSUERSERVICEVC_PATH:-/api/v1/issue-credential}
+      - UNIMAAS_ISSUERSERVICEVC_DID=${UNIMAAS_ISSUERSERVICEVC_DID:-did:web:edc-proxy-issuerservicevc%3A80:issuerservicevc}
+      - GAIAX_ISSUERSERVICEVC_PORT=${GAIAX_ISSUERSERVICEVC_PORT:-80}
+      - GAIAX_ISSUERSERVICEVC_PATH=${GAIAX_ISSUERSERVICEVC_PATH:-/api/v1/issue-gaiax-credential-jwt}
+      - UNIMAAS_OIDC_IDP_PROTOCOL=${UNIMAAS_OIDC_IDP_PROTOCOL:-http}
+      - UNIMAAS_OIDC_IDP_HOST=${UNIMAAS_OIDC_IDP_HOST:-keycloak}
+      - UNIMAAS_OIDC_IDP_PORT=${UNIMAAS_OIDC_IDP_PORT:-8080}
+      - UNIMAAS_OIDC_IDP_PATH=${UNIMAAS_OIDC_IDP_PATH:-/realms/unimaas/protocol/openid-connect/token}
+      - UNIMAAS_OIDC_IDP_CLIENT_ID=${UNIMAAS_OIDC_IDP_CLIENT_ID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - UNIMAAS_OIDC_IDP_CLIENT_SECRET=${UNIMAAS_OIDC_IDP_CLIENT_SECRET:-connectorcp-secret}
+      - UNIMAAS_CREDENTIALS_MEMBERSHIP_DUPLICATE_STRATEGY=${UNIMAAS_CREDENTIALS_MEMBERSHIP_DUPLICATE_STRATEGY:-REPLACE_ALWAYS}
+      - UNIMAAS_CREDENTIALS_DATAPROCESSOR_DUPLICATE_STRATEGY=${UNIMAAS_CREDENTIALS_DATAPROCESSOR_DUPLICATE_STRATEGY:-REPLACE_ALWAYS}
+      - UNIMAAS_CREDENTIALS_GAIAX_DUPLICATE_STRATEGY=${UNIMAAS_CREDENTIALS_GAIAX_DUPLICATE_STRATEGY:-REPLACE_ALWAYS}
+      - UNIMAAS_CREDENTIALS_RENEWAL_ENABLED=${UNIMAAS_CREDENTIALS_RENEWAL_ENABLED:-true}
+      - UNIMAAS_CREDENTIALS_RENEWAL_CHECK_INTERVAL_MINUTES=${UNIMAAS_CREDENTIALS_RENEWAL_CHECK_INTERVAL_MINUTES:-1440}
+      - UNIMAAS_CREDENTIALS_RENEWAL_EXPIRY_THRESHOLD_DAYS=${UNIMAAS_CREDENTIALS_RENEWAL_EXPIRY_THRESHOLD_DAYS:-30}
+      - EDC_DATASOURCE_DEFAULT_NAME=default
+      - EDC_DATASOURCE_DEFAULT_URL=jdbc:postgresql://edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}:5432/identityhub
+      - EDC_DATASOURCE_DEFAULT_USER=identityhub_user
+      - EDC_DATASOURCE_DEFAULT_PASSWORD=identityhub_password
+      - EDC_DATASOURCE_IDENTITYHUB_NAME=identityhub
+      - EDC_DATASOURCE_IDENTITYHUB_URL=jdbc:postgresql://edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}:5432/identityhub
+      - EDC_DATASOURCE_IDENTITYHUB_USER=identityhub_user
+      - EDC_DATASOURCE_IDENTITYHUB_PASSWORD=identityhub_password
+      - EDC_SQL_SCHEMA_AUTOCREATE=true
+      - EDC_SQL_POOL_CONNECTIONS_MAX=10
+      - EDC_SQL_POOL_CONNECTIONS_MIN=3
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:7090/api/check/health || curl -s http://127.0.0.1:7090/ >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+  edc-ih-seed-connector:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/identityhub-seed/Dockerfile.identityhub-seed-participant
+    image: unimaas/identityhub-seed-participant:1.0
+    hostname: edc-ih-seed-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    container_name: edc-ih-seed-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    networks:
+      edc-network:
+        aliases:
+          - edc-ih-seed-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    restart: "no"
+    depends_on:
+      ih-connector:
+        condition: service_healthy
+    volumes:
+      - ./scripts/ih-seed-entrypoint.sh:/identityhub/identityhub-seed.sh:ro
+      - ${REPOS_DIR:-./repos}/ed-node/deployment/assets/keysPrivPub/${ED_NODE_INSTANCE_NAME:-connectorcp}/${ED_NODE_INSTANCE_NAME:-connectorcp}_public.pem:/vault/keys/certificate.pem
+    environment:
+      - PARTICIPANT_ID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - PARTICIPANT_PROTOCOL=${NGINX_PROTOCOL:-http}
+      - PARTICIPANT_HOST=${ED_NODE_DID_HOST:-edc-proxy-connectorcp}
+      - PARTICIPANT_CALLBACK_PORT=${ED_NODE_DID_PORT:-80}
+      - PARTICIPANT_IH_HOST=edc-ih-${ED_NODE_INSTANCE_NAME:-connectorcp}
+      - PARTICIPANT_IH_API_KEY=${IH_API_KEY:-c3VwZXItdXNlcg==.c3VwZXItc2VjcmV0LWtleQo=}
+      - PARTICIPANT_IH_API_PORT=7090
+      - PARTICIPANT_IH_CREDENTIALS_PORT=${ED_NODE_DID_PORT:-80}
+      - PARTICIPANT_IH_IDENTITY_PORT=7092
+
+  connector:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: launchers/connector/src/main/docker/Dockerfile_connector
+    image: unimaas/edc-connector:1.0
+    hostname: edc-connector-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    container_name: edc-connector-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    ports:
+      - "8390:8080"
+      - "8391:8081"
+      - "8392:8082"
+      - "8393:8083"
+      - "8394:8084"
+      - "8395:8085"
+      - "11001:11001"
+    networks:
+      edc-network:
+        aliases:
+          - ${ED_NODE_INSTANCE_NAME:-connectorcp}
+          - edc-connector-${ED_NODE_INSTANCE_NAME:-connectorcp}
+    restart: unless-stopped
+    depends_on:
+      edc-postgres-connector:
+        condition: service_healthy
+      edc-vault-connector:
+        condition: service_healthy
+      ih-connector:
+        condition: service_healthy
+      edc-ih-seed-connector:
+        condition: service_completed_successfully
+    volumes:
+      - vault_init_data:/vault-token:ro
+    environment:
+      - EDC_HOSTNAME=${CONNECTOR_HOST:-edc-connector-connectorcp}
+      - EDC_IAM_ISSUER_ID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - EDC_IAM_DID_WEB_USE_HTTPS=false
+      - EDC_PARTICIPANT_ID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - EDC_IH_API_SUPERUSER_KEY=${CONNECTOR_IH_API_KEY:-c3VwZXItdXNlcg==.c3VwZXItc2VjcmV0LWtleQo=}
+      - EDC_DSP_CALLBACK_ADDRESS=${NGINX_PROTOCOL:-http}://${ED_NODE_DID_HOST:-edc-proxy-connectorcp}:${ED_NODE_DID_PORT:-80}/api/dsp
+      - EDC_IAM_STS_OAUTH_CLIENT_ID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - EDC_IAM_STS_OAUTH_CLIENT_SECRET_ALIAS=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}-sts-client-secret
+      - EDC_IAM_STS_OAUTH_TOKEN_URL=http://edc-ih-${ED_NODE_INSTANCE_NAME:-connectorcp}:7095/api/sts/token
+      - EDC_IAM_IDENTITYHUB_URL=http://edc-ih-${ED_NODE_INSTANCE_NAME:-connectorcp}:7093
+      - EDC_IAM_IDENTITYHUB_DID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - EDC_DATAPLANE_API_PUBLIC_BASEURL=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:9091/public
+      - EDC_DATAPLANE_SIGNALING_API_URL=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:9092/api/signaling
+      - EDC_DATAPLANE_TOKEN_VALIDATION_ENDPOINT=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:8083/api/control/v3/dataplane/token
+      - EDC_CONTROLPLANE_VALIDATION_ENDPOINT=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:8083/api/control/v3/dataplane/token
+      - EDC_DATAPLANE_PROXY_PUBLIC_ENDPOINT=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:11001/api/public
+      - EDC_DATAPLANE_API_INSTANCE_ID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - EDC_DPF_SELECTOR_URL=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:8083/api/control/v3/dataplanes
+      - EDC_LOG_LEVEL=DEBUG
+      - EDC_WEB_REST_CORS_ENABLED=true
+      - EDC_MONITOR_LEVEL=DEBUG
+      - UNIMAAS_ISSUERSERVICEVC_DID=${UNIMAAS_ISSUERSERVICEVC_DID:-did:web:edc-proxy-issuerservicevc%3A80:issuerservicevc}
+      - UNIMAAS_MOCKREGISTRY_CONTEXT_URL=${MOCKREGISTRY_CONTEXT_URL:-http://mock-registry:8080/main/context/2411}
+      - UNIMAAS_ENABLE_EXTRA_VP_CATALOGREQUEST=${CONNECTOR_UNIMAAS_ENABLE_EXTRA_VP_CATALOGREQUEST:-true}
+      - EDC_VAULT_HASHICORP_URL=http://edc-vault-${ED_NODE_INSTANCE_NAME:-connectorcp}:8200
+      - XACML_VALIDATION_ENABLED=${XACML_VALIDATION_ENABLED:-false}
+      - XACML_PDP_ENDPOINT=${XACML_PDP_ENDPOINT:-http://localhost:9092/pdp/verdict}
+      - XACML_DOMAIN=${XACML_DOMAIN:-unimaas}
+      - EDC_VAULT_CERTIFICATE_RESOLVER_ENABLED=true
+      - EDC_VAULT_PRIVATEKEY_RESOLVER_ENABLED=true
+      - EDC_DATASOURCE_DEFAULT_NAME=default
+      - EDC_DATASOURCE_DEFAULT_URL=jdbc:postgresql://edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}:5432/edc
+      - EDC_DATASOURCE_DEFAULT_USER=edc_user
+      - EDC_DATASOURCE_DEFAULT_PASSWORD=edc_password
+      - EDC_DATASOURCE_ASSET_NAME=asset
+      - EDC_DATASOURCE_ASSET_URL=jdbc:postgresql://edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}:5432/edc
+      - EDC_DATASOURCE_ASSET_USER=edc_user
+      - EDC_DATASOURCE_ASSET_PASSWORD=edc_password
+      - EDC_DATASOURCE_CONTRACTDEFINITION_NAME=contractdefinition
+      - EDC_DATASOURCE_CONTRACTDEFINITION_URL=jdbc:postgresql://edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}:5432/edc
+      - EDC_DATASOURCE_CONTRACTDEFINITION_USER=edc_user
+      - EDC_DATASOURCE_CONTRACTDEFINITION_PASSWORD=edc_password
+      - EDC_DATASOURCE_POLICY_NAME=policy
+      - EDC_DATASOURCE_POLICY_URL=jdbc:postgresql://edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}:5432/edc
+      - EDC_DATASOURCE_POLICY_USER=edc_user
+      - EDC_DATASOURCE_POLICY_PASSWORD=edc_password
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_NAME=contractnegotiation
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_URL=jdbc:postgresql://edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}:5432/edc
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_USER=edc_user
+      - EDC_DATASOURCE_CONTRACTNEGOTIATION_PASSWORD=edc_password
+      - EDC_DATASOURCE_TRANSFERPROCESS_NAME=transferprocess
+      - EDC_DATASOURCE_TRANSFERPROCESS_URL=jdbc:postgresql://edc-postgres-${ED_NODE_INSTANCE_NAME:-connectorcp}:5432/edc
+      - EDC_DATASOURCE_TRANSFERPROCESS_USER=edc_user
+      - EDC_DATASOURCE_TRANSFERPROCESS_PASSWORD=edc_password
+      - EDC_SQL_SCHEMA_AUTOCREATE=true
+      - EDC_SQL_POOL_CONNECTIONS_MAX=10
+      - EDC_SQL_POOL_CONNECTIONS_MIN=3
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:8080/api/check/health || curl -s http://127.0.0.1:8080/ >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+  # ============================================================================
+  # SECTION 4: CENTRAL KNOWLEDGE GRAPH & DMS STACK (central-kg & ids-mvd-dms)
+  # ============================================================================
+  central-platform-graphdb:
+    hostname: central-platform-graphdb
+    image: ontotext/graphdb:10.3.3
+    container_name: central-platform-graphdb
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f -s http://localhost:7200/protocol || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 45s
+    environment:
+      GDB_HEAP_SIZE: 4g
+      GDB_MIN_MEM: 1g
+      GDB_MAX_MEM: 4g
+      GRAPHDB_SECURITY: "true"
+      GRAPHDB_ADMIN_PASSWORD: "${GRAPHDB_ADMIN_PASSWORD:-mypassword}"
+    ports:
+      - "${CENTRAL_GRAPHDB_PORT:-7200}:7200"
+    volumes:
+      - central_graphdb_data:/opt/graphdb/home
+      - ${REPOS_DIR:-./repos}/central-kg/graphdb/config:/config
+    networks:
+      - edc-network
+
+  central-platform-postgres:
+    hostname: central-platform-postgres
+    image: postgres:18
+    container_name: central-platform-postgres
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-postgrescp}"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
+      POSTGRES_DB: ${POSTGRES_DB:-postgrescp}
+    volumes:
+      - central_postgres_data:/var/lib/postgresql
+    ports:
+      - "${CENTRAL_POSTGRES_PORT:-5432}:5432"
+    networks:
+      - edc-network
+
+  fuseki-server-provider:
+    image: stain/jena-fuseki
+    container_name: fuseki-server-provider
+    hostname: fuseki-server-provider
+    user: "0:0"
+    restart: unless-stopped
+    ports:
+      - "${FUSEKI_PROVIDER_PORT:-3032}:3030"
+    volumes:
+      - ${REPOS_DIR:-./repos}/ids-mvd-dms/fuseki/provider/config.ttl:/fuseki/config.ttl:ro
+      - fuseki_provider_data:/fuseki/databases
+      - ${REPOS_DIR:-./repos}/ids-mvd-dms/fuseki/provider/shiro.ini:/fuseki/shiro.ini:ro
+    command: ["/jena-fuseki/fuseki-server", "--config=/fuseki/config.ttl"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:3030/\\$/ping || curl -sf -u admin:mypassword 'http://localhost:3030/provider/query?query=ASK%7B%3Fs%20%3Fp%20%3Fo%7D' >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+    networks:
+      - edc-network
+
+  central-platform-federated-catalog:
+    build:
+      context: ${REPOS_DIR:-./repos}/ed-node
+      dockerfile: ../../dockerfiles/Dockerfile.federated-catalog
+    image: standalone-federated-catalog:latest
+    hostname: central-platform-federated-catalog
+    container_name: central-platform-federated-catalog
+    restart: unless-stopped
+    depends_on:
+      connector:
+        condition: service_healthy
+      ih-connector:
+        condition: service_healthy
+      central-platform-postgres:
+        condition: service_healthy
+    volumes:
+      - vault_init_data:/vault-token:ro
+      - ${REPOS_DIR:-./repos}/central-kg/env/standalone-catalog.env:/etc/app/env-file:ro
+    networks:
+      - edc-network
+    ports:
+      - "${CATALOG_PORT:-8184}:8184"
+      - "${CATALOG_MGMT_PORT:-8181}:8181"
+    environment:
+      - EDC_IAM_IDENTITYHUB_URL=http://edc-ih-${ED_NODE_INSTANCE_NAME:-connectorcp}:7093
+      - EDC_IAM_IDENTITYHUB_DID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
+      - EDC_CONTROLPLANE_VALIDATION_ENDPOINT=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:8083/api/control/v3/dataplane/token
+      - EDC_LOG_LEVEL=DEBUG
+      - EDC_WEB_REST_CORS_ENABLED=true
+      - EDC_MONITOR_LEVEL=DEBUG
+      - UNIMAAS_ISSUERSERVICEVC_DID=${UNIMAAS_ISSUERSERVICEVC_DID:-did:web:edc-proxy-issuerservicevc%3A80:issuerservicevc}
+      - UNIMAAS_MOCKREGISTRY_CONTEXT_URL=${MOCKREGISTRY_CONTEXT_URL:-http://mock-registry:8080/main/context/2411}
+      - UNIMAAS_ENABLE_EXTRA_VP_CATALOGREQUEST=${CONNECTOR_UNIMAAS_ENABLE_EXTRA_VP_CATALOGREQUEST:-true}
+
+  central-platform-digital-thread:
+    build:
+      context: ${REPOS_DIR:-./repos}/ids-mvd-dms
+      dockerfile: ../../dockerfiles/Dockerfile.digital-thread
+    image: digital-thread:latest
+    hostname: central-platform-digital-thread
+    container_name: central-platform-digital-thread
+    restart: unless-stopped
+    depends_on:
+      central-platform-graphdb:
+        condition: service_healthy
+      central-platform-postgres:
+        condition: service_healthy
+      central-platform-federated-catalog:
+        condition: service_started
+    env_file:
+      - ${REPOS_DIR:-./repos}/central-kg/env/digital_thread.env
+    volumes:
+      - ${REPOS_DIR:-./repos}/ids-mvd-dms/deployment/config/demo_dms.json:/etc/app/demo_dms.json:ro
+    networks:
+      - edc-network
+
+  central-platform-kg-api:
+    build:
+      context: ${REPOS_DIR:-./repos}/central-kg/centralKG_API
+      dockerfile: ../../../dockerfiles/Dockerfile.centralkg-api
+    image: centralkg-api:latest
+    hostname: central-platform-kg-api
+    container_name: central-platform-kg-api
+    restart: unless-stopped
+    depends_on:
+      central-platform-graphdb:
+        condition: service_healthy
+    env_file:
+      - ${REPOS_DIR:-./repos}/central-kg/centralKG_API/api.env
+    ports:
+      - "${CENTRAL_KG_API_PORT:-8000}:8000"
+    networks:
+      - edc-network
+
+volumes:
+  infraflex_graphdb_data:
+  central_graphdb_data:
+  central_postgres_data:
+  edc_postgres_data:
+  edc_postgres_data_connector1:
+  edc_postgres_data_connector2:
+  vault_init_data:
+  vault_init_data_connector1:
+  vault_init_data_connector2:
+  keycloak_data:
+  fuseki_provider_data:
+
+networks:
+  edc-network:
+    name: edc-network
+    driver: bridge

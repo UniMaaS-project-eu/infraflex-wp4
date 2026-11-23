@@ -1,0 +1,391 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:device:cell6_lift",
+      "idShort": "cell6_lift",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex device: Cell6/Lift (Lift)"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:asset:infraflex:device:cell6_lift",
+        "assetType": "https://w3id.org/fm/infraflex#LiftExecutor"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:device:cell6_lift:sm:devicesubmodel"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:device:cell6_lift:sm:livedata"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Device"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:device:cell6_lift:sm:devicesubmodel",
+      "idShort": "DeviceSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Device"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Device from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Cell6_Lift Device Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Nameplate",
+          "description": [
+            {
+              "language": "en",
+              "text": "Identifying information about this Device"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "ManufacturerName",
+              "valueType": "xs:string",
+              "value": "Infraflex"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "ManufacturerProductDesignation",
+              "valueType": "xs:string",
+              "value": "Lift Unit"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "SerialNumber",
+              "valueType": "xs:string",
+              "value": "SN-INFRA-CELL6_LIFT"
+            }
+          ]
+        },
+        {
+          "modelType": "ReferenceElement",
+          "idShort": "PartOfSite",
+          "value": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "urn:unimaas:infraflex:site:cell6"
+              }
+            ]
+          },
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasDevice_inverse"
+              }
+            ]
+          },
+          "description": [
+            {
+              "language": "en",
+              "text": "Site hosting this Device (cell6)"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Characteristics",
+          "description": [
+            {
+              "language": "en",
+              "text": "Characteristics of this Device (sc:hasCharacteristic)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_1",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell6_lift_operational_state"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell6_lift_operational_state"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_2",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell6_lift_position"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell6_lift_position"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_3",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell6_lift_emergency_stop"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell6_lift_emergency_stop"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_4",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell6_lift_error_code"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell6_lift_error_code"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:device:cell6_lift:sm:livedata",
+      "idShort": "livedata",
+      "kind": "Instance",
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "OperationalState",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#operationalState"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "Position",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#liftPosition"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ServiceMode",
+          "valueType": "xs:boolean",
+          "value": ""
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ErrorCode",
+          "valueType": "xs:int",
+          "value": ""
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ErrorMsg",
+          "valueType": "xs:string",
+          "value": ""
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ControlStop",
+          "valueType": "xs:boolean",
+          "value": ""
+        },
+        {
+          "modelType": "Property",
+          "idShort": "EmergencyStop",
+          "valueType": "xs:boolean",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#emergencyStop"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "LoweringEnable",
+          "valueType": "xs:boolean",
+          "value": ""
+        },
+        {
+          "modelType": "Property",
+          "idShort": "CurrentSkill",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#currentSkill"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "TaskState",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#taskState"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "LastUpdate",
+          "valueType": "xs:string",
+          "value": ""
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

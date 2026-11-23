@@ -1,0 +1,422 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:device:cell2_powerair",
+      "idShort": "cell2_powerair",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex device: Cell2/PowerAir (PowerAir)"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:asset:infraflex:device:cell2_powerair",
+        "assetType": "https://w3id.org/fm/infraflex#PowerAirExecutor"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:device:cell2_powerair:sm:devicesubmodel"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:device:cell2_powerair:sm:livedata"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Device"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:device:cell2_powerair:sm:devicesubmodel",
+      "idShort": "DeviceSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Device"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Device from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Cell2_PowerAir Device Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Nameplate",
+          "description": [
+            {
+              "language": "en",
+              "text": "Identifying information about this Device"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "ManufacturerName",
+              "valueType": "xs:string",
+              "value": "Infraflex"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "ManufacturerProductDesignation",
+              "valueType": "xs:string",
+              "value": "PowerAir Unit"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "SerialNumber",
+              "valueType": "xs:string",
+              "value": "SN-INFRA-CELL2_POWERAIR"
+            }
+          ]
+        },
+        {
+          "modelType": "ReferenceElement",
+          "idShort": "PartOfSite",
+          "value": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "urn:unimaas:infraflex:site:cell2"
+              }
+            ]
+          },
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasDevice_inverse"
+              }
+            ]
+          },
+          "description": [
+            {
+              "language": "en",
+              "text": "Site hosting this Device (cell2)"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Characteristics",
+          "description": [
+            {
+              "language": "en",
+              "text": "Characteristics of this Device (sc:hasCharacteristic)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_1",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell2_powerair_operational_state"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell2_powerair_operational_state"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_2",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell2_powerair_gripper_close"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell2_powerair_gripper_close"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_3",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell2_powerair_tool_attach"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell2_powerair_tool_attach"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_4",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell2_powerair_air_error_code"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell2_powerair_air_error_code"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_5",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell2_powerair_power_tool_enable"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell2_powerair_power_tool_enable"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:device:cell2_powerair:sm:livedata",
+      "idShort": "livedata",
+      "kind": "Instance",
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "OperationalState",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#operationalState"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "GripperClose",
+          "valueType": "xs:boolean",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#gripperClose"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ToolAttach",
+          "valueType": "xs:boolean",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#toolAttach"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "AirErrorCode",
+          "valueType": "xs:int",
+          "value": ""
+        },
+        {
+          "modelType": "Property",
+          "idShort": "AirErrorMsg",
+          "valueType": "xs:string",
+          "value": ""
+        },
+        {
+          "modelType": "Property",
+          "idShort": "PowerToolEnable",
+          "valueType": "xs:boolean",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#toolEnable"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "CurrentSkill",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#currentSkill"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "TaskState",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#taskState"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "TaskDuration",
+          "valueType": "xs:decimal",
+          "value": ""
+        },
+        {
+          "modelType": "Property",
+          "idShort": "LastUpdate",
+          "valueType": "xs:string",
+          "value": ""
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

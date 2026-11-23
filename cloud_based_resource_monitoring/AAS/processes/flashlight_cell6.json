@@ -1,0 +1,705 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:processconfiguration:flashlight_cell6",
+      "idShort": "flashlight_cell6",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:asset:infraflex:processconfiguration:flashlight_cell6"
+      },
+      "submodels": [
+        {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:processconfiguration:flashlight_cell6:sm:processconfiguration"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#ProcessConfiguration"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:processconfiguration:flashlight_cell6:sm:processconfiguration",
+      "idShort": "processconfiguration",
+      "kind": "Instance",
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ConfigurationName",
+          "valueType": "xs:string",
+          "value": "Flashlight@cell6"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ConfigurationIdentifier",
+          "valueType": "xs:string",
+          "value": "CONF_FLASHLIGHT_CELL6"
+        },
+        {
+          "modelType": "ReferenceElement",
+          "idShort": "RequiredProcess",
+          "value": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "urn:unimaas:infraflex:process:flashlight"
+              }
+            ]
+          },
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#requiresProcess"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "ReferenceElement",
+          "idShort": "AssignedCell",
+          "value": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "urn:unimaas:infraflex:site:cell6"
+              }
+            ]
+          },
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#isPerformedAt"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "StepAssignments",
+          "value": [
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_01_FlashlightPlacePCB",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "FlashlightPlacePCB"
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "DefinedInProcess",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:process:flashlight"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "AssignedToCell",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:site:cell6"
+                      }
+                    ]
+                  },
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "http://unimaas-project.eu/MSCOntology#isPerformedAt"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "SatisfiedBy",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "CapabilityRef",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "Submodel",
+                        "value": "urn:aas:infraflex:site:cell6:sm:configuration"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_02_FlashlightPlaceCoverClick",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "FlashlightPlaceCoverClick"
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "DefinedInProcess",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:process:flashlight"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "AssignedToCell",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:site:cell6"
+                      }
+                    ]
+                  },
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "http://unimaas-project.eu/MSCOntology#isPerformedAt"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "SatisfiedBy",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "CapabilityRef",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "Submodel",
+                        "value": "urn:aas:infraflex:site:cell6:sm:configuration"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_03_FlashlightPlaceLensClick",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "FlashlightPlaceLensClick"
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "DefinedInProcess",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:process:flashlight"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "AssignedToCell",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:site:cell6"
+                      }
+                    ]
+                  },
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "http://unimaas-project.eu/MSCOntology#isPerformedAt"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "SatisfiedBy",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "CapabilityRef",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "Submodel",
+                        "value": "urn:aas:infraflex:site:cell6:sm:configuration"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_04_FlashlightMoveFlashlightBackClick",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "FlashlightMoveFlashlightBackClick"
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "DefinedInProcess",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:process:flashlight"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "AssignedToCell",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:site:cell6"
+                      }
+                    ]
+                  },
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "http://unimaas-project.eu/MSCOntology#isPerformedAt"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "SatisfiedBy",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "CapabilityRef",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "Submodel",
+                        "value": "urn:aas:infraflex:site:cell6:sm:configuration"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "description": [
+            {
+              "language": "en",
+              "text": "Maps each process step to the cell capability that satisfies it"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Resources",
+          "description": [
+            {
+              "language": "en",
+              "text": "Resources used by this Process Configuration (sc:usesResource)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Resource_UR10e",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:equipmentresource:ur10e"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#usesResource"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Universal Robots UR10e robot arm"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Resource_SuctionGripper",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:equipmentresource:suction_gripper"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#usesResource"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Vacuum suction gripper"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Resource_ScrewDriver",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:equipmentresource:screwdriver"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#usesResource"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Robotic screwdriver tool"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Resource_Cell6PowerAir",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:device:cell6_powerair"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#usesResource"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Cell 6 pneumatic and power controller"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#usesResource"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Inputs",
+          "description": [
+            {
+              "language": "en",
+              "text": "Input Products for this Process Configuration (sc:hasInput)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Input_FlashlightLens",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:product:flashlight_lens"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasInput"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Flashlight optical lens"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Input_FlashlightCover",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:product:flashlight_cover"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasInput"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Flashlight bottom cover"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Input_FlashlightScrew",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:product:flashlight_screw"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasInput"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Flashlight assembly screws"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasInput"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Outputs",
+          "description": [
+            {
+              "language": "en",
+              "text": "Output Products for this Process Configuration (sc:hasOutput)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Output_Flashlight",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:product:flashlight"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasOutput"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Assembled UniMaaS LED flashlight"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasOutput"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProcessInstancesNote",
+          "valueType": "xs:string",
+          "value": "Execution instances recorded in TaskLog on urn:unimaas:infraflex:site:cell6. Job details in ExecutionLog on the arm shell assigned to cell6."
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

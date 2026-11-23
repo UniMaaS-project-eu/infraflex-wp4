@@ -1,0 +1,29 @@
+# Multi-stage Dockerfile for standalone-federated-catalog (built from ids-mvd-dms or ed-node)
+FROM gradle:8.12-jdk17-jammy AS builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN chmod +x gradlew && \
+    ./gradlew :launchers:standalone-federated-catalog:shadowJar --no-daemon --stacktrace
+
+FROM eclipse-temurin:23-jre-alpine
+
+WORKDIR /app
+
+RUN apk --no-cache add curl jq
+
+COPY --from=builder /app/launchers/standalone-federated-catalog/build/libs/standalone-federated-catalog.jar /app/standalone-federated-catalog.jar
+
+EXPOSE 8180 8181 8182 8183 8184 8185
+
+ENTRYPOINT ["sh", "-c", "\
+  TOKEN_ARG=''; \
+  if [ -f /vault-token/root_token.txt ]; then \
+    TOKEN_ARG=\"-Dedc.vault.hashicorp.token=$(cat /vault-token/root_token.txt)\"; \
+  elif [ -f /vault-token/token ]; then \
+    TOKEN_ARG=\"-Dedc.vault.hashicorp.token=$(cat /vault-token/token)\"; \
+  fi; \
+  exec java $TOKEN_ARG -Dedc.fs.config=/etc/app/env-file -jar /app/standalone-federated-catalog.jar --log-level=debug \
+"]

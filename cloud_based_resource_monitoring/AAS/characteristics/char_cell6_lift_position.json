@@ -1,0 +1,199 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:characteristic:char_cell6_lift_position",
+      "idShort": "char_cell6_lift_position",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex characteristic: Position (CHAR_CELL6_LIFT_POSITION)"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:asset:infraflex:characteristic:char_cell6_lift_position"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:characteristic:char_cell6_lift_position:sm:characteristicsubmodel"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Characteristic"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:characteristic:char_cell6_lift_position:sm:characteristicsubmodel",
+      "idShort": "CharacteristicSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Characteristic"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Characteristic from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Position Characteristic Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "Position",
+          "valueType": "xs:string",
+          "value": "DOWN"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "CharacteristicIdentifier",
+          "valueType": "xs:string",
+          "value": "CHAR_CELL6_LIFT_POSITION"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "CharacteristicValue",
+          "valueType": "xs:string",
+          "value": "DOWN"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "DataType",
+          "valueType": "xs:string",
+          "value": "string"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "Unit",
+          "valueType": "xs:string",
+          "value": ""
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "CharacterizesEntity",
+          "description": [
+            {
+              "language": "en",
+              "text": "ConfigurableEntity (Device, Resource, Site) that has this Characteristic"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Entity_Reference",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:device:cell6_lift"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic_inverse"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Entity possessing this characteristic (Position)"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic_inverse"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "ObservingSensors",
+          "description": [
+            {
+              "language": "en",
+              "text": "Sensors that observe this Characteristic (sc:isObservedBy)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Sensor_Reference",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:sensor:cell6_lift_sensor"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#isObservedBy"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Sensor observing Position"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#isObservedBy"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

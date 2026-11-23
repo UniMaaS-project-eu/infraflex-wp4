@@ -1,0 +1,199 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:characteristic:char_amr_mir200_1_position_y",
+      "idShort": "char_amr_mir200_1_position_y",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex characteristic: PositionY (CHAR_AMR_MIR200_1_POSITION_Y)"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:asset:infraflex:characteristic:char_amr_mir200_1_position_y"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:characteristic:char_amr_mir200_1_position_y:sm:characteristicsubmodel"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Characteristic"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:characteristic:char_amr_mir200_1_position_y:sm:characteristicsubmodel",
+      "idShort": "CharacteristicSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Characteristic"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Characteristic from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "PositionY Characteristic Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "PositionY",
+          "valueType": "xs:double",
+          "value": "3.40"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "CharacteristicIdentifier",
+          "valueType": "xs:string",
+          "value": "CHAR_AMR_MIR200_1_POSITION_Y"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "CharacteristicValue",
+          "valueType": "xs:double",
+          "value": "3.40"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "DataType",
+          "valueType": "xs:string",
+          "value": "double"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "Unit",
+          "valueType": "xs:string",
+          "value": "m"
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "CharacterizesEntity",
+          "description": [
+            {
+              "language": "en",
+              "text": "ConfigurableEntity (Device, Resource, Site) that has this Characteristic"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Entity_Reference",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:device:amr_mir200_1"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic_inverse"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Entity possessing this characteristic (PositionY)"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic_inverse"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "ObservingSensors",
+          "description": [
+            {
+              "language": "en",
+              "text": "Sensors that observe this Characteristic (sc:isObservedBy)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Sensor_Reference",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:sensor:amr_mir200_1_sensor"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#isObservedBy"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Sensor observing PositionY"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#isObservedBy"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

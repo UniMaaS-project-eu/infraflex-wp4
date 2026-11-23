@@ -1,0 +1,89 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:product:flashlight_screw",
+      "idShort": "flashlight_screw",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex product: Flashlight M3 Screw"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Type",
+        "globalAssetId": "urn:asset:infraflex:product:flashlight_screw"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:product:flashlight_screw:sm:productsubmodel"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Product"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:product:flashlight_screw:sm:productsubmodel",
+      "idShort": "ProductSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Product"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Product from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Flashlight M3 Screw Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ProductName",
+          "valueType": "xs:string",
+          "value": "Flashlight M3 Screw"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProductIdentifier",
+          "valueType": "xs:string",
+          "value": "PROD_PART_SCREW"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProductAspectDesignation",
+          "valueType": "xs:string",
+          "value": "-Screw"
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

@@ -1,0 +1,203 @@
+name: basyx-setup
+
+services:
+  aas-env:
+    image: eclipsebasyx/aas-environment:2.0.0-SNAPSHOT
+    container_name: aas-env
+    environment:
+      - SERVER_PORT=8081
+    volumes:
+      - ./basyx-setup/aas:/application/aas
+      - ./basyx-setup/basyx/aas-env.properties:/application/application.properties
+    ports:
+      - '8081:8081'
+    restart: always
+    depends_on:
+      aas-registry:
+        condition: service_healthy
+      sm-registry:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      mosquitto:
+        condition: service_healthy
+
+  aas-registry:
+    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-SNAPSHOT
+    container_name: aas-registry
+    ports:
+      - '8082:8080'
+    environment:
+      - SERVER_PORT=8080
+    volumes:
+      - ./basyx-setup/basyx/aas-registry.yml:/workspace/config/application.yml
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  sm-registry:
+    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-SNAPSHOT
+    container_name: sm-registry
+    ports:
+      - '8083:8080'
+    environment:
+      - SERVER_PORT=8080
+    volumes:
+      - ./basyx-setup/basyx/sm-registry.yml:/workspace/config/application.yml
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  aas-discovery:
+    image: eclipsebasyx/aas-discovery:2.0.0-SNAPSHOT
+    container_name: aas-discovery
+    environment:
+      - SERVER_PORT=8081
+    volumes:
+      - ./basyx-setup/basyx/aas-discovery.properties:/application/application.properties
+    ports:
+      - '8084:8081'
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  mongo:
+    image: mongo:5.0.10
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoAdmin
+      MONGO_INITDB_ROOT_PASSWORD: mongoPassword
+    restart: always
+    healthcheck:
+      test: mongo
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0.15
+    container_name: mosquitto
+    ports:
+      - '1883:1883'
+    volumes:
+      - ./basyx-setup/mosquitto:/mosquitto
+    restart: always
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - mosquitto_sub -p 1883 -t 'topic' -C 1 -E -i probe -W 3
+      interval: 5s
+      timeout: 10s
+      start_period: 1s
+      retries: 3
+
+  aas-web-ui:
+    image: eclipsebasyx/aas-gui:SNAPSHOT
+    container_name: aas-ui
+    ports:
+      - '3000:3000'
+    environment:
+      AAS_REGISTRY_PATH: http://localhost:8082/shell-descriptors
+      SUBMODEL_REGISTRY_PATH: http://localhost:8083/submodel-descriptors
+      AAS_REPO_PATH: http://localhost:8081/shells
+      SUBMODEL_REPO_PATH: http://localhost:8081/submodels
+      CD_REPO_PATH: http://localhost:8081/concept-descriptions
+      AAS_DISCOVERY_PATH: http://localhost:8084/lookup/shells
+      DASHBOARD_SERVICE_PATH: http://localhost:8085/api/elements
+    restart: always
+    depends_on:
+      aas-env:
+        condition: service_healthy
+
+  dashboard-api:
+    image: aaronzi/basyx-dashboard-api:SNAPSHOT_02
+    container_name: dashboard-api
+    ports:
+      - '8085:8085'
+    volumes:
+      - ./basyx-setup/basyx/aas-dashboard.yml:/application.yml
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  graphdb:
+    image: ontotext/graphdb:10.8.0
+    container_name: graphdb
+    ports:
+      - '7200:7200'
+    environment:
+      GDB_JAVA_OPTS: "-Xmx2g"
+    volumes:
+      - graphdb_data:/opt/graphdb/home
+    restart: always
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - curl -f -s http://localhost:7200/rest/repositories || exit 1
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  redpanda:
+    image: redpandadata/redpanda:latest
+    container_name: redpanda
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr internal://redpanda:9092,external://localhost:19092
+      - --pandaproxy-addr internal://0.0.0.0:8083,external://0.0.0.0:18083
+      - --advertise-pandaproxy-addr internal://redpanda:8083,external://localhost:18083
+      - --smp 1
+      - --memory 512M
+      - --mode dev-container
+      - --default-log-level=warn
+    ports:
+      - '19092:19092'
+      - '18083:18083'
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - rpk cluster health | grep -E 'Healthy:.+true' || exit 1
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+
+  unimaas-infraflex:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: unimaas-infraflex
+    environment:
+      MQTT_HOST: mosquitto
+      MQTT_PORT: 1883
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+      BASYX_AAS_REPO: http://aas-env:8081
+      BASYX_SUBMODEL_REPO: http://aas-env:8081
+      BASYX_AAS_REGISTRY: http://aas-registry:8080
+      GRAPHDB_URL: http://graphdb:7200
+      GRAPHDB_REPOSITORY: infraflex
+    volumes:
+      - ./unimaas_infraflex:/app/unimaas_infraflex
+      - ./AAS:/app/AAS
+      - ./ontologies:/app/ontologies
+    restart: always
+    depends_on:
+      aas-env:
+        condition: service_healthy
+      graphdb:
+        condition: service_healthy
+      redpanda:
+        condition: service_healthy
+      mosquitto:
+        condition: service_healthy
+
+volumes:
+  graphdb_data:

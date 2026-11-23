@@ -1,0 +1,3572 @@
+@prefix bfo: <http://purl.obolibrary.org/obo/bfo.owl> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix inst: <http://unimaas-project.eu/infraflex/instances#> .
+@prefix iof-constr: <https://spec.industrialontologies.org/ontology/construct/> .
+@prefix iof-core: <https://spec.industrialontologies.org/ontology/core/Core/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sc: <http://unimaas-project.eu/MSCOntology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://unimaas-project.eu/MSCOntology> a owl:Ontology ;
+    dcterms:contributor "FLM" ;
+    dcterms:created "2026-02-24"^^xsd:date ;
+    dcterms:creator "NTUA" ;
+    dcterms:issued "2026-05-27"^^xsd:date ;
+    dcterms:license <http://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-05-27"^^xsd:date ;
+    dcterms:title "Manufacturing Service Chain Ontology" ;
+    rdfs:comment "This ontology is aligned with IOF Core through lightweight mapping annotations. It does not fully import IOF Core in order to preserve application-level simplicity." ;
+    rdfs:seeAlso iof-core: ;
+    owl:versionIRI <http://unimaas-project.eu/MSCOntology/1.2.0> ;
+    owl:versionInfo "1.2.0" ;
+    dcat:keyword "manufacturing service chain",
+        "ontology" .
+
+sc:HumanResource a owl:Class ;
+    rdfs:label "Human Resource" ;
+    rdfs:comment "Human workforce resource used in a manufacturing service chain." ;
+    rdfs:subClassOf sc:Resource ;
+    skos:closeMatch iof-constr:Person ;
+    skos:relatedMatch iof-constr:Agent .
+
+sc:MaterialResource a owl:Class ;
+    rdfs:label "Material Resource" ;
+    rdfs:comment "Physical/material resource used in a manufacturing service chain." ;
+    rdfs:subClassOf sc:Resource ;
+    skos:closeMatch iof-constr:MaterialResource .
+
+sc:SoftwareResource a owl:Class ;
+    rdfs:label "Software Resource" ;
+    rdfs:comment "Software, algorithmic, or informational resource used in a manufacturing service chain." ;
+    rdfs:subClassOf sc:Resource ;
+    skos:closeMatch iof-constr:InformationContentEntity ;
+    skos:relatedMatch iof-constr:Algorithm,
+        iof-constr:EncodedAlgorithm .
+
+sc:greenOperationLevel a owl:DatatypeProperty ;
+    rdfs:label "green operation level" ;
+    rdfs:domain sc:Site ;
+    rdfs:range xsd:decimal .
+
+sc:hasCharacteristic a owl:ObjectProperty ;
+    rdfs:label "has characteristic" ;
+    rdfs:domain sc:ConfigurableEntity ;
+    rdfs:range sc:Characteristic .
+
+sc:hasComponent a owl:ObjectProperty,
+        owl:TransitiveProperty ;
+    rdfs:label "has component" ;
+    rdfs:domain sc:Product ;
+    rdfs:range sc:Product .
+
+sc:hasDevice a owl:ObjectProperty ;
+    rdfs:label "has device" ;
+    rdfs:domain sc:Site ;
+    rdfs:range sc:Device .
+
+sc:hasEndingPoint a owl:ObjectProperty ;
+    rdfs:label "has ending point" ;
+    rdfs:comment "The destination location of the route" ;
+    rdfs:domain sc:LogisticRoute ;
+    rdfs:range sc:Location .
+
+sc:hasLocation a owl:ObjectProperty ;
+    rdfs:label "has location" ;
+    rdfs:domain [ a owl:Class ;
+            owl:unionOf ( sc:Site sc:Supplier ) ] ;
+    rdfs:range sc:Location .
+
+sc:hasStartingPoint a owl:ObjectProperty ;
+    rdfs:label "has starting point" ;
+    rdfs:comment "The origin location of the route" ;
+    rdfs:domain sc:LogisticRoute ;
+    rdfs:range sc:Location .
+
+sc:id a owl:DatatypeProperty ;
+    rdfs:label "identifier" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+sc:name a owl:DatatypeProperty ;
+    rdfs:label "name" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+sc:outputOf a owl:ObjectProperty ;
+    owl:inverseOf sc:hasOutput .
+
+sc:processingRate a owl:DatatypeProperty ;
+    rdfs:label "processing rate" ;
+    rdfs:domain sc:Site ;
+    rdfs:range xsd:decimal .
+
+sc:refersToResource a owl:ObjectProperty ;
+    rdfs:label "refers to resource" ;
+    rdfs:domain sc:ResourceConf ;
+    rdfs:range sc:Resource .
+
+sc:requiresProcess a owl:ObjectProperty ;
+    rdfs:label "requires process" ;
+    rdfs:domain sc:ProcessConfiguration ;
+    rdfs:range sc:Process .
+
+sc:resourceType a owl:DatatypeProperty ;
+    rdfs:label "resource type" ;
+    rdfs:domain sc:Resource ;
+    rdfs:range xsd:string .
+
+sc:satisfiesRequirement a owl:ObjectProperty ;
+    rdfs:label "satisfies requirement" ;
+    rdfs:domain sc:Product ;
+    rdfs:range sc:CustomerRequirement .
+
+sc:sensorValue a owl:DatatypeProperty ;
+    rdfs:label "sensor value" ;
+    rdfs:domain sc:Sensor ;
+    rdfs:range xsd:decimal .
+
+sc:transmissionCost a owl:DatatypeProperty ;
+    rdfs:label "transmission cost" ;
+    rdfs:domain sc:LogisticRoute ;
+    rdfs:range xsd:decimal .
+
+sc:transmissionUnit a owl:DatatypeProperty ;
+    rdfs:label "transmission unit" ;
+    rdfs:domain sc:LogisticRoute ;
+    rdfs:range xsd:string .
+
+sc:transportationMode a owl:DatatypeProperty ;
+    rdfs:label "transportation mode" ;
+    rdfs:domain sc:LogisticRoute ;
+    rdfs:range xsd:string .
+
+sc:usesResource a owl:ObjectProperty ;
+    rdfs:label "uses resource" ;
+    rdfs:domain sc:ProcessConfiguration ;
+    rdfs:range sc:Resource .
+
+sc:usesResourceConf a owl:ObjectProperty ;
+    rdfs:label "uses resource configuration" ;
+    rdfs:domain sc:ProcessConfiguration ;
+    rdfs:range sc:ResourceConf .
+
+inst:equipmentresource_addon_conveyor a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "addon_conveyor" ;
+    sc:availableQuantity 1.0 ;
+    sc:conveyorStroke 1200.0 ;
+    sc:conveyorWidth 400.0 ;
+    sc:id "RES_ADDON_CONVEYOR",
+        "urn:unimaas:infraflex:equipmentresource:addon_conveyor" ;
+    sc:name "Add-On Conveyor",
+        "addon_conveyor" ;
+    sc:resourceType "Equipment" ;
+    sc:unit "unit" ;
+    rdfs:comment "Infraflex cell add-on: conveyor"@en .
+
+inst:equipmentresource_addon_lift a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "addon_lift" ;
+    sc:availableQuantity 1.0 ;
+    sc:id "RES_ADDON_LIFT",
+        "urn:unimaas:infraflex:equipmentresource:addon_lift" ;
+    sc:liftStrokeHeight 300.0 ;
+    sc:name "Add-On Lift",
+        "addon_lift" ;
+    sc:resourceType "Equipment" ;
+    sc:tableLength 800.0 ;
+    sc:tableWidth 600.0 ;
+    sc:unit "unit" ;
+    rdfs:comment "Infraflex cell add-on: lift table"@en .
+
+inst:equipmentresource_addon_table a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "addon_table" ;
+    sc:availableQuantity 1.0 ;
+    sc:id "RES_ADDON_TABLE",
+        "urn:unimaas:infraflex:equipmentresource:addon_table" ;
+    sc:name "Add-On Table",
+        "addon_table" ;
+    sc:resourceType "Equipment" ;
+    sc:tableLength 800.0 ;
+    sc:tableWidth 600.0 ;
+    sc:unit "unit" ;
+    rdfs:comment "Infraflex cell add-on: work table"@en .
+
+inst:equipmentresource_crx_25ia a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "crx_25ia" ;
+    sc:acoustic_noise_level "70" ;
+    sc:ambient_humidity "75" ;
+    sc:ambient_humidity_short_term "95" ;
+    sc:arbitraryMLP "Note: Every multilanguage property can be used."@en,
+        "Sample"@en ;
+    sc:at_wrist_25_30_kg "1889/1756 mm" ;
+    sc:capabilityComment "Drive screws; needs a ScrewDriver end-effector"@en,
+        "Move the TCP along a straight linear path (MoveL); precise Cartesian motion"@en,
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning"@en,
+        "Pick and place objects; needs PowerAir GripperControl"@en ;
+    sc:capabilityLevel "Compound",
+        "Primitive" ;
+    sc:composedOf "MoveJointSpace;MoveLinear" ;
+    sc:countryOfOrigin "DE" ;
+    sc:crx_25ia "Max. reach" ;
+    sc:dateOfManufacture "2022-01-01" ;
+    sc:description "Move the TCP along a straight linear path (MoveL); precise Cartesian motion",
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning" ;
+    sc:designationOfCertificateOrApproval "KEMA99IECEX1105/128" ;
+    sc:dimensions "410 x 277 x 370 mm" ;
+    sc:electricalPower_Consumption "0.4 kW" ;
+    sc:electricalSupply_Voltage "200-230 V" ;
+    sc:end_of_flange_environment_acoustic_noise_level "<70" ;
+    sc:environment_acoustic_noise_level "<70" ;
+    sc:environmentalAmbient_Temperature "0-45 degC" ;
+    sc:environmentalIp_Rating "IP67 IP" ;
+    sc:expiryDate "2022-01-01" ;
+    sc:firmwareVersion "1.0.0" ;
+    sc:hardwareVersion "1.0.0" ;
+    sc:id "12345678",
+        "urn:unimaas:infraflex:equipmentresource:crx_25ia" ;
+    sc:imageNote "Notes or explanations about the image provided"@en ;
+    sc:integrated_air_supply "1" ;
+    sc:integrated_signals_on_upper_arm_in_out "5/6 *3" ;
+    sc:issueDate "2022-01-01" ;
+    sc:manufacturer "FANUC",
+        "FANUC"@en ;
+    sc:manufacturerProductFamily "\"Type ABC\""@en ;
+    sc:manufacturerProductRoot "\"flow meter\""@en ;
+    sc:manufacturerProductType "FM-ABC-1234" ;
+    sc:markingAdditionalText "0044" ;
+    sc:markingName "0173-1#07-DAA603#004" ;
+    sc:maxPayload_kg 30.0 ;
+    sc:maxReach_mm 1889.0 ;
+    sc:maximumRatedVoltage 230.0 ;
+    sc:may_not_reach_the_maximum_value_stated "*6) In case of 30 kg payload" ;
+    sc:mds_04893_en "Technical information subject to changes without prior notice. All rights reserved. ©2023 FANUC Europe Corporation" ;
+    sc:mini_plus_r_1889_dimensions "410 x 277 x 370 mm" ;
+    sc:minimumRatedVoltage 200.0 ;
+    sc:motion_range "Maximum speed (°/s) *2" ;
+    sc:motion_range_of_end_of_flange "Integrated services" ;
+    sc:mounting_position "Floor" ;
+    sc:mounting_position_angle_0_deg "R-30iB Plus" ;
+    sc:name "crx_25ia",
+        "CRX-25iA"@en ;
+    sc:numberOfFunctionalSafetySetsOfCharacteristics 1 ;
+    sc:orderCodeOfManufacturer "FMABC1234" ;
+    sc:productArticleNumberOfManufacturer "FM11-ABC22-123456" ;
+    sc:productClassName "Name of product class in the used classification system"@en ;
+    sc:providesCapability "CapabilityGrasping",
+        "CapabilityScrewing" ;
+    sc:r1_3_rs485_interface_included_1756 "1756" ;
+    sc:r_1889_dimensions "410 x 277 x 370 mm" ;
+    sc:repeatability_mm 0.04 ;
+    sc:requiredExecutorSkill "GripperControl" ;
+    sc:requiredTool "ScrewDriver" ;
+    sc:robot_footprint "283 mm" ;
+    sc:selected_region_other_datasheet_p001_region_007 """Integrated signals on upper arm In/Out 5/6 *3
+Integrated air supply 1""" ;
+    sc:softwareVersion "1.0.0" ;
+    sc:standard "*Based on ISO9283" ;
+    sc:technical_DataController "R-30 i B Plus" ;
+    sc:technical_DataPayload "30 kg" ;
+    sc:technical_DataReach "1889 mm" ;
+    sc:technical_DataWeight "Moment/Inertia" ;
+    sc:textStatement "Statement by the manufacturer in text form, e.g. scope of validity of the statements, scopes of application, conditions of operation."@en ;
+    sc:totalJobsShown 0 ;
+    sc:uRIOfTheProduct "https://example.com/assets/crx_25ia" ;
+    sc:uniqueFacilityIdentifier "987654321" ;
+    sc:vibration_acceleration "4.9" ;
+    sc:working_range "CRX-25iA" ;
+    sc:yearOfConstruction "2022" .
+
+inst:equipmentresource_lbr_iiwa_7 a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "lbr_iiwa_7" ;
+    sc:a1 "±170 °" ;
+    sc:a2 "±120 °" ;
+    sc:a3 "±170 °" ;
+    sc:a4 "±120 °" ;
+    sc:a5 "±170 °" ;
+    sc:a6 "±120 °" ;
+    sc:a7 "±175 °" ;
+    sc:age_transportation_air_humidity "20 % to 80 %" ;
+    sc:air_humidity "20 % to 80 %" ;
+    sc:ambient_condi "5 °C to 33 °C (278 K to 306 K) degC" ;
+    sc:arbitraryMLP "Note: Every multilanguage property can be used."@en,
+        "Sample"@en ;
+    sc:arm_rated_supplementary_load_arm "0 kg" ;
+    sc:axis_data "Range of motion" ;
+    sc:axis_data_motion_range_a1 "±170 °" ;
+    sc:axis_velocity_axis_7 "180 °/s" ;
+    sc:base_frame_rated_supplementary_load_rotating "0 kg" ;
+    sc:basic_data "LBR iiwa 7 R800" ;
+    sc:basic_data_kinematic_type "Articulated robot" ;
+    sc:capabilityComment "Drive screws; needs a ScrewDriver end-effector"@en,
+        "Move the TCP along a straight linear path (MoveL); precise Cartesian motion"@en,
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning"@en,
+        "Pick and place objects; needs PowerAir GripperControl"@en ;
+    sc:capabilityLevel "Compound",
+        "Primitive" ;
+    sc:cobot "Yes" ;
+    sc:column_maximum_supplementary_load "rotating column" ;
+    sc:composedOf "MoveJointSpace;MoveLinear" ;
+    sc:content_a4 "130 °/s" ;
+    sc:controller_controller "KUKA Sunrise Cabinet" ;
+    sc:countryOfOrigin "DE" ;
+    sc:dateOfManufacture "2022-01-01" ;
+    sc:default_color "KUKA Sunrise Cabinet" ;
+    sc:description "Move the TCP along a straight linear path (MoveL); precise Cartesian motion",
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning" ;
+    sc:designationOfCertificateOrApproval "KEMA99IECEX1105/128" ;
+    sc:envelope "lope for the robot" ;
+    sc:envelope_view_number_of_axes "7" ;
+    sc:environmentalAmbient_Temperature "0 °C to 45 °C (273 K to 318 K) degC" ;
+    sc:environmentalIp_Rating "IP54 IP" ;
+    sc:expiryDate "2022-01-01" ;
+    sc:family_basic_data_kinematic_type "Articulated robot" ;
+    sc:firmwareVersion "1.0.0" ;
+    sc:flange_documentation_4_2_3 "Payloads, LBR iiwa 7 R800" ;
+    sc:footprint "approx. 23.9 kg" ;
+    sc:foundation_loads "The specified forces and moments already include the payload and the inertia" ;
+    sc:frame_maximum_supplementary_load "base frame" ;
+    sc:gravity_p "of the mounting flange on axis A7." ;
+    sc:hardwareVersion "1.0.0" ;
+    sc:horizontal_force "240 N" ;
+    sc:id "12345678",
+        "urn:unimaas:infraflex:equipmentresource:lbr_iiwa_7" ;
+    sc:imageNote "Notes or explanations about the image provided"@en ;
+    sc:iso_13849_1_technical_data_maximum_reach "800 mm" ;
+    sc:issueDate "2022-01-01" ;
+    sc:kinematic_type "Articulated robot" ;
+    sc:lbr_iiwa_14_r820 "Basic data" ;
+    sc:lbr_iiwa_7_r800 "Basic data" ;
+    sc:lbr_iiwa_7_r800_sound_level "< 75 dB (A)" ;
+    sc:lbr_iiwa_lbr_iiwa_7_r800_sound_level "< 75 dB (A)" ;
+    sc:load_16_79 "Issued: 28.01.2015 Version: Spez LBR iiwa V5" ;
+    sc:load_center_of "For all payloads, the load center of gravity refers to the distance from the face" ;
+    sc:lxy "35 mm" ;
+    sc:lz "60 mm" ;
+    sc:manufacturer "KUKA",
+        "KUKA"@en ;
+    sc:manufacturerProductFamily "\"Type ABC\""@en ;
+    sc:manufacturerProductRoot "\"flow meter\""@en ;
+    sc:manufacturerProductType "FM-ABC-1234" ;
+    sc:markingAdditionalText "0044" ;
+    sc:markingName "0173-1#07-DAA603#004" ;
+    sc:maxPayload_kg 7.0 ;
+    sc:maxReach_mm 800.0 ;
+    sc:maximum_supplementary_load "base frame" ;
+    sc:maximum_supplementary_load_arm "Nominal distance to load center of gravity" ;
+    sc:maximum_supplementary_load_link "arm" ;
+    sc:motion_range_a1 "±170 °" ;
+    sc:motion_range_axis_7 "±175 °" ;
+    sc:mounting_position "Floor; Payload diagram" ;
+    sc:name "lbr_iiwa_7",
+        "LBR iiwa 7 R800"@en ;
+    sc:nominal_distance_to_load_center_of_gravity_lxy "35 mm" ;
+    sc:numberOfFunctionalSafetySetsOfCharacteristics 1 ;
+    sc:orderCodeOfManufacturer "FMABC1234" ;
+    sc:permissible_angle_of_inclination "KUKA Sunrise Cabinet" ;
+    sc:productArticleNumberOfManufacturer "FM11-ABC22-123456" ;
+    sc:productClassName "Name of product class in the used classification system"@en ;
+    sc:providesCapability "CapabilityGrasping",
+        "CapabilityScrewing" ;
+    sc:r800_page_24_lbr_iiwa_14_r820 "Basic data" ;
+    sc:r820_page_34_4_2 "Technical data, LBR iiwa 7 R800" ;
+    sc:rated_mass_moment_of_inertia "0.3 kgm² kg" ;
+    sc:rated_supplementary_load_arm "0 kg" ;
+    sc:rated_supplementary_load_base "0 kg" ;
+    sc:rated_supplementary_load_link_arm "0 kg" ;
+    sc:rated_supplementary_load_rotating "0 kg" ;
+    sc:rated_total_load "7 kg" ;
+    sc:repeatability_mm 0.1 ;
+    sc:requiredExecutorSkill "GripperControl" ;
+    sc:requiredTool "ScrewDriver" ;
+    sc:rotating_column_rated_supplementary_load_link_arm "0 kg" ;
+    sc:safety_requirements "Category 3 and Performance" ;
+    sc:sections_robot "Technical data" ;
+    sc:selected_region_other_datasheet_p001_region_007 "Controller KUKA Sunrise Cabinet" ;
+    sc:selected_region_other_specifications_p002_region_004 "Mounting position Floor" ;
+    sc:selected_region_other_specifications_p002_region_005 "Controller KUKA Sunrise Cabinet" ;
+    sc:softwareVersion "1.0.0" ;
+    sc:sound_level "< 75 dB (A)" ;
+    sc:supplementary "The robot cannot carry a supplementary load." ;
+    sc:t_4_1 "Technical data, overview" ;
+    sc:technical_DataController "Controller KUKA Sunrise Cabinet" ;
+    sc:technical_DataNumber_Of_Axes "7 count" ;
+    sc:technical_DataPayload "7 kg" ;
+    sc:technical_DataReach "800 mm" ;
+    sc:technical_DataRepeatability "0.1 mm" ;
+    sc:technical_DataWeight "23.9 kg" ;
+    sc:technical_data_maximum_reach "800 mm" ;
+    sc:textStatement "Statement by the manufacturer in text form, e.g. scope of validity of the statements, scopes of application, conditions of operation."@en ;
+    sc:tilting_moment "310 Nm" ;
+    sc:tions "tion" ;
+    sc:torque_about_axis_1 "156 Nm" ;
+    sc:totalJobsShown 0 ;
+    sc:transformation_name "5 °C to 33 °C (278 K to 306 K) degC" ;
+    sc:uRIOfTheProduct "https://example.com/assets/lbr_iiwa_7" ;
+    sc:uniqueFacilityIdentifier "987654321" ;
+    sc:vertical_force "524 N" ;
+    sc:view_number_of_axes "7" ;
+    sc:volume_of_working_envelope "1.7 m³" ;
+    sc:wall_footprint "approx. 23.9 kg" ;
+    sc:ware_supplementary "The robot cannot carry a supplementary load." ;
+    sc:with_content_a4 "130 °/s" ;
+    sc:working "The diagram (>>> Fig. 4-1 ) shows the shape and size of the working enve" ;
+    sc:yearOfConstruction "2022" .
+
+inst:logisticroute_route_cell1_to_cell5 a sc:LogisticRoute,
+        owl:NamedIndividual ;
+    rdfs:label "route_cell1_to_cell5" ;
+    sc:distance 15.0 ;
+    sc:distanceUnit "m" ;
+    sc:hasEndingPoint inst:site_cell5 ;
+    sc:hasStartingPoint inst:site_cell1 ;
+    sc:id "ROUTE_CELL1_CELL5",
+        "urn:unimaas:infraflex:logisticroute:route_cell1_to_cell5" ;
+    sc:name "Cell 1 to Cell 5 Logistics Route",
+        "route_cell1_to_cell5" ;
+    sc:routeStatus "Active" ;
+    sc:transportationMode "AMR" ;
+    sc:usesResource inst:device_amr_mir200_1 ;
+    rdfs:comment "Infraflex logistic route: Cell 1 to Cell 5 Logistics Route"@en .
+
+inst:logisticroute_route_cell5_to_cell6 a sc:LogisticRoute,
+        owl:NamedIndividual ;
+    rdfs:label "route_cell5_to_cell6" ;
+    sc:distance 12.5 ;
+    sc:distanceUnit "m" ;
+    sc:hasEndingPoint inst:site_cell6 ;
+    sc:hasStartingPoint inst:site_cell5 ;
+    sc:id "ROUTE_CELL5_CELL6",
+        "urn:unimaas:infraflex:logisticroute:route_cell5_to_cell6" ;
+    sc:name "Cell 5 to Cell 6 Logistics Route",
+        "route_cell5_to_cell6" ;
+    sc:routeStatus "Active" ;
+    sc:transportationMode "AMR" ;
+    sc:usesResource inst:device_amr_mir200_1 ;
+    rdfs:comment "Infraflex logistic route: Cell 5 to Cell 6 Logistics Route"@en .
+
+inst:logisticroute_route_cell6_to_wh a sc:LogisticRoute,
+        owl:NamedIndividual ;
+    rdfs:label "route_cell6_to_wh" ;
+    sc:distance 25.0 ;
+    sc:distanceUnit "m" ;
+    sc:hasEndingPoint inst:device_warehouse_003 ;
+    sc:hasStartingPoint inst:site_cell6 ;
+    sc:id "ROUTE_CELL6_WH",
+        "urn:unimaas:infraflex:logisticroute:route_cell6_to_wh" ;
+    sc:name "Cell 6 to Warehouse Logistics Route",
+        "route_cell6_to_wh" ;
+    sc:routeStatus "Active" ;
+    sc:transportationMode "AMR" ;
+    sc:usesResource inst:device_amr_mir500_1 ;
+    rdfs:comment "Infraflex logistic route: Cell 6 to Warehouse Logistics Route"@en .
+
+inst:process_kuka_press a sc:Process,
+        owl:NamedIndividual ;
+    rdfs:label "kuka_press" ;
+    sc:hasStep inst:process_kuka_press_Step_01_PressBrakePistonAssembly,
+        inst:process_kuka_press_Step_02_PressBrakeCoverAssembly,
+        inst:process_kuka_press_Step_03_KukaGrabToolFromSkid,
+        inst:process_kuka_press_Step_04_PressBrakePistonDisassembly,
+        inst:process_kuka_press_Step_05_KukaDropToolToSkid,
+        inst:process_kuka_press_Step_06_PressBrakeCoverDisassembly ;
+    sc:id "PROC_KUKAPRESS",
+        "urn:unimaas:infraflex:process:kuka_press" ;
+    sc:name "KukaPress",
+        "kuka_press" ;
+    sc:note "No AAS cell shell found for the executing resources" ;
+    sc:processType "Assembly" .
+
+inst:site_cell2 a sc:Site,
+        owl:NamedIndividual ;
+    rdfs:label "cell2" ;
+    sc:deviceType "PowerAir" ;
+    sc:hasCharacteristic inst:characteristic_char_cell2_available_capacity ;
+    sc:hasDevice inst:device_cell2_powerair,
+        inst:equipmentresource_dossan_h2515 ;
+    sc:id "CELL2",
+        "urn:unimaas:infraflex:site:cell2" ;
+    sc:location "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F" ;
+    sc:locationAddress "UniMaaS Smart Factory, Cell2" ;
+    sc:locationAspectDesignation "+Cell2" ;
+    sc:mqttPath "Infraflex/Executors/Cell2/PowerAir" ;
+    sc:name "Cell2",
+        "cell2" ;
+    rdfs:comment "Infraflex production site Cell2"@en .
+
+inst:site_cell3 a sc:Site,
+        owl:NamedIndividual ;
+    rdfs:label "cell3" ;
+    sc:hasCharacteristic inst:characteristic_char_cell3_available_capacity ;
+    sc:hasDevice inst:equipmentresource_ur10e ;
+    sc:id "CELL3",
+        "urn:unimaas:infraflex:site:cell3" ;
+    sc:location "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F" ;
+    sc:locationAddress "UniMaaS Smart Factory, Cell3" ;
+    sc:locationAspectDesignation "+Cell3" ;
+    sc:name "Cell3",
+        "cell3" ;
+    rdfs:comment "Infraflex production site Cell3"@en .
+
+inst:site_cell4 a sc:Site,
+        owl:NamedIndividual ;
+    rdfs:label "cell4" ;
+    sc:deviceType "PowerAir",
+        "Turntable" ;
+    sc:hasCharacteristic inst:characteristic_char_cell4_available_capacity ;
+    sc:hasDevice inst:device_cell4_powerair,
+        inst:device_cell4_turntable,
+        inst:equipmentresource_kr_10_1100_2 ;
+    sc:id "CELL4",
+        "urn:unimaas:infraflex:site:cell4" ;
+    sc:location "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F" ;
+    sc:locationAddress "UniMaaS Smart Factory, Cell4" ;
+    sc:locationAspectDesignation "+Cell4" ;
+    sc:mqttPath "Infraflex/Executors/Cell4/PowerAir",
+        "Infraflex/Executors/Cell4/Turntable" ;
+    sc:name "Cell4",
+        "cell4" ;
+    rdfs:comment "Infraflex production site Cell4"@en .
+
+sc:CustomerRequirement a owl:Class ;
+    rdfs:label "Customer Requirement" ;
+    rdfs:comment "Specifications required by customer" ;
+    rdfs:subClassOf iof-constr:RequirementSpecification ;
+    skos:closeMatch iof-constr:RequirementSpecification .
+
+sc:hasInput a owl:ObjectProperty ;
+    rdfs:label "has input" ;
+    rdfs:domain sc:ProcessConfiguration ;
+    rdfs:range sc:Product .
+
+sc:hasNextStep a owl:ObjectProperty ;
+    rdfs:label "has next step" ;
+    rdfs:domain sc:ProcessConfiguration ;
+    rdfs:range sc:ProcessConfiguration ;
+    owl:inverseOf sc:hasPreviousStep ;
+    owl:propertyChainAxiom ( sc:hasOutput sc:inputOf ),
+        ( sc:hasOutput sc:inputOf ) .
+
+sc:hasPreviousStep a owl:ObjectProperty ;
+    rdfs:label "has previous step" ;
+    rdfs:domain sc:ProcessConfiguration ;
+    rdfs:range sc:ProcessConfiguration ;
+    owl:inverseOf sc:hasNextStep .
+
+sc:isObservedBy a owl:ObjectProperty ;
+    rdfs:label "is observed by" ;
+    rdfs:domain sc:Characteristic ;
+    rdfs:range sc:Sensor ;
+    owl:inverseOf sc:observes .
+
+sc:isPerformedAt a owl:ObjectProperty ;
+    rdfs:label "is performed at" ;
+    rdfs:domain sc:Process ;
+    rdfs:range sc:Site ;
+    owl:inverseOf sc:performs .
+
+sc:isProvidedBy a owl:ObjectProperty ;
+    rdfs:label "is provided by" ;
+    rdfs:domain [ a owl:Class ;
+            owl:unionOf ( sc:Resource sc:Product ) ] ;
+    rdfs:range sc:Supplier ;
+    owl:inverseOf sc:provides .
+
+sc:observes a owl:ObjectProperty ;
+    rdfs:label "observes" ;
+    rdfs:domain sc:Sensor ;
+    rdfs:range sc:Characteristic ;
+    owl:inverseOf sc:isObservedBy .
+
+sc:performs a owl:ObjectProperty ;
+    rdfs:label "performs" ;
+    rdfs:domain sc:Site ;
+    rdfs:range sc:Process ;
+    owl:inverseOf sc:isPerformedAt .
+
+sc:provides a owl:ObjectProperty ;
+    rdfs:label "provides" ;
+    rdfs:domain sc:Supplier ;
+    rdfs:range [ a owl:Class ;
+            owl:unionOf ( sc:Resource sc:Product ) ] ;
+    owl:inverseOf sc:isProvidedBy .
+
+inst:characteristic_char_cell1_available_capacity a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell1_available_capacity" ;
+    sc:availableCapacity 100.0 ;
+    sc:characteristicValue 100.0 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_CELL1_CAPACITY",
+        "urn:unimaas:infraflex:characteristic:char_cell1_available_capacity" ;
+    sc:name "char_cell1_available_capacity" ;
+    sc:unit "%" ;
+    rdfs:comment "Infraflex characteristic: AvailableCapacity (CHAR_CELL1_CAPACITY)"@en .
+
+inst:characteristic_char_cell2_available_capacity a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell2_available_capacity" ;
+    sc:availableCapacity 100.0 ;
+    sc:characteristicValue 100.0 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_CELL2_CAPACITY",
+        "urn:unimaas:infraflex:characteristic:char_cell2_available_capacity" ;
+    sc:name "char_cell2_available_capacity" ;
+    sc:unit "%" ;
+    rdfs:comment "Infraflex characteristic: AvailableCapacity (CHAR_CELL2_CAPACITY)"@en .
+
+inst:characteristic_char_cell3_available_capacity a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell3_available_capacity" ;
+    sc:availableCapacity 100.0 ;
+    sc:characteristicValue 100.0 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_CELL3_CAPACITY",
+        "urn:unimaas:infraflex:characteristic:char_cell3_available_capacity" ;
+    sc:name "char_cell3_available_capacity" ;
+    sc:unit "%" ;
+    rdfs:comment "Infraflex characteristic: AvailableCapacity (CHAR_CELL3_CAPACITY)"@en .
+
+inst:characteristic_char_cell4_available_capacity a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell4_available_capacity" ;
+    sc:availableCapacity 100.0 ;
+    sc:characteristicValue 100.0 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_CELL4_CAPACITY",
+        "urn:unimaas:infraflex:characteristic:char_cell4_available_capacity" ;
+    sc:name "char_cell4_available_capacity" ;
+    sc:unit "%" ;
+    rdfs:comment "Infraflex characteristic: AvailableCapacity (CHAR_CELL4_CAPACITY)"@en .
+
+inst:characteristic_char_cell5_available_capacity a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell5_available_capacity" ;
+    sc:availableCapacity 100.0 ;
+    sc:characteristicValue 100.0 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_CELL5_CAPACITY",
+        "urn:unimaas:infraflex:characteristic:char_cell5_available_capacity" ;
+    sc:name "char_cell5_available_capacity" ;
+    sc:unit "%" ;
+    rdfs:comment "Infraflex characteristic: AvailableCapacity (CHAR_CELL5_CAPACITY)"@en .
+
+inst:characteristic_char_cell6_available_capacity a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_available_capacity" ;
+    sc:availableCapacity 100.0 ;
+    sc:characteristicValue 100.0 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_CELL6_CAPACITY",
+        "urn:unimaas:infraflex:characteristic:char_cell6_available_capacity" ;
+    sc:name "char_cell6_available_capacity" ;
+    sc:unit "%" ;
+    rdfs:comment "Infraflex characteristic: AvailableCapacity (CHAR_CELL6_CAPACITY)"@en .
+
+inst:characteristic_char_fingered_gripper_payload a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_fingered_gripper_payload" ;
+    sc:characteristicValue 10.0 ;
+    sc:dataType "double" ;
+    sc:gripperPayload 10.0 ;
+    sc:id "CHAR_TOOL_FG_PAYLOAD",
+        "urn:unimaas:infraflex:characteristic:char_fingered_gripper_payload" ;
+    sc:name "char_fingered_gripper_payload" ;
+    sc:unit "kg" ;
+    rdfs:comment "Infraflex characteristic: GripperPayload (CHAR_TOOL_FG_PAYLOAD)"@en .
+
+inst:characteristic_char_screwdriver_torque a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_screwdriver_torque" ;
+    sc:characteristicValue 8.5 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_TOOL_SD_TORQUE",
+        "urn:unimaas:infraflex:characteristic:char_screwdriver_torque" ;
+    sc:name "char_screwdriver_torque" ;
+    sc:screwDriverMaxTorque 8.5 ;
+    sc:unit "Nm" ;
+    rdfs:comment "Infraflex characteristic: ScrewDriverMaxTorque (CHAR_TOOL_SD_TORQUE)"@en .
+
+inst:characteristic_char_suction_gripper_payload a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_suction_gripper_payload" ;
+    sc:characteristicValue 5.0 ;
+    sc:dataType "double" ;
+    sc:gripperPayload 5.0 ;
+    sc:id "CHAR_TOOL_SG_PAYLOAD",
+        "urn:unimaas:infraflex:characteristic:char_suction_gripper_payload" ;
+    sc:name "char_suction_gripper_payload" ;
+    sc:unit "kg" ;
+    rdfs:comment "Infraflex characteristic: GripperPayload (CHAR_TOOL_SG_PAYLOAD)"@en .
+
+inst:device_cell1_powerair a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "cell1_powerair" ;
+    sc:hasCharacteristic inst:characteristic_char_cell1_powerair_air_error_code,
+        inst:characteristic_char_cell1_powerair_gripper_close,
+        inst:characteristic_char_cell1_powerair_operational_state,
+        inst:characteristic_char_cell1_powerair_power_tool_enable,
+        inst:characteristic_char_cell1_powerair_tool_attach ;
+    sc:id "SN-INFRA-CELL1_POWERAIR",
+        "urn:unimaas:infraflex:device:cell1_powerair" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "PowerAir Unit",
+        "cell1_powerair" ;
+    rdfs:comment "Infraflex device: Cell1/PowerAir (PowerAir)"@en .
+
+inst:device_cell2_powerair a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "cell2_powerair" ;
+    sc:hasCharacteristic inst:characteristic_char_cell2_powerair_air_error_code,
+        inst:characteristic_char_cell2_powerair_gripper_close,
+        inst:characteristic_char_cell2_powerair_operational_state,
+        inst:characteristic_char_cell2_powerair_power_tool_enable,
+        inst:characteristic_char_cell2_powerair_tool_attach ;
+    sc:id "SN-INFRA-CELL2_POWERAIR",
+        "urn:unimaas:infraflex:device:cell2_powerair" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "PowerAir Unit",
+        "cell2_powerair" ;
+    rdfs:comment "Infraflex device: Cell2/PowerAir (PowerAir)"@en .
+
+inst:device_cell4_powerair a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "cell4_powerair" ;
+    sc:hasCharacteristic inst:characteristic_char_cell4_powerair_air_error_code,
+        inst:characteristic_char_cell4_powerair_gripper_close,
+        inst:characteristic_char_cell4_powerair_operational_state,
+        inst:characteristic_char_cell4_powerair_power_tool_enable,
+        inst:characteristic_char_cell4_powerair_tool_attach ;
+    sc:id "SN-INFRA-CELL4_POWERAIR",
+        "urn:unimaas:infraflex:device:cell4_powerair" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "PowerAir Unit",
+        "cell4_powerair" ;
+    rdfs:comment "Infraflex device: Cell4/PowerAir (PowerAir)"@en .
+
+inst:device_cell4_turntable a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "cell4_turntable" ;
+    sc:hasCharacteristic inst:characteristic_char_cell4_turntable_error_code,
+        inst:characteristic_char_cell4_turntable_operational_state,
+        inst:characteristic_char_cell4_turntable_slot_empty,
+        inst:characteristic_char_cell4_turntable_slot_positions ;
+    sc:id "SN-INFRA-CELL4_TURNTABLE",
+        "urn:unimaas:infraflex:device:cell4_turntable" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "Turntable Unit",
+        "cell4_turntable" ;
+    rdfs:comment "Infraflex device: Cell4/Turntable (Turntable)"@en .
+
+inst:device_cell5_lift a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "cell5_lift" ;
+    sc:hasCharacteristic inst:characteristic_char_cell5_lift_emergency_stop,
+        inst:characteristic_char_cell5_lift_error_code,
+        inst:characteristic_char_cell5_lift_operational_state,
+        inst:characteristic_char_cell5_lift_position ;
+    sc:id "SN-INFRA-CELL5_LIFT",
+        "urn:unimaas:infraflex:device:cell5_lift" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "Lift Unit",
+        "cell5_lift" ;
+    rdfs:comment "Infraflex device: Cell5/Lift (Lift)"@en .
+
+inst:device_cell6_lift a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "cell6_lift" ;
+    sc:hasCharacteristic inst:characteristic_char_cell6_lift_emergency_stop,
+        inst:characteristic_char_cell6_lift_error_code,
+        inst:characteristic_char_cell6_lift_operational_state,
+        inst:characteristic_char_cell6_lift_position ;
+    sc:id "SN-INFRA-CELL6_LIFT",
+        "urn:unimaas:infraflex:device:cell6_lift" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "Lift Unit",
+        "cell6_lift" ;
+    rdfs:comment "Infraflex device: Cell6/Lift (Lift)"@en .
+
+inst:device_cell6_turntable a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "cell6_turntable" ;
+    sc:hasCharacteristic inst:characteristic_char_cell6_turntable_error_code,
+        inst:characteristic_char_cell6_turntable_operational_state,
+        inst:characteristic_char_cell6_turntable_slot_empty,
+        inst:characteristic_char_cell6_turntable_slot_positions ;
+    sc:id "SN-INFRA-CELL6_TURNTABLE",
+        "urn:unimaas:infraflex:device:cell6_turntable" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "Turntable Unit",
+        "cell6_turntable" ;
+    rdfs:comment "Infraflex device: Cell6/Turntable (Turntable)"@en .
+
+inst:device_debonder a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "debonder" ;
+    sc:hasCharacteristic inst:characteristic_char_debonder_error_code,
+        inst:characteristic_char_debonder_operational_state ;
+    sc:id "SN-INFRA-DEBONDER",
+        "urn:unimaas:infraflex:device:debonder" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "Debonder Unit",
+        "debonder" ;
+    rdfs:comment "Infraflex device: Debonder (Debonder)"@en .
+
+inst:equipmentresource_dossan_h2017 a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "dossan_h2017" ;
+    sc:a0509_a0912_air_blowing "Gluing & Bonding" ;
+    sc:a0509f_a0912f_a_series_agile "Service" ;
+    sc:a0912 "M1013" ;
+    sc:a0912f_dedicated "A0509F Dedicated" ;
+    sc:a0912s "Model" ;
+    sc:a_press_machine "into a dripper just like a barista" ;
+    sc:a_series_agile "Service" ;
+    sc:a_series_can_go_anywhere "Dedicated F&B Model" ;
+    sc:a_series_controller "to allow for eﬃcient operation. Integrated conduit brackets and holders" ;
+    sc:a_skilled_welder "with autonomous driving robots" ;
+    sc:a_speed "A+ ROI" ;
+    sc:a_systematic_doosan_robot_framework_library_is "conﬁguration and overall operations such as the installation," ;
+    sc:agile "A0912ㆍA0912SㆍA0912FㆍA0509ㆍA0509SㆍA0509F" ;
+    sc:air_blowing "Gluing & Bonding" ;
+    sc:allowing_for_e_cient_and_organized_work "wide range of applications with half the" ;
+    sc:among_existing_collaborative_robots "enables cost-eﬀective operation for a" ;
+    sc:and_automated "engines, shock absorb" ;
+    sc:and_automated_procedures_plastic_injection_support "Film Production" ;
+    sc:and_debugging_tools_for_the_implementation_of "to safety devices to automate your work process with" ;
+    sc:and_immediate_operation_a0912 "M1013" ;
+    sc:and_production_e_ciency_of_collaborative_robots "or tablet with Windows OS, Android, or Mac OS installed." ;
+    sc:any_expertise_on_programming "smartphone applications in concept" ;
+    sc:api "Doosan is proud to oﬀer training courses on system" ;
+    sc:api_request_data_api "Doosan is proud to oﬀer training courses on system" ;
+    sc:application_programs_it_provides_various_libraries "Meet our partners from end eﬀectors" ;
+    sc:arbitraryMLP "Note: Every multilanguage property can be used."@en,
+        "Sample"@en ;
+    sc:arm_cable_length "6 m (default)" ;
+    sc:assembling "Polishing" ;
+    sc:assembling_heavy_or "such as surgical assistance, rehabilitation," ;
+    sc:assembling_heavy_parts "Assembling Automotive Bodies" ;
+    sc:assembly "Noodle" ;
+    sc:assembly_lines "after processing" ;
+    sc:available_for_robot_application_developers_to_create "programming and maintenance of Doosan robots. mm" ;
+    sc:beverage_industry_2 "Axis" ;
+    sc:body_parts_like_doors_lift "movements" ;
+    sc:build "And, the log data from the corresponding robot is transmitted remotely and" ;
+    sc:bulky_parts_such_as_engines "and support" ;
+    sc:cable_holder_other_options "Cockpit Advanced Features (SW)" ;
+    sc:capabilityComment "Drive screws; needs a ScrewDriver end-effector"@en,
+        "Move the TCP along a straight linear path (MoveL); precise Cartesian motion"@en,
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning"@en,
+        "Pick and place objects; needs PowerAir GripperControl"@en ;
+    sc:capabilityLevel "Compound",
+        "Primitive" ;
+    sc:certi_cation "KCs, CE, NRTL, EN ISO 10218-1, EN ISO 13849-1 PLe Cat.4 for emergency stop, PLd Cat.3 for other safety functions" ;
+    sc:changes_to_provide_superior_safety "measures inclination angles," ;
+    sc:co_ee "Noodles" ;
+    sc:cockpit_to_quickly_and_easily_teach_robots "P-SERIES" ;
+    sc:color "Black, White" ;
+    sc:combats_labor_shortages_by "Assists advanced medical applications" ;
+    sc:communications "ModbusTCP (Master/Slave), ModbusRTU (Master), PROFINET IO (Device), EtherNet/IP (Adapter), TCP/IP, RS-232/RS-422/RS-485 using USB to Serial converter (not included)" ;
+    sc:compatible_robot_models "H-SERIES / M-SERIES / A-SERIES / E-SERIES" ;
+    sc:components_of_dart_suite_dart_ide "DART-Platform 3" ;
+    sc:composedOf "MoveJointSpace;MoveLinear" ;
+    sc:con_guration "H2017 / H2515" ;
+    sc:consistently "Detaching objects" ;
+    sc:construction_perforation "Medical Treatment" ;
+    sc:convenient_communication_connections "A0912S" ;
+    sc:countryOfOrigin "DE" ;
+    sc:cover_dimension_a0509 "Jacket" ;
+    sc:crushing "Tool" ;
+    sc:custom "H2515ㆍH2017" ;
+    sc:dart_developers "Forum" ;
+    sc:dart_ide "DART-Platform 3" ;
+    sc:dart_ota "Coming soon" ;
+    sc:dart_ota_develop_on_dart_ide_website "Services allowing users to update multiple robots remotely at once and to manage using Cloud server." ;
+    sc:dart_sdk "✓ Has a module structure similar to smartphone apps," ;
+    sc:dart_studio_drl_simulator_app_builder "DART-Studio (DRL, Simulator)" ;
+    sc:dateOfManufacture "2022-01-01" ;
+    sc:degree_of_freedom "6" ;
+    sc:description "Move the TCP along a straight linear path (MoveL); precise Cartesian motion",
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning" ;
+    sc:designationOfCertificateOrApproval "KEMA99IECEX1105/128" ;
+    sc:detaching_objects_from_stacking_transporting_and_handling "Can be used at professional" ;
+    sc:develop_dart_ota_develop_on_dart_ide_website "Services allowing users to update multiple robots remotely at once and to manage using Cloud server." ;
+    sc:develop_on_dart_ide_website "Services allowing users to update multiple robots remotely at once and to manage using Cloud server." ;
+    sc:developed_robot_functions "allowing module development 24/7" ;
+    sc:dimension "pallet and laser scanners can also be installed and multiple storage" ;
+    sc:dimension_a0509 "Jacket" ;
+    sc:dimensions "606(W) x 306.9(D) x 446(H) mm" ;
+    sc:doosan_heritage "DOOSAN ROBOT LINE-UP" ;
+    sc:doosan_mate_maximizes_applications_and_use_scenarios_flexible "H2017" ;
+    sc:doosan_provides_a_wealth_of_resources_including "Material" ;
+    sc:doosan_robot_01 "Operation Option" ;
+    sc:doosan_robot_all_line_up_prime "Edge" ;
+    sc:doosan_robot_application_manufacturing "Food & Beverage" ;
+    sc:doosan_robotics "doosanrobotics" ;
+    sc:doosan_robotics_doosan_robotics "doosanrobotics" ;
+    sc:dress_pack_material "Zinc Plated Steel" ;
+    sc:e0509 "A0509S" ;
+    sc:e_ectiveness "a model speciﬁcally for the food and" ;
+    sc:e_series_controller "Φ23, Φ29" ;
+    sc:e_series_edge_water_into_a_dripper_just "noodles and udon" ;
+    sc:edge "E0509" ;
+    sc:edge_sanitation "Edge+ ROI" ;
+    sc:edge_water_into_a_dripper_just "noodles and udon" ;
+    sc:electricalPower_Consumption "307 W" ;
+    sc:eliminates_singularities "utilize approximately 25% less power" ;
+    sc:enhancing_productivity "in the same class." ;
+    sc:ensures_maximum_hygiene_and "rapid ROI in as few as 14" ;
+    sc:environmentalAmbient_Temperature "0-45 degC" ;
+    sc:environmentalIp_Rating "IP66 IP" ;
+    sc:expiryDate "2022-01-01" ;
+    sc:f_b "F&B" ;
+    sc:f_b_makes_up_to_three_cups "Boils and cooks a" ;
+    sc:feeding_the_cnc "Safely and repeatedly" ;
+    sc:firmwareVersion "1.0.0" ;
+    sc:flange_interfaces "D-in 2, D-out 2, RS-485(Psuedo), DC 24V (Max.3A) by one connector (X1)" ;
+    sc:flexible "H2017" ;
+    sc:food_safety "NSF Splash Zone" ;
+    sc:force_compliance_control "X, Y, Z direction only by current control" ;
+    sc:force_sensor "F&B Model" ;
+    sc:forum_ide "Platform" ;
+    sc:free_pc_software_ms_surface_compatible "DART-Platform for Windows (free PC software, MS Surface compatible), Mac (M1, M2), Android (Tablet)" ;
+    sc:from_injection_mold "loading from a" ;
+    sc:full_cover_jacket_integrated_controller "M1013" ;
+    sc:gates_etc_h2515 "H2017" ;
+    sc:gear_assembling "and udon with consistent quality" ;
+    sc:h2515 "H2017" ;
+    sc:h2515_speci_cation "A0912s" ;
+    sc:h_series_high_power_and_automated "engines, shock absorb" ;
+    sc:h_series_prevention "Orientation" ;
+    sc:hardwareVersion "1.0.0" ;
+    sc:head_cover_dimension_a0509 "Jacket" ;
+    sc:heavy_objects "Heavy Parts" ;
+    sc:heavy_objects_for_logistics "into the pallet" ;
+    sc:high_power_and_automated "engines, shock absorb" ;
+    sc:higher_level_controllers_and_programs_for "We also provide step-by-step online learning materials" ;
+    sc:id "12345678",
+        "urn:unimaas:infraflex:equipmentresource:dossan_h2017" ;
+    sc:ide "Platform" ;
+    sc:imageNote "Notes or explanations about the image provided"@en ;
+    sc:in_accordance_with_the_site_application "M-SERIES is the highest quality premium cobot! 6 high-tech torque sensors provide the highest dexterity for highly" ;
+    sc:including_dart_api_and_user_component "modules developed with IDE" ;
+    sc:including_screw_and "pallet" ;
+    sc:injection_mold_and "broadcasting sites to assist safe and" ;
+    sc:install_the_build_environment "Like robot applications, remote updates up to the OS level are possible to manage security risks." ;
+    sc:install_the_development_environment_select_ide_dart_ota "Coming soon" ;
+    sc:install_the_required_libraries "development environment" ;
+    sc:integrated_controller "M1013" ;
+    sc:interfaces "D-in 16, D-out 16, A-in 2, A-out 2, External Encoder 2, OSSD in 4, DC 24V 2A" ;
+    sc:ip66_accreditation_e_series "automation solution, ensuring" ;
+    sc:issueDate "2022-01-01" ;
+    sc:j1 "±360 ° I 120 °/s" ;
+    sc:j2 "±360 ° I 120 °/s" ;
+    sc:j3 "±155 ° I 150 °/s" ;
+    sc:j4 "±360 ° I 225 °/s" ;
+    sc:j5 "±155 ° I 225 °/s" ;
+    sc:j6 "±360 ° I 225 °/s" ;
+    sc:joint_movement_range_i_max_speed_s_j1 "±360 ° I 120 °/s" ;
+    sc:key_features_a_speed "A+ ROI" ;
+    sc:key_features_edge_sanitation "Edge+ ROI" ;
+    sc:key_features_master_safety "Master + Setup" ;
+    sc:key_features_prime_innovation "Prime+ Productivity Prime+ Economic Eﬃciency" ;
+    sc:leading_innovation_in_palletizing_application_p_series "Managing" ;
+    sc:leading_innovation_in_palletizing_application_p_series_safe "With a payload of 30kg and a working radius of 2030mm, it surpasses existing limits with top-notch speciﬁcations kg" ;
+    sc:like_a_barista "with consistent" ;
+    sc:like_screw_driving_and "noodle dishes such as rice noodles" ;
+    sc:limit "The H-Series is the most powerful collaborative robot on the market! Its incredible payload of 25 kg and 6-axis torque" ;
+    sc:linux_windows_mac_and_android_supported_dart_sdk "✓ Has a module structure similar to smartphone apps," ;
+    sc:load_unload "tasks in accordance with" ;
+    sc:loading_them_onto_pallets "precise camera movements" ;
+    sc:loading_unloading_from "right to customers" ;
+    sc:low_electrical_power_enable_sophisticated_and_safe_work "production line assembly for" ;
+    sc:m1509 "M0609" ;
+    sc:m_series_can_detect_subtle_force "operation, as it automatically" ;
+    sc:m_series_in_accordance_with_the_site_application "M-SERIES is the highest quality premium cobot! 6 high-tech torque sensors provide the highest dexterity for highly" ;
+    sc:m_series_masterpiece_assembly_lines "after processing" ;
+    sc:machine_to "performs pre-deﬁned" ;
+    sc:made_by_doosan_through_4_components "on Module Purchase & Installation" ;
+    sc:main_applications_assembling "Polishing" ;
+    sc:main_applications_co_ee "Noodles" ;
+    sc:main_applications_palletizing "Assembling" ;
+    sc:main_features_of_dart_suite_1 "4" ;
+    sc:makes_up_to_three_cups "Boils and cooks a" ;
+    sc:manipulator "E0509" ;
+    sc:manufacturer "Doosan",
+        "Doosan"@en ;
+    sc:manufacturerProductFamily "\"Type ABC\""@en ;
+    sc:manufacturerProductRoot "\"flow meter\""@en ;
+    sc:manufacturerProductType "FM-ABC-1234" ;
+    sc:manufacturing "Food & Beverage" ;
+    sc:markingAdditionalText "0044" ;
+    sc:markingName "0173-1#07-DAA603#004" ;
+    sc:master_safety "Master + Setup" ;
+    sc:masterpiece_assembly_lines "after processing" ;
+    sc:material "Zinc Plated Steel" ;
+    sc:maxPayload_kg 20.0 ;
+    sc:maxReach_mm 1700.0 ;
+    sc:mobile_base_speci_cation "※P3020 is only applicable to CS-01P" ;
+    sc:model "CS-12P (DC)" ;
+    sc:model_with "Dedicated" ;
+    sc:models "CS-01P (AC) Hardened IP*" ;
+    sc:module_development "Module Operation" ;
+    sc:module_market_for "both of which are" ;
+    sc:motions_for_exterior "for gluing and" ;
+    sc:mount_position "Any Orientation" ;
+    sc:name "dossan_h2017",
+        "H2017"@en ;
+    sc:necessary_functions_and_the_development_environment "Doosan’s collaborative robots" ;
+    sc:no_code_functions_that_enables "quick and easy robot operation" ;
+    sc:noise "< 60 dB" ;
+    sc:non_contact_controller "※P3020 is excluded" ;
+    sc:nsf "rds smaller" ;
+    sc:nsf_food_zone_food_safety "NSF Splash Zone" ;
+    sc:numberOfFunctionalSafetySetsOfCharacteristics 1 ;
+    sc:objects_between_tasks_a_press_machine "into a dripper just like a barista" ;
+    sc:objects_for_logistics "bulky parts such as" ;
+    sc:objects_into_the "user needs in service" ;
+    sc:objects_of_various_weights "6-axis articulated robots" ;
+    sc:of_espresso_in_15 "variety of noodle" ;
+    sc:on_average_and_competi_productivity_e_ciency_and "a precision force control model, and" ;
+    sc:on_various_power_tool "surface polishing" ;
+    sc:optional_teach_pendant "Built-in Teach Pendant (IP40, 10.1 inch display, 0.8kg, 4.5m/2.5m cable) kg" ;
+    sc:orderCodeOfManufacturer "FMABC1234" ;
+    sc:other_features_flange_interfaces "D-in 2, D-out 2, RS-485(Psuedo), DC 24V (Max.3A) by one connector (X1)" ;
+    sc:other_options "Cockpit Advanced Features (SW)" ;
+    sc:others_heavy_objects_for_logistics "into the pallet" ;
+    sc:over_longer_distances_enhancing_productivity "in the same class." ;
+    sc:p3020 "E0509" ;
+    sc:p_series "E-SERIES" ;
+    sc:packaging "months" ;
+    sc:pallet "industries like medical" ;
+    sc:palletizing "Assembling" ;
+    sc:palletizing_heavy "Assembling heavy or" ;
+    sc:passing_data "from basics for beginners to advanced applications for professionals" ;
+    sc:pick_place "Ice cream" ;
+    sc:picking_up_panels_for "Scoops ice cream and delivers it" ;
+    sc:plastic_injection_support "Film Production" ;
+    sc:power_consumption_typical "210W" ;
+    sc:power_supply "22~60 VDC V" ;
+    sc:power_tools "& Deburring" ;
+    sc:precise_work_tool_position_and_weight_6 "Torque" ;
+    sc:prevention "Orientation" ;
+    sc:prime "Edge" ;
+    sc:prime_innovation "Prime+ Productivity Prime+ Economic Eﬃciency" ;
+    sc:procedures "onto pallets" ;
+    sc:productArticleNumberOfManufacturer "FM11-ABC22-123456" ;
+    sc:productClassName "Name of product class in the used classification system"@en ;
+    sc:production_scenarios_like_those "ers, etc." ;
+    sc:production_scenarios_like_those_p3020 "found in logistics and fabric" ;
+    sc:productivity_e_ciency_and "a precision force control model, and" ;
+    sc:products_a0912f_dedicated "A0509F Dedicated" ;
+    sc:programming "(free PC software, MS Surface compatible)" ;
+    sc:protected_range "Liquid such as water and paint (85℃ ± 5℃)" ;
+    sc:providesCapability "CapabilityGrasping",
+        "CapabilityScrewing" ;
+    sc:provides_dart_ide_supporting "Provides DART-Platform3 allowing" ;
+    sc:provides_dart_store_a_web "Provides Developer Site and Forum," ;
+    sc:provides_feedback_on_development_module_test "Update Coming soon" ;
+    sc:provides_introductions_for_dart_suite_services "Community for DART-Suite developers mm" ;
+    sc:quick_and_easy_development_of "through module development and" ;
+    sc:quicker_roi_beverage_industry_2 "Axis" ;
+    sc:reach_1200mm "bonding" ;
+    sc:reach_2030_mm "Reach 900 mm" ;
+    sc:reach_900mm_reach_1300mm "Reach 1700mm Reach 900mm mm" ;
+    sc:reducing_cycle_time_and "compared to competing products" ;
+    sc:reliable_performance "Burr removal and" ;
+    sc:relocation_on_the_robot_speci_cation_models "Speciﬁcation" ;
+    sc:remote_provides_feedback_on_development_module_test "Update Coming soon" ;
+    sc:repeatability_mm 0.05 ;
+    sc:request_data_api "Doosan is proud to oﬀer training courses on system" ;
+    sc:requiredExecutorSkill "GripperControl" ;
+    sc:requiredTool "ScrewDriver" ;
+    sc:resources_robot_programming_on_a_pc "Tech Data" ;
+    sc:robot_operation_software_without "installation, which is similar to" ;
+    sc:robot_programming_on_a_pc "Tech Data" ;
+    sc:robot_the_world_s_first_motion_platform_company "SERIES" ;
+    sc:roi_main_applications_co_ee "Noodles" ;
+    sc:safe "With a payload of 30kg and a working radius of 2030mm, it surpasses existing limits with top-notch speciﬁcations kg" ;
+    sc:sanitation "months for coﬀee applications" ;
+    sc:seconds_by_pouring "dishes such as rice" ;
+    sc:sensor "Payload 5kg kg" ;
+    sc:sensors "Minutes" ;
+    sc:simple_loading_unloading_loading_unloading_from "right to customers" ;
+    sc:softwareVersion "1.0.0" ;
+    sc:space "Cooperation" ;
+    sc:speci_cation "※P3020 is only applicable to CS-01P" ;
+    sc:speci_cation_models "Speciﬁcation" ;
+    sc:speed "10%" ;
+    sc:spraying_adhesive_and_automated "press machine" ;
+    sc:stacking_and "Feeding the CNC" ;
+    sc:stacking_and_palletizing "to load/unload objects" ;
+    sc:stacking_transporting_and_handling "Can be used at professional" ;
+    sc:super "Space restriction and ﬁve workspace settings to fully protect operators" ;
+    sc:t_edge "E0509" ;
+    sc:technical_DataController "※P3020 is excluded" ;
+    sc:technical_DataNumber_Of_Axes "6 count" ;
+    sc:technical_DataPayload "20 kg" ;
+    sc:technical_DataReach "1700 mm" ;
+    sc:technical_DataRepeatability "0.05 mm" ;
+    sc:technical_DataWeight "22.5 kg" ;
+    sc:technical_speci_cation "Edge E-SERIES" ;
+    sc:textStatement "Statement by the manufacturer in text form, e.g. scope of validity of the statements, scopes of application, conditions of operation."@en ;
+    sc:the_5_axis_structure_for_palletizing "Minimize initial investment costs and" ;
+    sc:the_world_s_first_motion_platform_company "SERIES" ;
+    sc:their_own_purposes_passing_data "from basics for beginners to advanced applications for professionals" ;
+    sc:thickness "0.55 ± 0.02mm mm" ;
+    sc:through_the_simultaneous_handling_of "power consumption of comparable" ;
+    sc:tive_pricing_means_e_ectiveness "a model speciﬁcally for the food and" ;
+    sc:tool_kit_for_software_development "Robot drive software allowing the execution of" ;
+    sc:tool_position_and_weight_6 "Torque" ;
+    sc:tool_speed "Over 1 m/s" ;
+    sc:totalJobsShown 0 ;
+    sc:traditional_assembly_tasks "Boils and cooks a variety of" ;
+    sc:traditional_sw_development "to communicate each other mm" ;
+    sc:uRIOfTheProduct "https://example.com/assets/dossan_h2017" ;
+    sc:uniqueFacilityIdentifier "987654321" ;
+    sc:uploading_downloading "technical support services" ;
+    sc:user_community_module_development "Module Operation" ;
+    sc:value_adding "DART-Platform" ;
+    sc:value_adding_doosan_robot_01 "Operation Option" ;
+    sc:water_into_a_dripper_just "noodles and udon" ;
+    sc:web_service "& Drive SW" ;
+    sc:welding "Charging Electric Vehicles" ;
+    sc:welding_parts_together "multiple objects simultaneously" ;
+    sc:with "Model" ;
+    sc:with_nsf_certi_cations_and "E-SERIES is a cost-eﬀective" ;
+    sc:with_simple_button_operations_25 "H2515" ;
+    sc:with_six_high_tech_torque_sensors "quick installation and immediate mm" ;
+    sc:with_the_highest_collision_sensitivity "objects for logistics" ;
+    sc:with_the_precision_of "in fast-paced production scenarios like" ;
+    sc:www_doosanrobotics_com_en_doosan_robotics_doosan_robotics "doosanrobotics" ;
+    sc:yearOfConstruction "2022" ;
+    sc:zone "Limit Zone" .
+
+inst:equipmentresource_dossan_h2515 a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "dossan_h2515" ;
+    sc:accessoires_doosan_robotics_dress_pack "TRAINING KIT" ;
+    sc:accompagnement_personnalis_sur_site_en_fonction "de la marque Doosan Robotics." ;
+    sc:accord_avant_le_1er_jour_de_formation "• Équilibre théorie/pratique à définir" ;
+    sc:actuellement_pr_sents_sur_le_march "des objets à l’aide de capteurs de force / couple et" ;
+    sc:allonge_1700_mm "• Répétabilité : 0.1 mm" ;
+    sc:allonge_900_mm "• Portée : 900 mm" ;
+    sc:antid_rapant "• Poids : 12 kg" ;
+    sc:arbitraryMLP "Note: Every multilanguage property can be used."@en,
+        "Sample"@en ;
+    sc:automatiser_les_applications_de_type_chargement "palettisation ou l’automatisation de plusieurs" ;
+    sc:autonomie_proximit_contact_sans "la poussière IP66. Fonctionne à une" ;
+    sc:avec_capteurs "saisir et déposer des intercalaires" ;
+    sc:avec_son_software_accupick_3d_solomon_propose "AccuPick 3D de Solomon est une solution" ;
+    sc:avec_une_meilleure_organisation_des_c_bles "Structure" ;
+    sc:axes_6 "• Axes : 6" ;
+    sc:axes_6_allonge_900_mm "• Portée : 900 mm" ;
+    sc:base_2_jours_niv_1 "+1 journée suppl. à 850 € HT" ;
+    sc:bases_et "opérateurs sur la manipulation de charges" ;
+    sc:capabilityComment "Drive screws; needs a ScrewDriver end-effector"@en,
+        "Move the TCP along a straight linear path (MoveL); precise Cartesian motion"@en,
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning"@en,
+        "Pick and place objects; needs PowerAir GripperControl"@en ;
+    sc:capabilityLevel "Compound",
+        "Primitive" ;
+    sc:capacit_d_aspiration_525_9_l_min "• Contient la bride, le préhenseur et le câble de" ;
+    sc:capacit_de_charge_verticale_80_n "• Manipulation de pièces étanches et légèrement" ;
+    sc:capteur_de_couple_hex "PRÉHENSEUR RG2FT *" ;
+    sc:capteur_de_couple_sur_chaque_axe "• Position de montage : Sol, Plafond, Mur" ;
+    sc:capteur_de_couple_sur_chaque_axe_classification_ip54 "• Classification IP54" ;
+    sc:cas_pratiques "• Introduction à la programmation orientée objet mm" ;
+    sc:cas_pratiques_cpf "robot..." ;
+    sc:category "4" ;
+    sc:certifi_nsf "Adapté à l’environnement" ;
+    sc:certification_iso_classe_5_pour_une_utilisation_en "15066 grâce à une conception innovante du produit," ;
+    sc:charge_horizontale_350_n "poreuses" ;
+    sc:charge_utile_15_kg "• Déploiement facile" ;
+    sc:charge_utile_20_kg "• Axes : 6" ;
+    sc:charge_utile_5_kg "• Charge utile : 6 kg" ;
+    sc:charge_utile_maximale_de_11_kg "• Grâce à son poids propre particulièrement faible et" ;
+    sc:classification_ip54 "• Classification IP54" ;
+    sc:classification_ip66_s_curit_pl_e_cat_4 "Osez la programmation par vous même ! mm" ;
+    sc:cobots_effecteurs_mis_disposition "stagiaire (En cas d’impossibilité nous prévenir à l’inscription)" ;
+    sc:cobots_effecteurs_mis_disposition_locaux_humarobotics_bordeaux "• Ordinateur sous Windows requis : fourni par le" ;
+    sc:cockpit "DART-PLATFORM" ;
+    sc:collaboratifs "Couleur optionnelle : Navy (+ 500 € HT)" ;
+    sc:colonne_motoris_e "• Préhenseur à déterminer en fonction de" ;
+    sc:colonne_t_lescopique_en_option "• Optimisation des trajectoires et de la" ;
+    sc:colonnes "accompagnement" ;
+    sc:comment_am_liorer_un_temps_de_cycle_gestion "• Introduction à la programmation Python mm" ;
+    sc:commercial_en_charge_de_votre_r_gion_colonnes "accompagnement" ;
+    sc:communication_interfaces "Modbus TCP/RTU, EtherNet/IP, Profinet IO, TCP/IP" ;
+    sc:compacte "Suivi de projet" ;
+    sc:compatible_avec_le_m0609_fabricant_doosan_robotics "Prix public : 7 100 € HT" ;
+    sc:compatible_avec_les_robots_doosan "sur site" ;
+    sc:compatible_avec_surface_partiellement_ouverte "• Une préhension solide et stable : avec 3 points de" ;
+    sc:compos_de_6_boutons_d_apprentissage_directs "de Doosan Robotics dédié à l’apprentissage" ;
+    sc:composedOf "MoveJointSpace;MoveLinear" ;
+    sc:confirmation_de_l_inscription "• Approfondissement d’un sujet en fonction des" ;
+    sc:conforme_aux_normes_alimentaires "Indice de protection contre l’eau et" ;
+    sc:connecteur_ethernet_rj45 "A travers des journées d’accompagnement (forfait jour" ;
+    sc:consid_rent_les_objectifs_de_la "lors des exercices pratiques." ;
+    sc:contactez_nous_pour_tudier_les_possibilit_s "Objectif" ;
+    sc:controller_dc_et_smart_pendant "• Large gamme de préhenseurs mm" ;
+    sc:controller_et_rangement_d_outils "• Ensemble de blocs à trier" ;
+    sc:couleur_navy "diverses applications, des plus simples aux plus" ;
+    sc:couleur_optionnelle_navy_500_ht "Couleur optionnelle : Navy (+ 500 € HT)" ;
+    sc:countryOfOrigin "DE" ;
+    sc:course_jusqu_73_mm "Fabricant : Schunk" ;
+    sc:cpf "robot..." ;
+    sc:d_apr_s_les_enqu_tes_men_es "• Introduction à l’API en C++ Doosan et ROS" ;
+    sc:d_indiquer_l_ensemble_des_coordonn_es "Pour toutes les formations, une évaluation de la" ;
+    sc:d_tection_de_palettes "concrètement dans la mise en service de votre robot" ;
+    sc:d_tection_gripper "Fabricant : OnRobot" ;
+    sc:d_usinage_op_ration_sur_machines_d_coupage "notre équipe d’experts." ;
+    sc:d_vracage_3d_et_de_tri "numérisation d’objets en mouvement." ;
+    sc:dateOfManufacture "2022-01-01" ;
+    sc:de_mouvements_contraints "robotiques Doosan Robotics." ;
+    sc:de_vos_besoins "Robotics." ;
+    sc:demande_de_prise_en_charge "4 800 € HT" ;
+    sc:description "Move the TCP along a straight linear path (MoveL); precise Cartesian motion",
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning" ;
+    sc:design_adapt_aux_espaces_restreints "Packaging optimisé" ;
+    sc:designationOfCertificateOrApproval "KEMA99IECEX1105/128" ;
+    sc:diam_tre_des_buses_1_5_mm "au réglage et à la surveillance du processus de" ;
+    sc:dim_1350x866x55_mm "• Préhenseurs légers et performants" ;
+    sc:dimension_280_x_225_x_125_mm "Un PC est requis pour l’installation et l’utilisation" ;
+    sc:dimensions_600_x_850_x_825_mm "Fabricant : Doosan Robotics" ;
+    sc:disposition_3_rang_es_54_mm "• Températures de fonctionnement : 5 - 45°C degC" ;
+    sc:doosan_robotics "la manipulation de charges lourdes et sur les" ;
+    sc:doosan_robotics_automatiser_les_applications_de_type_chargement "palettisation ou l’automatisation de plusieurs" ;
+    sc:doosan_robotics_dress_pack "TRAINING KIT" ;
+    sc:doosan_robotics_l_easy_palletizer_soulage_les "Pour une étude de faisabilité, rien de plus simple !" ;
+    sc:doosan_robotics_s_rie_m_robot_m1013 "ROBOT M0617" ;
+    sc:double_quick_changer_pr_sente_une_conception "de proximité intégrés pour garantir une manipulation" ;
+    sc:double_syst_me_de_palettisation_connecteur_ethernet_rj45 "A travers des journées d’accompagnement (forfait jour" ;
+    sc:dress_pack "TRAINING KIT" ;
+    sc:electricalSupply_Voltage "100-240 V" ;
+    sc:emp_che_la_d_sarticulation_avec_un_coussinet "Inclus dans le kit" ;
+    sc:en_air_externe_n_cessaire "• Force de préhension de 10 à 240 N" ;
+    sc:entre_autres "divers outils." ;
+    sc:environmentalAmbient_Temperature "0-45 degC" ;
+    sc:environmentalIp_Rating "IP54 IP" ;
+    sc:exigences_de_charge_utile "stationnaires avec des robots collaboratifs. Idéal" ;
+    sc:existe_en_noir_ou_blanc "• Tension d’alimentation 22- 60 VDC V" ;
+    sc:expiryDate "2022-01-01" ;
+    sc:extension_licence_12_mois_standard_250_ht "• Durée : 2 jours / 14 heures" ;
+    sc:fabricant_defitech "contact" ;
+    sc:fabricant_doosan_robotics "Fabricant : Doosan Robotics" ;
+    sc:fabricant_easy_robotics "• Analyse de votre projet" ;
+    sc:fabricant_easy_robotics_profeeder_flex "• Aide dans la modélisation 3D de votre outil" ;
+    sc:fabricant_onrobot "Prix public : 3 830 € HT*" ;
+    sc:fabricant_onrobot_prix_public_3_175_ht "Fabricant : Schmalz" ;
+    sc:fabricant_schmalz_prix_public_2_310_ht "Prix public : 25 500 € HT" ;
+    sc:facile_manipuler "du robot et à un large panel d’actions de" ;
+    sc:facile_transporter_et_installer_gr_ce "Design des jonctions sans interstice et" ;
+    sc:facturation "Programme général à préciser lors de la réunion mm" ;
+    sc:firmwareVersion "1.0.0" ;
+    sc:flange_interfaces "Digital I/O 6 In / 6 Out" ;
+    sc:flexible_compacte "Suivi de projet" ;
+    sc:force_d_aspiration_concentr_e_et_puissante "parfait pour les espaces restreints, mais avec une" ;
+    sc:force_et_de_couple "haute précision." ;
+    sc:formation_accord_avant_le_1er_jour_de_formation "• Équilibre théorie/pratique à définir" ;
+    sc:formation_base_niv_1 "• Cobots & effecteurs mis à disposition" ;
+    sc:formations "Programme mm" ;
+    sc:formations_validation_d_un_devis_demande_par_email "(TCP/IP, Modbus, ...)" ;
+    sc:fxcb_avec_ventouses "CAMERA INTEL REALSENSE" ;
+    sc:garantie_2_ans "300 € HT/pers. suppl. - max 4 pers." ;
+    sc:garantie_du_bras_24_mois_inclus "A l’issue de la formation, le stagiaire sera capable de" ;
+    sc:guidage_manuel_facile "des objets" ;
+    sc:hardwareVersion "1.0.0" ;
+    sc:hauteur_158_mm "• Puissance : 13 W" ;
+    sc:humarobotics "FORMATION BASE" ;
+    sc:humarobotics_est_datadock_e_et_certifi_e "Jour 2" ;
+    sc:humarobotics_vous_confirme_l_inscription_et_les_dates "formation entièrement atteints" ;
+    sc:i_o_power_supply "DC 24 V / Max. 3 A" ;
+    sc:id "12345678",
+        "urn:unimaas:infraflex:equipmentresource:dossan_h2515" ;
+    sc:id_al_pour_des_applications_pick_and_place "• Interface de communication: E/S numériques mm" ;
+    sc:imageNote "Notes or explanations about the image provided"@en ;
+    sc:indice_ip67 "• Il répond aux exigences de la norme ISO TS" ;
+    sc:initiation_au_custom_code "Jour 2" ;
+    sc:inter_entreprise "INTER-ENTREPRISE" ;
+    sc:interface_utilisateur_graphique_facile_installer "• La pince est livrée avec un logiciel pré-intégré" ;
+    sc:interm_diaire_2_jours_niv_2 "• Locaux : au choix" ;
+    sc:intra_entreprise "• Création d’une application: Astuces et bonnes" ;
+    sc:io_channels "18 E/S" ;
+    sc:issueDate "2022-01-01" ;
+    sc:joint_torque_sensors "Capteur de couple sur chaque axe" ;
+    sc:jour_2 "• Communication avec une autre machine (TCP/IP, mm" ;
+    sc:journ_e_d_accompagnement_1_250_ht "Objectif" ;
+    sc:journ_e_suivante_850_ht "créer des applications complexes à l’aide d’un cobot" ;
+    sc:jusqu_2_personnes "• Prérequis : Réussir le questionnaire HR niv 3 ou les" ;
+    sc:jusqu_2_personnes_jusqu_2_personnes "• Prérequis : Réussir le questionnaire HR niv 3 ou les" ;
+    sc:l_inscription "• Durée : 8 demi-journées sur 5 jours / 28 heures" ;
+    sc:l_ment_est_indispensable_pour_toute_facturation_options "• Participant pertinent avec le cahier des charge" ;
+    sc:la_plupart_des_bras_de_robots_industriels "• Une technique sophistiquée capable de détecter" ;
+    sc:large_gamme_de_formats_standards "• Grande course, jusqu’a 150 mm" ;
+    sc:largeur_123_2_mm "• Capacité d’aspiration : 12 l/min" ;
+    sc:le_cockpit_facilite_et_optimise_la_programmation "L’interface du teach pendant directement sur" ;
+    sc:le_parcours_suivant "besoins" ;
+    sc:le_robot "• Caméra : INTEL REALSENSE" ;
+    sc:les_applications_simples_pick_place_mise_en "M1509 est idéal pour soulager l’opérateur sur" ;
+    sc:les_avantages_de_la_solution_flexible_compacte "Suivi de projet" ;
+    sc:les_capteurs_de_couple_onrobot_6_axes "Préhenseur intelligent avec capteur." ;
+    sc:les_capteurs_sont_con_us_pour_s_adapter "Dédié aux robots collaboratifs, le préhenseur" ;
+    sc:les_formations_aux_robots_collaboratifs_doosan "programmation de votre robot mm" ;
+    sc:licence_dart_studio_avanc_e_1_200_ht "Conditions" ;
+    sc:ligible_au_plan_de_formation_entreprise "• Rappel des bases : Anatomie et écosystème," ;
+    sc:locaux_humarobotics_bordeaux "• Ordinateur sous Windows requis : fourni par le" ;
+    sc:locaux_humarobotics_bordeaux_formation_base_niv_1 "• Cobots & effecteurs mis à disposition" ;
+    sc:longueur_297_mm "manipulation" ;
+    sc:lourdes "• Vous aider à détecter les applications potentielles" ;
+    sc:manipulation_de_charges_lourdes_le_robot_h2017 "Le robot est idéal pour vos applications de" ;
+    sc:manufacturer "Doosan",
+        "Doosan"@en ;
+    sc:manufacturerProductFamily "\"Type ABC\""@en ;
+    sc:manufacturerProductRoot "\"flow meter\""@en ;
+    sc:manufacturerProductType "FM-ABC-1234" ;
+    sc:manufacturer_detail "Doosan Robotics" ;
+    sc:manutention_stationnaires_avec_des_robots "• Kit de préhension pour robot prêt à être raccordé" ;
+    sc:markingAdditionalText "0044" ;
+    sc:markingName "0173-1#07-DAA603#004" ;
+    sc:mat_riau_spandex_et_fibre_de_carbone "• Préhenseur" ;
+    sc:mat_riel_silicone "avancées." ;
+    sc:maxPayload_kg 25.0 ;
+    sc:maxReach_mm 1500.0 ;
+    sc:maximumRatedVoltage 240.0 ;
+    sc:miniature "• Basé sur un générateur de vide intelligent" ;
+    sc:minimumRatedVoltage 100.0 ;
+    sc:mise_en_place_facile_avec_bande_velcro "AGV/AMR avec 48V" ;
+    sc:mise_en_place_rapide_quipement_sanitaire_suppl_mentaire "température allant jusqu’à 45°C degC" ;
+    sc:mod_le_avec_fts_en_option_sur_devis "Modèle avec FTS en option (sur devis)" ;
+    sc:name "dossan_h2515",
+        "H2515"@en ;
+    sc:navy_par_d_faut_ou_blanc_robots "Prix public : 29 000 € HT (cockpit et teach inclus)" ;
+    sc:niv_1_2_100_ht "INTERMÉDIAIRE" ;
+    sc:niv_2_2_800_ht "AVANCÉE" ;
+    sc:niv_3_3_100_ht_inter_entreprise "INTER-ENTREPRISE" ;
+    sc:niveau_bulles "• Comprend un teach pendant avec son câble (2.5 m)" ;
+    sc:nombre_de_ventouses_15 "raccordement en plus du générateur de vide" ;
+    sc:nombreuses_applications_diff_rentes "• Température ambiante maxi : 55 °C degC" ;
+    sc:non_paiement "• Proposition de date" ;
+    sc:nos "• Inscription à une formation Humarobotics" ;
+    sc:notamment_les_s_ries_a "la procédure de déballage/remballage" ;
+    sc:nouveaut_2023 "matériel adapté à vos besoins" ;
+    sc:numberOfFunctionalSafetySetsOfCharacteristics 1 ;
+    sc:objectif "Objectif" ;
+    sc:opco_op_rateur_de_comp_tences_en_suivant "• Approfondissement d’un sujet en fonction des" ;
+    sc:options "• Participant pertinent avec le cahier des charge" ;
+    sc:orderCodeOfManufacturer "FMABC1234" ;
+    sc:pL "PL e" ;
+    sc:palettisation_5_jours "5 400 € HT" ;
+    sc:palettisation_formation_base_niv_1_conseill_e "Conditions" ;
+    sc:pas_besoin_de_fichiers_cao "• La numérisation d’objets en mouvement" ;
+    sc:permet_d_enregistrer_des_points_sur_une_trajectoire "• Excellente résolution" ;
+    sc:permettent_de_comprendre_les_enjeux_de_la_robotique "• Accompagnement des équipes opérationnelles" ;
+    sc:personnalisation_illimit_e "Fabricant : OnRobot" ;
+    sc:peut_tre_d_ploy_en_quelques_minutes "• Course par doigt: 6 mm" ;
+    sc:pfe_ou_au_compte_personnel_de_formation "configuration, cellule de travail, programmation mm" ;
+    sc:planification_des_points_de_passage "d’Intel RealSense" ;
+    sc:plateau "Etude de faisabilité" ;
+    sc:plateforme_stable_robuste_et_modulaire "Préhenseurs collaboratifs" ;
+    sc:poids_2_169_kg "électrique" ;
+    sc:poids_300_kg "adaptés aux applications de palettisation" ;
+    sc:poids_32_kg_vitesse_1_m_s "• Vitesse : 1 m/s" ;
+    sc:poids_34_kg_allonge_1700_mm "• Répétabilité : 0.1 mm" ;
+    sc:poids_74_kg "• Vitesse : 1 m/s" ;
+    sc:position_de_montage_sol_plafond_mur "• Position de montage : Sol, Plafond, Mur" ;
+    sc:possibilit_de_d_tecter_plusieurs_objets_avec_un "Fabricant" ;
+    sc:pr_henseur_2fg7 "PRÉHENSEUR EGP-C 40" ;
+    sc:pr_henseur_mousse "PRÉHENSEUR 3FG15 *" ;
+    sc:pr_henseur_parall_le_facile_d_ployer_dans "Pince collaborative de petites pièces Co-act" ;
+    sc:pr_henseurs "facilement à la forme et aux différents états de" ;
+    sc:pr_paratoire "• Matériel du client mis à disposition" ;
+    sc:pratiques_9_personnes_form_es_sur_10 "compréhension sera effectuée par le formateur" ;
+    sc:prendre_connaissance_des_contraintes_de_votre "• Réalisation des tests de faisabilité" ;
+    sc:prix_a_partir_de_14_500_ht "robotics." ;
+    sc:prix_a_partir_de_4_800_ht "à 100% sur l’accompagnement client pendant toutes" ;
+    sc:prix_public_17_000_ht "• choix du modèle de robot Doosan robotics" ;
+    sc:prix_public_260_ht "Prix public : 1 200 € HT" ;
+    sc:prix_public_2_310_ht "Prix public : 25 500 € HT" ;
+    sc:prix_public_2_420_ht "• Le software est mis à jour régulièrement" ;
+    sc:prix_public_3_175_ht "Fabricant : Schmalz" ;
+    sc:prix_public_3_915_ht "• Générateur de vide intégré" ;
+    sc:prix_public_4_000_ht "Compatible avec les séries M et H" ;
+    sc:prix_public_4_120_ht "Prix public : 7 995 € HT*" ;
+    sc:prix_public_6_315_ht_fxcb_avec_ventouses "CAMERA INTEL REALSENSE" ;
+    sc:prix_public_a_partir_de_180_ht "• Alimentation E/S : 24V" ;
+    sc:prix_public_a_partir_de_190_ht "• Engrenages à assembler" ;
+    sc:prix_sur_demande_s_rie_e "Bras collaboratif Doosan" ;
+    sc:prix_sur_devis "• Ventouses configurables" ;
+    sc:productArticleNumberOfManufacturer "FM11-ABC22-123456" ;
+    sc:productClassName "Name of product class in the used classification system"@en ;
+    sc:productivit_axes_6 "PALETTISATION « DO IT YOURSELF »" ;
+    sc:profeeder_flex "• Aide dans la modélisation 3D de votre outil" ;
+    sc:programmation_avanc_e_en_custom_code "Modbus,...)" ;
+    sc:programmation_rapide "• Indication de prise : détecte le risque de glissement" ;
+    sc:programmation_robot_par_bloc "• Programmation Custom Code mm" ;
+    sc:providesCapability "CapabilityGrasping",
+        "CapabilityScrewing" ;
+    sc:proximit_contact_sans "la poussière IP66. Fonctionne à une" ;
+    sc:public_price "50 500 € HT (cockpit et teach inclus)" ;
+    sc:qualiopi "• Les bases de la programmation avec Doosan mm" ;
+    sc:qualit_de_la_mousse_en_fonction_des_besoins "• Charge utile lourde jusqu’a 15 kg" ;
+    sc:que_les_gros_porteurs_existants_du_march_le "lourdes) et application de palettisation. Bien plus" ;
+    sc:quipement_sanitaire_suppl_mentaire "température allant jusqu’à 45°C degC" ;
+    sc:r_glage_facile_de_la_courbure_du_harnais "• Base" ;
+    sc:r_p_tabilit_0_03_mm "• Température de fonctionnement : 0-45°C degC" ;
+    sc:r_p_tabilit_0_1_mm "• Température de fonctionnement : 0-45°C degC" ;
+    sc:reconnaissance_des_objets_de_petite_taille_de "• La génération rapide de nuages de points 3D" ;
+    sc:region_label_additional_properties_flange_interfaces "Digital I/O 6 In / 6 Out" ;
+    sc:region_label_additional_properties_installation_position "Only Floor" ;
+    sc:region_label_other_teach_pendant "4.5 m" ;
+    sc:region_label_technical_data_tool_speed "1 m/s" ;
+    sc:repeatability_mm 0.1 ;
+    sc:requiredExecutorSkill "GripperControl" ;
+    sc:requiredTool "ScrewDriver" ;
+    sc:robot_a0509 "ROBOT M1509" ;
+    sc:robot_h2017 "ROBOT H2515" ;
+    sc:robot_m1013 "ROBOT M0617" ;
+    sc:robots "Le robot collaboratif A0912 se caractérise par une" ;
+    sc:s_curit_pl_e_cat_4 "• Sécurité : PL e-Cat 4" ;
+    sc:s_rie_a "• Contrôle de couple sur chaque axe" ;
+    sc:s_rie_e "Bras collaboratif Doosan" ;
+    sc:s_rie_h "• Axes : 6" ;
+    sc:s_rie_m_robot_m1013 "ROBOT M0617" ;
+    sc:safetyCategory "4" ;
+    sc:safetyFunctional_Safety "PL e-Cat 4" ;
+    sc:safetyPerformance_Level "PL e" ;
+    sc:salle_blanche "à l’élargissement de la surface de contact et à la" ;
+    sc:selected_region_other_datasheet_p009_region_004 "Interfaces Serial (RS232) / USB 3.0 (RS422/485*), TCP/IP *Requires a USB to RS422/485 converter Industrial Network** Modbus-TCP (Master/Slave) / Modbus-RTU (Master) / EtherNet/IP (Adapter) / PROFINET IO (Device) *Install a gateway for other communication support Dimensions 490 × 390 × 287 mm Weight 9 kg Protection Rating IP 40 I/O Port - Digital I/O 16 / 16 I/O Port - Analog I/O 2 / 2 I/O Power Supply DC 24 V Rated Supply Voltage 100~240 VAC, 50~60Hz Cable Length (Arm) 6.0 m" ;
+    sc:selected_region_other_datasheet_p009_region_005 "Teach Pendant  Protection Rating  IP 40 Dimensions  264 x 218 x 42mm Weight / Screen Size  0.8 kg / 10.1 inch Cable Length (TP)  4.5 m" ;
+    sc:service_apr_s_vente_assur_par_nos_soins "• Jusqu’à 2 personnes" ;
+    sc:services "des personnes formées se déclarent" ;
+    sc:simplifie_la_programmation_du_robot "programmation directement sur PC. mm" ;
+    sc:softwareVersion "1.0.0" ;
+    sc:software_accupick_3d "SOFTWARE ACCUPICK 3D" ;
+    sc:son_installation_sa_programmation_ou_son_entretien "• Force de préhension maximale : 140 N" ;
+    sc:soulagement_des_op_rateurs_sur_la_manipulation_collaboratifs "Hygiène" ;
+    sc:speed "1 m/s" ;
+    sc:sur_votre_robot "programmation de robot collaboratifs en utilisant mm" ;
+    sc:syst_me_d_amarrage_pour_palettes "• Un même préhenseur est capable de" ;
+    sc:teach_pendant "4.5 m" ;
+    sc:technical_DataMounting_Position "Only Floor" ;
+    sc:technical_DataNumber_Of_Axes "6 count" ;
+    sc:technical_DataPayload "25 kg" ;
+    sc:technical_DataReach "1500 mm" ;
+    sc:technical_DataRepeatability "0.1 mm" ;
+    sc:technical_DataWeight "72 kg" ;
+    sc:technologie_unique_du_capteur_onrobot "• Indication de prise supprimant" ;
+    sc:temp_rature_de_fonctionnement_0_45_c "• Classification IP54" ;
+    sc:temp_rature_de_fonctionnement_5_45_c "• Capteur de couple sur chaque axe" ;
+    sc:temps_d_change_nos "• Inscription à une formation Humarobotics" ;
+    sc:test_de_faisabilit_poc_nous_consulter "Conditions" ;
+    sc:textStatement "Statement by the manufacturer in text form, e.g. scope of validity of the statements, scopes of application, conditions of operation."@en ;
+    sc:tool_speed "1 m/s" ;
+    sc:totalJobsShown 0 ;
+    sc:toute_personne_en_situation_de_handicap "Conditions" ;
+    sc:traitement_et_num_risation_rapide_des_images "utilise pleinement les fonctionnalités distinctives" ;
+    sc:type_de_vanne_r_sistance_au_flux "• Interface intégrée destinée à la commande, mm" ;
+    sc:uRIOfTheProduct "https://example.com/assets/dossan_h2515" ;
+    sc:uniqueFacilityIdentifier "987654321" ;
+    sc:vitesse_1_m_s "• Vitesse : 1 m/s" ;
+    sc:vitesse_de_fonctionnement_robots "• Automatisation d’un poste charnière" ;
+    sc:vous_devez_adresser_une_demande_votre_opco_pour "+ DÉPLACEMENT" ;
+    sc:yearOfConstruction "2022" .
+
+inst:equipmentresource_fingered_gripper a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "fingered_gripper" ;
+    sc:availableQuantity 1.0 ;
+    sc:gripperForceMax 180.0 ;
+    sc:gripperForceMin 20.0 ;
+    sc:gripperJawStroke 50.0 ;
+    sc:gripperPayload 10.0 ;
+    sc:hasCharacteristic inst:characteristic_char_fingered_gripper_payload ;
+    sc:id "RES_TOOL_FINGERED_GRIPPER",
+        "urn:unimaas:infraflex:equipmentresource:fingered_gripper" ;
+    sc:name "Fingered Gripper",
+        "fingered_gripper" ;
+    sc:resourceType "Equipment" ;
+    sc:unit "unit" ;
+    rdfs:comment "Fingered (jaw) gripper — Infraflex equipment resource"@en .
+
+inst:equipmentresource_kr_10_1100_2 a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "kr_10_1100_2" ;
+    sc:a1 "±170 °" ;
+    sc:a2 "190 ° / 45 °" ;
+    sc:a3 "120 ° / 156 °" ;
+    sc:a4 "±185 °" ;
+    sc:a5 "±120 °" ;
+    sc:a6 "±350 °" ;
+    sc:air_consumption "0.1 m3/h" ;
+    sc:air_line_connection "Plug-in connection for hose, stand" ;
+    sc:ambient_conditions_humidity_class_en_60204 "3K3" ;
+    sc:arbitraryMLP "Note: Every multilanguage property can be used."@en,
+        "Sample"@en ;
+    sc:axis_data_motion_range_a1 "±170 °" ;
+    sc:base_frame_rated_supplementary_load_rotating "0 kg" ;
+    sc:cable_designation "robot controller" ;
+    sc:cable_lengths_standard "1 m, 4 m, 7 m, 15 m, 25 m" ;
+    sc:capabilityComment "Drive screws; needs a ScrewDriver end-effector"@en,
+        "Move the TCP along a straight linear path (MoveL); precise Cartesian motion"@en,
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning"@en,
+        "Pick and place objects; needs PowerAir GripperControl"@en ;
+    sc:capabilityLevel "Compound",
+        "Primitive" ;
+    sc:clamping_length "min. 1.5 x nominal diameter" ;
+    sc:classification_of_environmental "3K3" ;
+    sc:column_maximum_supplementary_load_ro "1 kg" ;
+    sc:composedOf "MoveJointSpace;MoveLinear" ;
+    sc:compressed_air "Oil-free, dry, filtered" ;
+    sc:connector_designation_interface_with_cable_designation "robot controller" ;
+    sc:countryOfOrigin "DE" ;
+    sc:data_cable "Han Q12" ;
+    sc:dateOfManufacture "2022-01-01" ;
+    sc:default_color "Base frame: gray aluminum (RAL" ;
+    sc:depth_of_engagement "min. 5.5 mm, max. 7 mm" ;
+    sc:description "Move the TCP along a straight linear path (MoveL); precise Cartesian motion",
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning" ;
+    sc:designationOfCertificateOrApproval "KEMA99IECEX1105/128" ;
+    sc:desired_angle_footprint "208 mm x 208 mm" ;
+    sc:during_operation "0 °C to 45 °C (273 K to 318 K) degC" ;
+    sc:during_storage_transportation "40 °C to 60 °C (233 K to 333 K) degC" ;
+    sc:environmentalAmbient_Temperature "0 °C to 45 °C (273 K to 318 K) degC" ;
+    sc:environmentalIp_Rating "IP65/IP67 IP" ;
+    sc:expiryDate "2022-01-01" ;
+    sc:f_a "289 N" ;
+    sc:f_h_max "762 N" ;
+    sc:f_h_normal "558 N" ;
+    sc:f_r "265 N" ;
+    sc:f_v_max "1200 N" ;
+    sc:f_v_normal "916 N" ;
+    sc:firmwareVersion "1.0.0" ;
+    sc:flange_loads_during_operation_f_a "289 N" ;
+    sc:footprint "208 mm x 208 mm" ;
+    sc:frame_maximum_supplementary_load "0 kg" ;
+    sc:ground_conductor_equi "M4 ring cable" ;
+    sc:hardwareVersion "1.0.0" ;
+    sc:hole_pattern_mounting_surface_for "C246" ;
+    sc:humidity_class_en_60204 "3K3" ;
+    sc:id "12345678",
+        "urn:unimaas:infraflex:equipmentresource:kr_10_1100_2" ;
+    sc:imageNote "Notes or explanations about the image provided"@en ;
+    sc:in_line_wrist_type "ZH Arm KR10" ;
+    sc:ing_flange_m_g_4_5_4 "Foundation loads, KR 10 R1100-2" ;
+    sc:interface_with_cable_designation "robot controller" ;
+    sc:issueDate "2022-01-01" ;
+    sc:kinematic_system_permissible_angle_of_inclination "Base frame: gray aluminum (RAL" ;
+    sc:kr_10_r1100_2_number_of_axes "6" ;
+    sc:kr_agilus_2_technical_data_4_5 "Technical data, KR 10 R1100-2" ;
+    sc:kr_c4_compact_transformation_name "KR C4: KR10R1100_2 C4SR" ;
+    sc:locating_element "5 H7" ;
+    sc:m_g "27 Nm" ;
+    sc:m_k "34 Nm" ;
+    sc:m_k_max "894 Nm" ;
+    sc:m_k_normal "542 Nm" ;
+    sc:m_r_max "430 Nm" ;
+    sc:m_r_normal "249 Nm" ;
+    sc:manufacturer "KUKA",
+        "KUKA"@en ;
+    sc:manufacturerProductFamily "\"Type ABC\""@en ;
+    sc:manufacturerProductRoot "\"flow meter\""@en ;
+    sc:manufacturerProductType "FM-ABC-1234" ;
+    sc:markingAdditionalText "0044" ;
+    sc:markingName "0173-1#07-DAA603#004" ;
+    sc:maxPayload_kg 5.0 ;
+    sc:maxReach_mm 1101.0 ;
+    sc:maximum_supplementary_load "0 kg" ;
+    sc:maximum_supplementary_load_ro "1 kg" ;
+    sc:motion_range_a1 "±170 °" ;
+    sc:motor_cable "Han Yellock 30" ;
+    sc:mounting_flange "see drawing" ;
+    sc:mounting_flange_hole_circle "31.5 mm" ;
+    sc:mounting_flange_in_line_wrist_type "ZH Arm KR10" ;
+    sc:mounting_position "Floor" ;
+    sc:moving_parts_traffic_white_ral_9016_controller "KR C4 smallsize-2" ;
+    sc:name "kr_10_1100_2",
+        "KR 10 R1100-2"@en ;
+    sc:numberOfFunctionalSafetySetsOfCharacteristics 1 ;
+    sc:number_of_fastening_threads "7" ;
+    sc:of_the_connecting_cables_4_5_2 "Axis data, KR 10 R1100-2" ;
+    sc:option_cable_lengths_standard "1 m, 4 m, 7 m, 15 m, 25 m" ;
+    sc:orderCodeOfManufacturer "FMABC1234" ;
+    sc:overpressure_in_the_robot "0.03 MPa (0.3 bar)" ;
+    sc:permissible_angle_of_inclination "Base frame: gray aluminum (RAL" ;
+    sc:potential_bonding "lug" ;
+    sc:productArticleNumberOfManufacturer "FM11-ABC22-123456" ;
+    sc:productClassName "Name of product class in the used classification system"@en ;
+    sc:providesCapability "CapabilityGrasping",
+        "CapabilityScrewing" ;
+    sc:rated_mass_moment_of_inertia "0.045 kgm² kg" ;
+    sc:rated_supplementary_load_base "0 kg" ;
+    sc:rated_supplementary_load_link "0 kg" ;
+    sc:rated_supplementary_load_rotating "0 kg" ;
+    sc:repeatability_mm 0.02 ;
+    sc:requiredExecutorSkill "GripperControl" ;
+    sc:requiredTool "ScrewDriver" ;
+    sc:robot_motor_cable "Han Yellock 30" ;
+    sc:robot_robot_motor_cable "Han Yellock 30" ;
+    sc:screw_grade "12.9" ;
+    sc:screw_size "M5" ;
+    sc:selected_region_other_specification_p001_region_005 """Controller KR C4 smallsize-2;
+KR C4 compact""" ;
+    sc:selected_region_other_specification_p002_region_009 """Connector designation
+Interface with
+Cable designation robot controller -
+robot
+robot
+Motor cable X20 - X30 Han Yellock 30
+Data cable X21 - X31 Han Q12
+Ground conductor, equi- M4 ring cable
+potential bonding lug
+(can be ordered as an
+option)
+Cable lengths
+Standard 1 m, 4 m, 7 m, 15 m, 25 m""" ;
+    sc:softwareVersion "1.0.0" ;
+    sc:sound_level "< 57 dB (A)" ;
+    sc:standard "1 m, 4 m, 7 m, 15 m, 25 m" ;
+    sc:tating_column_rated_supplementary_load_link "0 kg" ;
+    sc:technical_DataController "KR C4 smallsize-2" ;
+    sc:technical_DataNumber_Of_Axes "6 count" ;
+    sc:technical_DataPayload "5 kg" ;
+    sc:technical_DataReach "1101 mm" ;
+    sc:technical_DataRepeatability "0.02 mm" ;
+    sc:technical_DataWeight "56.5 kg" ;
+    sc:technical_data "KR AGILUS-2" ;
+    sc:technical_data_4_5 "Technical data, KR 10 R1100-2" ;
+    sc:textStatement "Statement by the manufacturer in text form, e.g. scope of validity of the statements, scopes of application, conditions of operation."@en ;
+    sc:totalJobsShown 0 ;
+    sc:transformation_name "KR C4: KR10R1100_2 C4SR" ;
+    sc:uRIOfTheProduct "https://example.com/assets/kr_10_1100_2" ;
+    sc:uniqueFacilityIdentifier "987654321" ;
+    sc:volume_of_working_envelope "5.2 m³" ;
+    sc:wall_desired_angle_footprint "208 mm x 208 mm" ;
+    sc:yearOfConstruction "2022" .
+
+inst:equipmentresource_screwdriver a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "screwdriver" ;
+    sc:availableQuantity 1.0 ;
+    sc:hasCharacteristic inst:characteristic_char_screwdriver_torque ;
+    sc:id "RES_TOOL_SCREWDRIVER",
+        "urn:unimaas:infraflex:equipmentresource:screwdriver" ;
+    sc:name "Screw Driver",
+        "screwdriver" ;
+    sc:resourceType "Equipment" ;
+    sc:screwDriverMaxTorque 8.5 ;
+    sc:screwDriverScrewMaxLength 25.0 ;
+    sc:unit "unit" ;
+    rdfs:comment "Robotic screwdriver — Infraflex equipment resource"@en .
+
+inst:equipmentresource_suction_gripper a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "suction_gripper" ;
+    sc:availableQuantity 1.0 ;
+    sc:gripperPayload 5.0 ;
+    sc:gripperReleaseTime 0.1 ;
+    sc:gripperSealTime 0.2 ;
+    sc:gripperSuctionCupSize 30.0 ;
+    sc:hasCharacteristic inst:characteristic_char_suction_gripper_payload ;
+    sc:id "RES_TOOL_SUCTION_GRIPPER",
+        "urn:unimaas:infraflex:equipmentresource:suction_gripper" ;
+    sc:name "Suction Gripper",
+        "suction_gripper" ;
+    sc:resourceType "Equipment" ;
+    sc:unit "unit" ;
+    rdfs:comment "Vacuum suction gripper — Infraflex equipment resource"@en .
+
+inst:equipmentresource_tx2_90xl a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "tx2_90xl" ;
+    sc:arbitraryMLP "Note: Every multilanguage property can be used."@en,
+        "Sample"@en ;
+    sc:available_options_nf_en_60_204_1 "non-condensing" ;
+    sc:axis_1_a "± 180°" ;
+    sc:axis_2_b "± 147.5°/-130°" ;
+    sc:axis_3_c "± 145 °" ;
+    sc:axis_4_d "± 270°" ;
+    sc:axis_5_e "+ 140°/-115°" ;
+    sc:axis_6_f "± 270° (1)" ;
+    sc:brakes "All axes" ;
+    sc:capabilityComment "Drive screws; needs a ScrewDriver end-effector"@en,
+        "Move the TCP along a straight linear path (MoveL); precise Cartesian motion"@en,
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning"@en,
+        "Pick and place objects; needs PowerAir GripperControl"@en ;
+    sc:capabilityLevel "Compound",
+        "Primitive" ;
+    sc:characteristics "User interface" ;
+    sc:cleanroom_standard_iso_14644_1 "Available" ;
+    sc:composedOf "MoveJointSpace;MoveLinear" ;
+    sc:countryOfOrigin "DE" ;
+    sc:d181_637_04_st_ubli_units "Representatives / Agents" ;
+    sc:dateOfManufacture "2022-01-01" ;
+    sc:description "Move the TCP along a straight linear path (MoveL); precise Cartesian motion",
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning" ;
+    sc:designationOfCertificateOrApproval "KEMA99IECEX1105/128" ;
+    sc:dimensions_performance_joint_speed_axis_1 "330°/s" ;
+    sc:e_available_options_nf_en_60_204_1 "non-condensing" ;
+    sc:environmentalIp_Rating "SCR(Supercleanroom) IP" ;
+    sc:expiryDate "2022-01-01" ;
+    sc:firmwareVersion "1.0.0" ;
+    sc:hardwareVersion "1.0.0" ;
+    sc:horizontal_cable_outlet "Vertical cable outlet" ;
+    sc:horizontal_cable_outlethorizontal_cable_outlet "Vertical cable outlet Vertical cable outlet" ;
+    sc:humidity_according_to "30% to 95% max" ;
+    sc:id "12345678",
+        "urn:unimaas:infraflex:equipmentresource:tx2_90xl" ;
+    sc:imageNote "Notes or explanations about the image provided"@en ;
+    sc:installation_environment_working_temperature_according "Cable outlet horizontal and vertical (option)" ;
+    sc:ip65_ip67 "Available" ;
+    sc:issueDate "2022-01-01" ;
+    sc:joint_speed_axis_1 "330°/s" ;
+    sc:joint_speed_axis_2 "350°/s" ;
+    sc:joint_speed_axis_3 "410°/s" ;
+    sc:joint_speed_axis_4 "540°/s" ;
+    sc:joint_speed_axis_5 "475°/s" ;
+    sc:joint_speed_axis_6 "760°/s" ;
+    sc:manufacturer "Stäubli",
+        "Stäubli"@en ;
+    sc:manufacturerProductFamily "\"Type ABC\""@en ;
+    sc:manufacturerProductRoot "\"flow meter\""@en ;
+    sc:manufacturerProductType "FM-ABC-1234" ;
+    sc:markingAdditionalText "0044" ;
+    sc:markingName "0173-1#07-DAA603#004" ;
+    sc:maxPayload_kg 14.0 ;
+    sc:maxReach_mm 900.0 ;
+    sc:maximum_inertia_axis_5 "1 kg.m2" ;
+    sc:maximum_inertia_axis_6 "2" ;
+    sc:maximum_reach_between_900_mm "1350 mm" ;
+    sc:maximum_speed_at_load_gravity_center "11.6 m/s" ;
+    sc:minimum_reach_between_200_mm "327 mm" ;
+    sc:minimum_reach_between_256_mm "391 mm" ;
+    sc:name "tx2_90xl",
+        "TX2-90XL"@en ;
+    sc:nf_en_60_204_1 "non-condensing" ;
+    sc:numberOfFunctionalSafetySetsOfCharacteristics 1 ;
+    sc:orderCodeOfManufacturer "FMABC1234" ;
+    sc:performance_joint_speed_axis_1 "330°/s" ;
+    sc:pressurized_version "for hygienic demands" ;
+    sc:productArticleNumberOfManufacturer "FM11-ABC22-123456" ;
+    sc:productClassName "Name of product class in the used classification system"@en ;
+    sc:providesCapability "CapabilityGrasping",
+        "CapabilityScrewing" ;
+    sc:reach_between_axis_1_and_6 "bi-stable solenoid valves 5/2 « pressure » or mono-stable « center close »" ;
+    sc:reach_between_axis_3_and_5_r_b "Mounting (not for vertical cable outlet option)" ;
+    sc:repeatability_mm 0.02 ;
+    sc:requiredExecutorSkill "GripperControl" ;
+    sc:requiredTool "ScrewDriver" ;
+    sc:selected_region_other_datasheet_p002_region_010 """Vertical cable outlet version Available
+Pressurized version Available
+Controller CS9
+Cleanroom standard ISO 14644-1 5""" ;
+    sc:softwareVersion "1.0.0" ;
+    sc:st_ubli_units "Representatives / Agents" ;
+    sc:technical_DataController "CS9 HE (Humid Environment) Available" ;
+    sc:technical_DataNumber_Of_Axes "5 count" ;
+    sc:technical_DataPayload "14 kg" ;
+    sc:technical_DataReach "900 mm" ;
+    sc:technical_DataRepeatability "10" ;
+    sc:technical_DataWeight "119 kg" ;
+    sc:textStatement "Statement by the manufacturer in text form, e.g. scope of validity of the statements, scopes of application, conditions of operation."@en ;
+    sc:totalJobsShown 0 ;
+    sc:tx2_90 "TX2-90XL" ;
+    sc:uRIOfTheProduct "https://example.com/assets/tx2_90xl" ;
+    sc:ul_certification "" ;
+    sc:uniqueFacilityIdentifier "987654321" ;
+    sc:vertical_cable_outlet_version "for smarter integration" ;
+    sc:working_temperature_according "Cable outlet horizontal and vertical (option)" ;
+    sc:yearOfConstruction "2022" .
+
+inst:process_flashlight_Step_01_FlashlightPlacePCB a sc:ProcessConfiguration ;
+    rdfs:label "Step_01_FlashlightPlacePCB" ;
+    sc:jobSkill "PickAndPlace" ;
+    sc:requiredCapability "CapabilityGrasping" ;
+    sc:stepName "FlashlightPlacePCB" ;
+    sc:stepOrder 1 .
+
+inst:process_flashlight_Step_02_FlashlightPlaceCoverClick a sc:ProcessConfiguration ;
+    rdfs:label "Step_02_FlashlightPlaceCoverClick" ;
+    sc:jobSkill "PickAndPlace" ;
+    sc:requiredCapability "CapabilityGrasping" ;
+    sc:stepName "FlashlightPlaceCoverClick" ;
+    sc:stepOrder 2 .
+
+inst:process_flashlight_Step_03_FlashlightPlaceLensClick a sc:ProcessConfiguration ;
+    rdfs:label "Step_03_FlashlightPlaceLensClick" ;
+    sc:jobSkill "PickAndPlace" ;
+    sc:requiredCapability "CapabilityGrasping" ;
+    sc:stepName "FlashlightPlaceLensClick" ;
+    sc:stepOrder 3 .
+
+inst:process_flashlight_Step_04_FlashlightMoveFlashlightBackClick a sc:ProcessConfiguration ;
+    rdfs:label "Step_04_FlashlightMoveFlashlightBackClick" ;
+    sc:jobSkill "PickAndPlace" ;
+    sc:requiredCapability "CapabilityGrasping" ;
+    sc:stepName "FlashlightMoveFlashlightBackClick" ;
+    sc:stepOrder 4 .
+
+inst:process_kuka_press_Step_01_PressBrakePistonAssembly a sc:ProcessConfiguration ;
+    rdfs:label "Step_01_PressBrakePistonAssembly" ;
+    sc:jobSkill "KukaGrabDropTool" ;
+    sc:requiredCapability "CapabilityGrasping" ;
+    sc:stepName "PressBrakePistonAssembly" ;
+    sc:stepOrder 1 .
+
+inst:process_kuka_press_Step_02_PressBrakeCoverAssembly a sc:ProcessConfiguration ;
+    rdfs:label "Step_02_PressBrakeCoverAssembly" ;
+    sc:jobSkill "KukaPickAndPlace" ;
+    sc:requiredCapability "CapabilityGrasping" ;
+    sc:stepName "PressBrakeCoverAssembly" ;
+    sc:stepOrder 2 .
+
+inst:process_kuka_press_Step_03_KukaGrabToolFromSkid a sc:ProcessConfiguration ;
+    rdfs:label "Step_03_KukaGrabToolFromSkid" ;
+    sc:jobSkill "KukaGrabDropTool" ;
+    sc:requiredCapability "CapabilityGrasping" ;
+    sc:stepName "KukaGrabToolFromSkid" ;
+    sc:stepOrder 3 .
+
+inst:process_kuka_press_Step_04_PressBrakePistonDisassembly a sc:ProcessConfiguration ;
+    rdfs:label "Step_04_PressBrakePistonDisassembly" ;
+    sc:jobSkill "KukaGrabDropTool" ;
+    sc:requiredCapability "CapabilityGrasping" ;
+    sc:stepName "PressBrakePistonDisassembly" ;
+    sc:stepOrder 4 .
+
+inst:process_kuka_press_Step_05_KukaDropToolToSkid a sc:ProcessConfiguration ;
+    rdfs:label "Step_05_KukaDropToolToSkid" ;
+    sc:jobSkill "KukaGrabDropTool" ;
+    sc:requiredCapability "CapabilityGrasping" ;
+    sc:stepName "KukaDropToolToSkid" ;
+    sc:stepOrder 5 .
+
+inst:process_kuka_press_Step_06_PressBrakeCoverDisassembly a sc:ProcessConfiguration ;
+    rdfs:label "Step_06_PressBrakeCoverDisassembly" ;
+    sc:jobSkill "KukaPickAndPlace" ;
+    sc:requiredCapability "CapabilityGrasping" ;
+    sc:stepName "PressBrakeCoverDisassembly" ;
+    sc:stepOrder 6 .
+
+inst:site_cell1 a sc:Site,
+        owl:NamedIndividual ;
+    rdfs:label "cell1" ;
+    sc:deviceType "PowerAir" ;
+    sc:hasCharacteristic inst:characteristic_char_cell1_available_capacity ;
+    sc:hasDevice inst:device_amr_mir200_1,
+        inst:device_amr_mir500_1,
+        inst:device_cell1_powerair,
+        inst:device_debonder,
+        inst:device_warehouse_003,
+        inst:equipmentresource_tx2_90xl ;
+    sc:id "CELL1",
+        "urn:unimaas:infraflex:site:cell1" ;
+    sc:location "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F" ;
+    sc:locationAddress "UniMaaS Smart Factory, Cell1" ;
+    sc:locationAspectDesignation "+Cell1" ;
+    sc:mqttPath "Infraflex/Executors/Cell1/PowerAir" ;
+    sc:name "Cell1",
+        "cell1" ;
+    rdfs:comment "Infraflex production site Cell1"@en .
+
+sc:ResourceConf a owl:Class ;
+    rdfs:label "Resource Configuration" ;
+    rdfs:comment "MSC Resource Configuration is inserted between ProcessConfigurations and Resource nodes to allow multiple uses of the same resource in different configurations." .
+
+sc:inputOf a owl:ObjectProperty ;
+    owl:inverseOf sc:hasInput .
+
+inst:characteristic_char_amr_mir200_1_battery_level a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir200_1_battery_level" ;
+    sc:batteryLevel 98.5 ;
+    sc:characteristicValue 98.5 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_AMR_MIR200_1_BATTERY_LEVEL",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir200_1_battery_level" ;
+    sc:isObservedBy inst:sensor_amr_mir200_1_sensor ;
+    sc:name "char_amr_mir200_1_battery_level" ;
+    sc:unit "%" ;
+    rdfs:comment "Infraflex characteristic: BatteryLevel (CHAR_AMR_MIR200_1_BATTERY_LEVEL)"@en .
+
+inst:characteristic_char_amr_mir200_1_current_location a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir200_1_current_location" ;
+    sc:characteristicValue "Cell1" ;
+    sc:currentLocation "Cell1" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_AMR_MIR200_1_CURRENT_LOCATION",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir200_1_current_location" ;
+    sc:isObservedBy inst:sensor_amr_mir200_1_sensor ;
+    sc:name "char_amr_mir200_1_current_location" ;
+    rdfs:comment "Infraflex characteristic: CurrentLocation (CHAR_AMR_MIR200_1_CURRENT_LOCATION)"@en .
+
+inst:characteristic_char_amr_mir200_1_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir200_1_error_code" ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:errorCode 0 ;
+    sc:id "CHAR_AMR_MIR200_1_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir200_1_error_code" ;
+    sc:isObservedBy inst:sensor_amr_mir200_1_sensor ;
+    sc:name "char_amr_mir200_1_error_code" ;
+    rdfs:comment "Infraflex characteristic: ErrorCode (CHAR_AMR_MIR200_1_ERROR_CODE)"@en .
+
+inst:characteristic_char_amr_mir200_1_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir200_1_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_AMR_MIR200_1_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir200_1_operational_state" ;
+    sc:isObservedBy inst:sensor_amr_mir200_1_sensor ;
+    sc:name "char_amr_mir200_1_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_AMR_MIR200_1_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_amr_mir200_1_position_x a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir200_1_position_x" ;
+    sc:characteristicValue 1.25 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_AMR_MIR200_1_POSITION_X",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir200_1_position_x" ;
+    sc:isObservedBy inst:sensor_amr_mir200_1_sensor ;
+    sc:name "char_amr_mir200_1_position_x" ;
+    sc:positionX 1.25 ;
+    sc:unit "m" ;
+    rdfs:comment "Infraflex characteristic: PositionX (CHAR_AMR_MIR200_1_POSITION_X)"@en .
+
+inst:characteristic_char_amr_mir200_1_position_y a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir200_1_position_y" ;
+    sc:characteristicValue 3.4 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_AMR_MIR200_1_POSITION_Y",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir200_1_position_y" ;
+    sc:isObservedBy inst:sensor_amr_mir200_1_sensor ;
+    sc:name "char_amr_mir200_1_position_y" ;
+    sc:positionY 3.4 ;
+    sc:unit "m" ;
+    rdfs:comment "Infraflex characteristic: PositionY (CHAR_AMR_MIR200_1_POSITION_Y)"@en .
+
+inst:characteristic_char_amr_mir500_1_battery_level a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir500_1_battery_level" ;
+    sc:batteryLevel 98.5 ;
+    sc:characteristicValue 98.5 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_AMR_MIR500_1_BATTERY_LEVEL",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir500_1_battery_level" ;
+    sc:isObservedBy inst:sensor_amr_mir500_1_sensor ;
+    sc:name "char_amr_mir500_1_battery_level" ;
+    sc:unit "%" ;
+    rdfs:comment "Infraflex characteristic: BatteryLevel (CHAR_AMR_MIR500_1_BATTERY_LEVEL)"@en .
+
+inst:characteristic_char_amr_mir500_1_current_location a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir500_1_current_location" ;
+    sc:characteristicValue "Cell1" ;
+    sc:currentLocation "Cell1" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_AMR_MIR500_1_CURRENT_LOCATION",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir500_1_current_location" ;
+    sc:isObservedBy inst:sensor_amr_mir500_1_sensor ;
+    sc:name "char_amr_mir500_1_current_location" ;
+    rdfs:comment "Infraflex characteristic: CurrentLocation (CHAR_AMR_MIR500_1_CURRENT_LOCATION)"@en .
+
+inst:characteristic_char_amr_mir500_1_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir500_1_error_code" ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:errorCode 0 ;
+    sc:id "CHAR_AMR_MIR500_1_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir500_1_error_code" ;
+    sc:isObservedBy inst:sensor_amr_mir500_1_sensor ;
+    sc:name "char_amr_mir500_1_error_code" ;
+    rdfs:comment "Infraflex characteristic: ErrorCode (CHAR_AMR_MIR500_1_ERROR_CODE)"@en .
+
+inst:characteristic_char_amr_mir500_1_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir500_1_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_AMR_MIR500_1_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir500_1_operational_state" ;
+    sc:isObservedBy inst:sensor_amr_mir500_1_sensor ;
+    sc:name "char_amr_mir500_1_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_AMR_MIR500_1_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_amr_mir500_1_position_x a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir500_1_position_x" ;
+    sc:characteristicValue 1.25 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_AMR_MIR500_1_POSITION_X",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir500_1_position_x" ;
+    sc:isObservedBy inst:sensor_amr_mir500_1_sensor ;
+    sc:name "char_amr_mir500_1_position_x" ;
+    sc:positionX 1.25 ;
+    sc:unit "m" ;
+    rdfs:comment "Infraflex characteristic: PositionX (CHAR_AMR_MIR500_1_POSITION_X)"@en .
+
+inst:characteristic_char_amr_mir500_1_position_y a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_amr_mir500_1_position_y" ;
+    sc:characteristicValue 3.4 ;
+    sc:dataType "double" ;
+    sc:id "CHAR_AMR_MIR500_1_POSITION_Y",
+        "urn:unimaas:infraflex:characteristic:char_amr_mir500_1_position_y" ;
+    sc:isObservedBy inst:sensor_amr_mir500_1_sensor ;
+    sc:name "char_amr_mir500_1_position_y" ;
+    sc:positionY 3.4 ;
+    sc:unit "m" ;
+    rdfs:comment "Infraflex characteristic: PositionY (CHAR_AMR_MIR500_1_POSITION_Y)"@en .
+
+inst:characteristic_char_cell1_powerair_air_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell1_powerair_air_error_code" ;
+    sc:airErrorCode 0 ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:id "CHAR_CELL1_POWERAIR_AIR_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_cell1_powerair_air_error_code" ;
+    sc:isObservedBy inst:sensor_cell1_powerair_sensor ;
+    sc:name "char_cell1_powerair_air_error_code" ;
+    rdfs:comment "Infraflex characteristic: AirErrorCode (CHAR_CELL1_POWERAIR_AIR_ERROR_CODE)"@en .
+
+inst:characteristic_char_cell1_powerair_gripper_close a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell1_powerair_gripper_close" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:gripperClose false ;
+    sc:id "CHAR_CELL1_POWERAIR_GRIPPER_CLOSE",
+        "urn:unimaas:infraflex:characteristic:char_cell1_powerair_gripper_close" ;
+    sc:isObservedBy inst:sensor_cell1_powerair_sensor ;
+    sc:name "char_cell1_powerair_gripper_close" ;
+    rdfs:comment "Infraflex characteristic: GripperClose (CHAR_CELL1_POWERAIR_GRIPPER_CLOSE)"@en .
+
+inst:characteristic_char_cell1_powerair_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell1_powerair_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL1_POWERAIR_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_cell1_powerair_operational_state" ;
+    sc:isObservedBy inst:sensor_cell1_powerair_sensor ;
+    sc:name "char_cell1_powerair_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_CELL1_POWERAIR_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_cell1_powerair_power_tool_enable a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell1_powerair_power_tool_enable" ;
+    sc:characteristicValue true ;
+    sc:dataType "boolean" ;
+    sc:id "CHAR_CELL1_POWERAIR_POWER_TOOL_ENABLE",
+        "urn:unimaas:infraflex:characteristic:char_cell1_powerair_power_tool_enable" ;
+    sc:isObservedBy inst:sensor_cell1_powerair_sensor ;
+    sc:name "char_cell1_powerair_power_tool_enable" ;
+    sc:powerToolEnable true ;
+    rdfs:comment "Infraflex characteristic: PowerToolEnable (CHAR_CELL1_POWERAIR_POWER_TOOL_ENABLE)"@en .
+
+inst:characteristic_char_cell1_powerair_tool_attach a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell1_powerair_tool_attach" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:id "CHAR_CELL1_POWERAIR_TOOL_ATTACH",
+        "urn:unimaas:infraflex:characteristic:char_cell1_powerair_tool_attach" ;
+    sc:isObservedBy inst:sensor_cell1_powerair_sensor ;
+    sc:name "char_cell1_powerair_tool_attach" ;
+    sc:toolAttach false ;
+    rdfs:comment "Infraflex characteristic: ToolAttach (CHAR_CELL1_POWERAIR_TOOL_ATTACH)"@en .
+
+inst:characteristic_char_cell2_powerair_air_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell2_powerair_air_error_code" ;
+    sc:airErrorCode 0 ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:id "CHAR_CELL2_POWERAIR_AIR_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_cell2_powerair_air_error_code" ;
+    sc:isObservedBy inst:sensor_cell2_powerair_sensor ;
+    sc:name "char_cell2_powerair_air_error_code" ;
+    rdfs:comment "Infraflex characteristic: AirErrorCode (CHAR_CELL2_POWERAIR_AIR_ERROR_CODE)"@en .
+
+inst:characteristic_char_cell2_powerair_gripper_close a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell2_powerair_gripper_close" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:gripperClose false ;
+    sc:id "CHAR_CELL2_POWERAIR_GRIPPER_CLOSE",
+        "urn:unimaas:infraflex:characteristic:char_cell2_powerair_gripper_close" ;
+    sc:isObservedBy inst:sensor_cell2_powerair_sensor ;
+    sc:name "char_cell2_powerair_gripper_close" ;
+    rdfs:comment "Infraflex characteristic: GripperClose (CHAR_CELL2_POWERAIR_GRIPPER_CLOSE)"@en .
+
+inst:characteristic_char_cell2_powerair_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell2_powerair_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL2_POWERAIR_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_cell2_powerair_operational_state" ;
+    sc:isObservedBy inst:sensor_cell2_powerair_sensor ;
+    sc:name "char_cell2_powerair_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_CELL2_POWERAIR_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_cell2_powerair_power_tool_enable a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell2_powerair_power_tool_enable" ;
+    sc:characteristicValue true ;
+    sc:dataType "boolean" ;
+    sc:id "CHAR_CELL2_POWERAIR_POWER_TOOL_ENABLE",
+        "urn:unimaas:infraflex:characteristic:char_cell2_powerair_power_tool_enable" ;
+    sc:isObservedBy inst:sensor_cell2_powerair_sensor ;
+    sc:name "char_cell2_powerair_power_tool_enable" ;
+    sc:powerToolEnable true ;
+    rdfs:comment "Infraflex characteristic: PowerToolEnable (CHAR_CELL2_POWERAIR_POWER_TOOL_ENABLE)"@en .
+
+inst:characteristic_char_cell2_powerair_tool_attach a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell2_powerair_tool_attach" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:id "CHAR_CELL2_POWERAIR_TOOL_ATTACH",
+        "urn:unimaas:infraflex:characteristic:char_cell2_powerair_tool_attach" ;
+    sc:isObservedBy inst:sensor_cell2_powerair_sensor ;
+    sc:name "char_cell2_powerair_tool_attach" ;
+    sc:toolAttach false ;
+    rdfs:comment "Infraflex characteristic: ToolAttach (CHAR_CELL2_POWERAIR_TOOL_ATTACH)"@en .
+
+inst:characteristic_char_cell4_powerair_air_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell4_powerair_air_error_code" ;
+    sc:airErrorCode 0 ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:id "CHAR_CELL4_POWERAIR_AIR_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_cell4_powerair_air_error_code" ;
+    sc:isObservedBy inst:sensor_cell4_powerair_sensor ;
+    sc:name "char_cell4_powerair_air_error_code" ;
+    rdfs:comment "Infraflex characteristic: AirErrorCode (CHAR_CELL4_POWERAIR_AIR_ERROR_CODE)"@en .
+
+inst:characteristic_char_cell4_powerair_gripper_close a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell4_powerair_gripper_close" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:gripperClose false ;
+    sc:id "CHAR_CELL4_POWERAIR_GRIPPER_CLOSE",
+        "urn:unimaas:infraflex:characteristic:char_cell4_powerair_gripper_close" ;
+    sc:isObservedBy inst:sensor_cell4_powerair_sensor ;
+    sc:name "char_cell4_powerair_gripper_close" ;
+    rdfs:comment "Infraflex characteristic: GripperClose (CHAR_CELL4_POWERAIR_GRIPPER_CLOSE)"@en .
+
+inst:characteristic_char_cell4_powerair_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell4_powerair_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL4_POWERAIR_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_cell4_powerair_operational_state" ;
+    sc:isObservedBy inst:sensor_cell4_powerair_sensor ;
+    sc:name "char_cell4_powerair_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_CELL4_POWERAIR_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_cell4_powerair_power_tool_enable a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell4_powerair_power_tool_enable" ;
+    sc:characteristicValue true ;
+    sc:dataType "boolean" ;
+    sc:id "CHAR_CELL4_POWERAIR_POWER_TOOL_ENABLE",
+        "urn:unimaas:infraflex:characteristic:char_cell4_powerair_power_tool_enable" ;
+    sc:isObservedBy inst:sensor_cell4_powerair_sensor ;
+    sc:name "char_cell4_powerair_power_tool_enable" ;
+    sc:powerToolEnable true ;
+    rdfs:comment "Infraflex characteristic: PowerToolEnable (CHAR_CELL4_POWERAIR_POWER_TOOL_ENABLE)"@en .
+
+inst:characteristic_char_cell4_powerair_tool_attach a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell4_powerair_tool_attach" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:id "CHAR_CELL4_POWERAIR_TOOL_ATTACH",
+        "urn:unimaas:infraflex:characteristic:char_cell4_powerair_tool_attach" ;
+    sc:isObservedBy inst:sensor_cell4_powerair_sensor ;
+    sc:name "char_cell4_powerair_tool_attach" ;
+    sc:toolAttach false ;
+    rdfs:comment "Infraflex characteristic: ToolAttach (CHAR_CELL4_POWERAIR_TOOL_ATTACH)"@en .
+
+inst:characteristic_char_cell4_turntable_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell4_turntable_error_code" ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:errorCode 0 ;
+    sc:id "CHAR_CELL4_TURNTABLE_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_cell4_turntable_error_code" ;
+    sc:isObservedBy inst:sensor_cell4_turntable_sensor ;
+    sc:name "char_cell4_turntable_error_code" ;
+    rdfs:comment "Infraflex characteristic: ErrorCode (CHAR_CELL4_TURNTABLE_ERROR_CODE)"@en .
+
+inst:characteristic_char_cell4_turntable_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell4_turntable_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL4_TURNTABLE_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_cell4_turntable_operational_state" ;
+    sc:isObservedBy inst:sensor_cell4_turntable_sensor ;
+    sc:name "char_cell4_turntable_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_CELL4_TURNTABLE_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_cell4_turntable_slot_empty a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell4_turntable_slot_empty" ;
+    sc:characteristicValue "true" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL4_TURNTABLE_SLOT_EMPTY",
+        "urn:unimaas:infraflex:characteristic:char_cell4_turntable_slot_empty" ;
+    sc:isObservedBy inst:sensor_cell4_turntable_sensor ;
+    sc:name "char_cell4_turntable_slot_empty" ;
+    sc:slotEmpty "true" ;
+    rdfs:comment "Infraflex characteristic: SlotEmpty (CHAR_CELL4_TURNTABLE_SLOT_EMPTY)"@en .
+
+inst:characteristic_char_cell4_turntable_slot_positions a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell4_turntable_slot_positions" ;
+    sc:characteristicValue "0,90,180,270" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL4_TURNTABLE_SLOT_POSITIONS",
+        "urn:unimaas:infraflex:characteristic:char_cell4_turntable_slot_positions" ;
+    sc:isObservedBy inst:sensor_cell4_turntable_sensor ;
+    sc:name "char_cell4_turntable_slot_positions" ;
+    sc:slotPositions "0,90,180,270" ;
+    sc:unit "deg" ;
+    rdfs:comment "Infraflex characteristic: SlotPositions (CHAR_CELL4_TURNTABLE_SLOT_POSITIONS)"@en .
+
+inst:characteristic_char_cell5_lift_emergency_stop a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell5_lift_emergency_stop" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:emergencyStop false ;
+    sc:id "CHAR_CELL5_LIFT_EMERGENCY_STOP",
+        "urn:unimaas:infraflex:characteristic:char_cell5_lift_emergency_stop" ;
+    sc:isObservedBy inst:sensor_cell5_lift_sensor ;
+    sc:name "char_cell5_lift_emergency_stop" ;
+    rdfs:comment "Infraflex characteristic: EmergencyStop (CHAR_CELL5_LIFT_EMERGENCY_STOP)"@en .
+
+inst:characteristic_char_cell5_lift_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell5_lift_error_code" ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:errorCode 0 ;
+    sc:id "CHAR_CELL5_LIFT_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_cell5_lift_error_code" ;
+    sc:isObservedBy inst:sensor_cell5_lift_sensor ;
+    sc:name "char_cell5_lift_error_code" ;
+    rdfs:comment "Infraflex characteristic: ErrorCode (CHAR_CELL5_LIFT_ERROR_CODE)"@en .
+
+inst:characteristic_char_cell5_lift_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell5_lift_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL5_LIFT_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_cell5_lift_operational_state" ;
+    sc:isObservedBy inst:sensor_cell5_lift_sensor ;
+    sc:name "char_cell5_lift_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_CELL5_LIFT_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_cell5_lift_position a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell5_lift_position" ;
+    sc:characteristicValue "DOWN" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL5_LIFT_POSITION",
+        "urn:unimaas:infraflex:characteristic:char_cell5_lift_position" ;
+    sc:isObservedBy inst:sensor_cell5_lift_sensor ;
+    sc:name "char_cell5_lift_position" ;
+    sc:position "DOWN" ;
+    rdfs:comment "Infraflex characteristic: Position (CHAR_CELL5_LIFT_POSITION)"@en .
+
+inst:characteristic_char_cell5_powerair_air_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell5_powerair_air_error_code" ;
+    sc:airErrorCode 0 ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:id "CHAR_CELL5_POWERAIR_AIR_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_cell5_powerair_air_error_code" ;
+    sc:isObservedBy inst:sensor_cell5_powerair_sensor ;
+    sc:name "char_cell5_powerair_air_error_code" ;
+    rdfs:comment "Infraflex characteristic: AirErrorCode (CHAR_CELL5_POWERAIR_AIR_ERROR_CODE)"@en .
+
+inst:characteristic_char_cell5_powerair_gripper_close a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell5_powerair_gripper_close" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:gripperClose false ;
+    sc:id "CHAR_CELL5_POWERAIR_GRIPPER_CLOSE",
+        "urn:unimaas:infraflex:characteristic:char_cell5_powerair_gripper_close" ;
+    sc:isObservedBy inst:sensor_cell5_powerair_sensor ;
+    sc:name "char_cell5_powerair_gripper_close" ;
+    rdfs:comment "Infraflex characteristic: GripperClose (CHAR_CELL5_POWERAIR_GRIPPER_CLOSE)"@en .
+
+inst:characteristic_char_cell5_powerair_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell5_powerair_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL5_POWERAIR_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_cell5_powerair_operational_state" ;
+    sc:isObservedBy inst:sensor_cell5_powerair_sensor ;
+    sc:name "char_cell5_powerair_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_CELL5_POWERAIR_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_cell5_powerair_power_tool_enable a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell5_powerair_power_tool_enable" ;
+    sc:characteristicValue true ;
+    sc:dataType "boolean" ;
+    sc:id "CHAR_CELL5_POWERAIR_POWER_TOOL_ENABLE",
+        "urn:unimaas:infraflex:characteristic:char_cell5_powerair_power_tool_enable" ;
+    sc:isObservedBy inst:sensor_cell5_powerair_sensor ;
+    sc:name "char_cell5_powerair_power_tool_enable" ;
+    sc:powerToolEnable true ;
+    rdfs:comment "Infraflex characteristic: PowerToolEnable (CHAR_CELL5_POWERAIR_POWER_TOOL_ENABLE)"@en .
+
+inst:characteristic_char_cell5_powerair_tool_attach a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell5_powerair_tool_attach" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:id "CHAR_CELL5_POWERAIR_TOOL_ATTACH",
+        "urn:unimaas:infraflex:characteristic:char_cell5_powerair_tool_attach" ;
+    sc:isObservedBy inst:sensor_cell5_powerair_sensor ;
+    sc:name "char_cell5_powerair_tool_attach" ;
+    sc:toolAttach false ;
+    rdfs:comment "Infraflex characteristic: ToolAttach (CHAR_CELL5_POWERAIR_TOOL_ATTACH)"@en .
+
+inst:characteristic_char_cell6_lift_emergency_stop a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_lift_emergency_stop" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:emergencyStop false ;
+    sc:id "CHAR_CELL6_LIFT_EMERGENCY_STOP",
+        "urn:unimaas:infraflex:characteristic:char_cell6_lift_emergency_stop" ;
+    sc:isObservedBy inst:sensor_cell6_lift_sensor ;
+    sc:name "char_cell6_lift_emergency_stop" ;
+    rdfs:comment "Infraflex characteristic: EmergencyStop (CHAR_CELL6_LIFT_EMERGENCY_STOP)"@en .
+
+inst:characteristic_char_cell6_lift_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_lift_error_code" ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:errorCode 0 ;
+    sc:id "CHAR_CELL6_LIFT_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_cell6_lift_error_code" ;
+    sc:isObservedBy inst:sensor_cell6_lift_sensor ;
+    sc:name "char_cell6_lift_error_code" ;
+    rdfs:comment "Infraflex characteristic: ErrorCode (CHAR_CELL6_LIFT_ERROR_CODE)"@en .
+
+inst:characteristic_char_cell6_lift_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_lift_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL6_LIFT_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_cell6_lift_operational_state" ;
+    sc:isObservedBy inst:sensor_cell6_lift_sensor ;
+    sc:name "char_cell6_lift_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_CELL6_LIFT_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_cell6_lift_position a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_lift_position" ;
+    sc:characteristicValue "DOWN" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL6_LIFT_POSITION",
+        "urn:unimaas:infraflex:characteristic:char_cell6_lift_position" ;
+    sc:isObservedBy inst:sensor_cell6_lift_sensor ;
+    sc:name "char_cell6_lift_position" ;
+    sc:position "DOWN" ;
+    rdfs:comment "Infraflex characteristic: Position (CHAR_CELL6_LIFT_POSITION)"@en .
+
+inst:characteristic_char_cell6_powerair_air_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_powerair_air_error_code" ;
+    sc:airErrorCode 0 ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:id "CHAR_CELL6_POWERAIR_AIR_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_cell6_powerair_air_error_code" ;
+    sc:isObservedBy inst:sensor_cell6_powerair_sensor ;
+    sc:name "char_cell6_powerair_air_error_code" ;
+    rdfs:comment "Infraflex characteristic: AirErrorCode (CHAR_CELL6_POWERAIR_AIR_ERROR_CODE)"@en .
+
+inst:characteristic_char_cell6_powerair_gripper_close a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_powerair_gripper_close" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:gripperClose false ;
+    sc:id "CHAR_CELL6_POWERAIR_GRIPPER_CLOSE",
+        "urn:unimaas:infraflex:characteristic:char_cell6_powerair_gripper_close" ;
+    sc:isObservedBy inst:sensor_cell6_powerair_sensor ;
+    sc:name "char_cell6_powerair_gripper_close" ;
+    rdfs:comment "Infraflex characteristic: GripperClose (CHAR_CELL6_POWERAIR_GRIPPER_CLOSE)"@en .
+
+inst:characteristic_char_cell6_powerair_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_powerair_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL6_POWERAIR_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_cell6_powerair_operational_state" ;
+    sc:isObservedBy inst:sensor_cell6_powerair_sensor ;
+    sc:name "char_cell6_powerair_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_CELL6_POWERAIR_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_cell6_powerair_power_tool_enable a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_powerair_power_tool_enable" ;
+    sc:characteristicValue true ;
+    sc:dataType "boolean" ;
+    sc:id "CHAR_CELL6_POWERAIR_POWER_TOOL_ENABLE",
+        "urn:unimaas:infraflex:characteristic:char_cell6_powerair_power_tool_enable" ;
+    sc:isObservedBy inst:sensor_cell6_powerair_sensor ;
+    sc:name "char_cell6_powerair_power_tool_enable" ;
+    sc:powerToolEnable true ;
+    rdfs:comment "Infraflex characteristic: PowerToolEnable (CHAR_CELL6_POWERAIR_POWER_TOOL_ENABLE)"@en .
+
+inst:characteristic_char_cell6_powerair_tool_attach a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_powerair_tool_attach" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:id "CHAR_CELL6_POWERAIR_TOOL_ATTACH",
+        "urn:unimaas:infraflex:characteristic:char_cell6_powerair_tool_attach" ;
+    sc:isObservedBy inst:sensor_cell6_powerair_sensor ;
+    sc:name "char_cell6_powerair_tool_attach" ;
+    sc:toolAttach false ;
+    rdfs:comment "Infraflex characteristic: ToolAttach (CHAR_CELL6_POWERAIR_TOOL_ATTACH)"@en .
+
+inst:characteristic_char_cell6_turntable_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_turntable_error_code" ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:errorCode 0 ;
+    sc:id "CHAR_CELL6_TURNTABLE_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_cell6_turntable_error_code" ;
+    sc:isObservedBy inst:sensor_cell6_turntable_sensor ;
+    sc:name "char_cell6_turntable_error_code" ;
+    rdfs:comment "Infraflex characteristic: ErrorCode (CHAR_CELL6_TURNTABLE_ERROR_CODE)"@en .
+
+inst:characteristic_char_cell6_turntable_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_turntable_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL6_TURNTABLE_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_cell6_turntable_operational_state" ;
+    sc:isObservedBy inst:sensor_cell6_turntable_sensor ;
+    sc:name "char_cell6_turntable_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_CELL6_TURNTABLE_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_cell6_turntable_slot_empty a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_turntable_slot_empty" ;
+    sc:characteristicValue "true" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL6_TURNTABLE_SLOT_EMPTY",
+        "urn:unimaas:infraflex:characteristic:char_cell6_turntable_slot_empty" ;
+    sc:isObservedBy inst:sensor_cell6_turntable_sensor ;
+    sc:name "char_cell6_turntable_slot_empty" ;
+    sc:slotEmpty "true" ;
+    rdfs:comment "Infraflex characteristic: SlotEmpty (CHAR_CELL6_TURNTABLE_SLOT_EMPTY)"@en .
+
+inst:characteristic_char_cell6_turntable_slot_positions a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_cell6_turntable_slot_positions" ;
+    sc:characteristicValue "0,90,180,270" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_CELL6_TURNTABLE_SLOT_POSITIONS",
+        "urn:unimaas:infraflex:characteristic:char_cell6_turntable_slot_positions" ;
+    sc:isObservedBy inst:sensor_cell6_turntable_sensor ;
+    sc:name "char_cell6_turntable_slot_positions" ;
+    sc:slotPositions "0,90,180,270" ;
+    sc:unit "deg" ;
+    rdfs:comment "Infraflex characteristic: SlotPositions (CHAR_CELL6_TURNTABLE_SLOT_POSITIONS)"@en .
+
+inst:characteristic_char_debonder_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_debonder_error_code" ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:errorCode 0 ;
+    sc:id "CHAR_DEBONDER_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_debonder_error_code" ;
+    sc:isObservedBy inst:sensor_debonder_sensor ;
+    sc:name "char_debonder_error_code" ;
+    rdfs:comment "Infraflex characteristic: ErrorCode (CHAR_DEBONDER_ERROR_CODE)"@en .
+
+inst:characteristic_char_debonder_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_debonder_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_DEBONDER_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_debonder_operational_state" ;
+    sc:isObservedBy inst:sensor_debonder_sensor ;
+    sc:name "char_debonder_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_DEBONDER_OPERATIONAL_STATE)"@en .
+
+inst:characteristic_char_warehouse_003_emergency_stop a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_warehouse_003_emergency_stop" ;
+    sc:characteristicValue false ;
+    sc:dataType "boolean" ;
+    sc:emergencyStop false ;
+    sc:id "CHAR_WAREHOUSE_003_EMERGENCY_STOP",
+        "urn:unimaas:infraflex:characteristic:char_warehouse_003_emergency_stop" ;
+    sc:isObservedBy inst:sensor_warehouse_003_sensor ;
+    sc:name "char_warehouse_003_emergency_stop" ;
+    rdfs:comment "Infraflex characteristic: EmergencyStop (CHAR_WAREHOUSE_003_EMERGENCY_STOP)"@en .
+
+inst:characteristic_char_warehouse_003_error_code a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_warehouse_003_error_code" ;
+    sc:characteristicValue 0 ;
+    sc:dataType "integer" ;
+    sc:errorCode 0 ;
+    sc:id "CHAR_WAREHOUSE_003_ERROR_CODE",
+        "urn:unimaas:infraflex:characteristic:char_warehouse_003_error_code" ;
+    sc:isObservedBy inst:sensor_warehouse_003_sensor ;
+    sc:name "char_warehouse_003_error_code" ;
+    rdfs:comment "Infraflex characteristic: ErrorCode (CHAR_WAREHOUSE_003_ERROR_CODE)"@en .
+
+inst:characteristic_char_warehouse_003_operational_state a sc:Characteristic,
+        owl:NamedIndividual ;
+    rdfs:label "char_warehouse_003_operational_state" ;
+    sc:characteristicValue "IDLE" ;
+    sc:dataType "string" ;
+    sc:id "CHAR_WAREHOUSE_003_OPERATIONAL_STATE",
+        "urn:unimaas:infraflex:characteristic:char_warehouse_003_operational_state" ;
+    sc:isObservedBy inst:sensor_warehouse_003_sensor ;
+    sc:name "char_warehouse_003_operational_state" ;
+    sc:operationalState "IDLE" ;
+    rdfs:comment "Infraflex characteristic: OperationalState (CHAR_WAREHOUSE_003_OPERATIONAL_STATE)"@en .
+
+inst:device_amr_mir500_1 a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "amr_mir500_1" ;
+    sc:hasCharacteristic inst:characteristic_char_amr_mir500_1_battery_level,
+        inst:characteristic_char_amr_mir500_1_current_location,
+        inst:characteristic_char_amr_mir500_1_error_code,
+        inst:characteristic_char_amr_mir500_1_operational_state,
+        inst:characteristic_char_amr_mir500_1_position_x,
+        inst:characteristic_char_amr_mir500_1_position_y ;
+    sc:id "SN-INFRA-AMR_MIR500_1",
+        "urn:unimaas:infraflex:device:amr_mir500_1" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "AMR Unit",
+        "amr_mir500_1" ;
+    rdfs:comment "Infraflex device: AMR/MIR500_1 (AMR)"@en .
+
+inst:device_cell5_powerair a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "cell5_powerair" ;
+    sc:hasCharacteristic inst:characteristic_char_cell5_powerair_air_error_code,
+        inst:characteristic_char_cell5_powerair_gripper_close,
+        inst:characteristic_char_cell5_powerair_operational_state,
+        inst:characteristic_char_cell5_powerair_power_tool_enable,
+        inst:characteristic_char_cell5_powerair_tool_attach ;
+    sc:id "SN-INFRA-CELL5_POWERAIR",
+        "urn:unimaas:infraflex:device:cell5_powerair" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "PowerAir Unit",
+        "cell5_powerair" ;
+    rdfs:comment "Infraflex device: Cell5/PowerAir (PowerAir)"@en .
+
+inst:device_cell6_powerair a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "cell6_powerair" ;
+    sc:hasCharacteristic inst:characteristic_char_cell6_powerair_air_error_code,
+        inst:characteristic_char_cell6_powerair_gripper_close,
+        inst:characteristic_char_cell6_powerair_operational_state,
+        inst:characteristic_char_cell6_powerair_power_tool_enable,
+        inst:characteristic_char_cell6_powerair_tool_attach ;
+    sc:id "SN-INFRA-CELL6_POWERAIR",
+        "urn:unimaas:infraflex:device:cell6_powerair" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "PowerAir Unit",
+        "cell6_powerair" ;
+    rdfs:comment "Infraflex device: Cell6/PowerAir (PowerAir)"@en .
+
+inst:device_warehouse_003 a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "warehouse_003" ;
+    sc:hasCharacteristic inst:characteristic_char_warehouse_003_emergency_stop,
+        inst:characteristic_char_warehouse_003_error_code,
+        inst:characteristic_char_warehouse_003_operational_state ;
+    sc:id "SN-INFRA-WAREHOUSE_003",
+        "urn:unimaas:infraflex:device:warehouse_003" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "Warehouse Unit",
+        "warehouse_003" ;
+    rdfs:comment "Infraflex device: Warehouse003 (Warehouse)"@en .
+
+inst:equipmentresource_crx_20ia a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "crx_20ia" ;
+    sc:acoustic_noise_level "70" ;
+    sc:ambient_humidity "75" ;
+    sc:ambient_humidity_short_term "95" ;
+    sc:arbitraryMLP "Note: Every multilanguage property can be used."@en,
+        "Sample"@en ;
+    sc:at_wrist_20_kg "1418 mm" ;
+    sc:capabilityComment "Drive screws; needs a ScrewDriver end-effector"@en,
+        "Move the TCP along a straight linear path (MoveL); precise Cartesian motion"@en,
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning"@en,
+        "Pick and place objects; needs PowerAir GripperControl"@en ;
+    sc:capabilityLevel "Compound",
+        "Primitive" ;
+    sc:cleanroom_class_iso_class_3 "*6" ;
+    sc:composedOf "MoveJointSpace;MoveLinear" ;
+    sc:countryOfOrigin "DE" ;
+    sc:crx_20ia_l "Max. reach" ;
+    sc:dateOfManufacture "2022-01-01" ;
+    sc:description "Move the TCP along a straight linear path (MoveL); precise Cartesian motion",
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning" ;
+    sc:designationOfCertificateOrApproval "KEMA99IECEX1105/128" ;
+    sc:dimensions "410 x 277 x 370 mm" ;
+    sc:electricalPower_Consumption "0.4 kW" ;
+    sc:electricalSupply_Voltage "200-230 V" ;
+    sc:electrical_connections_160 "200-230" ;
+    sc:environmentalAmbient_Temperature "0-45 degC" ;
+    sc:environmentalIp_Rating "IP67 IP" ;
+    sc:expiryDate "2022-01-01" ;
+    sc:firmwareVersion "1.0.0" ;
+    sc:food_grade_grease "*7" ;
+    sc:food_grade_mechanical_options_food_grade_grease "*7" ;
+    sc:hardwareVersion "1.0.0" ;
+    sc:id "12345678",
+        "urn:unimaas:infraflex:equipmentresource:crx_20ia" ;
+    sc:imageNote "Notes or explanations about the image provided"@en ;
+    sc:integrated_air_supply "Environment" ;
+    sc:integrated_services_710_340 "2/2 *3" ;
+    sc:integrated_signals_on_upper_arm_in_out "2/2 *3" ;
+    sc:issueDate "2022-01-01" ;
+    sc:j5_axis_rotation_center "410 x 277 x 370" ;
+    sc:manufacturer "FANUC",
+        "FANUC"@en ;
+    sc:manufacturerProductFamily "\"Type ABC\""@en ;
+    sc:manufacturerProductRoot "\"flow meter\""@en ;
+    sc:manufacturerProductType "FM-ABC-1234" ;
+    sc:markingAdditionalText "0044" ;
+    sc:markingName "0173-1#07-DAA603#004" ;
+    sc:maxPayload_kg 20.0 ;
+    sc:maxReach_mm 1418.0 ;
+    sc:maximumRatedVoltage 230.0 ;
+    sc:mds_04849_en_v1_12_2023 "*Based on ISO9283" ;
+    sc:minimumRatedVoltage 200.0 ;
+    sc:motion_range "Maximum speed (°/s) *2" ;
+    sc:motion_range_of_end_of_flange "Tablet TP" ;
+    sc:motion_range_of_j5_axis_rotation_center "410 x 277 x 370" ;
+    sc:mounting_position "Floor" ;
+    sc:mounting_position_floor_mounting_position_upside_down_0 "±180 °" ;
+    sc:mounting_position_upside_down_0 "±180 °" ;
+    sc:name "crx_20ia",
+        "CRX-20iA"@en ;
+    sc:numberOfFunctionalSafetySetsOfCharacteristics 1 ;
+    sc:orderCodeOfManufacturer "FMABC1234" ;
+    sc:productArticleNumberOfManufacturer "FM11-ABC22-123456" ;
+    sc:productClassName "Name of product class in the used classification system"@en ;
+    sc:providesCapability "CapabilityGrasping",
+        "CapabilityScrewing" ;
+    sc:r_1250_controller "R-30iB Plus" ;
+    sc:r_1418_r_1250_controller "R-30iB Plus" ;
+    sc:repeatability_mm 0.04 ;
+    sc:requiredExecutorSkill "GripperControl" ;
+    sc:requiredTool "ScrewDriver" ;
+    sc:robot_footprint "190 mm" ;
+    sc:selected_region_other_datasheet_p001_region_009 "Integrated signals on upper arm In/Out 2/2 *3" ;
+    sc:softwareVersion "1.0.0" ;
+    sc:technical_DataController "R-30 i B Plus" ;
+    sc:technical_DataPayload "20 kg" ;
+    sc:technical_DataReach "1418 mm" ;
+    sc:technical_DataWeight "Moment/Inertia" ;
+    sc:textStatement "Statement by the manufacturer in text form, e.g. scope of validity of the statements, scopes of application, conditions of operation."@en ;
+    sc:totalJobsShown 0 ;
+    sc:uRIOfTheProduct "https://example.com/assets/crx_20ia" ;
+    sc:uniqueFacilityIdentifier "987654321" ;
+    sc:vibration_acceleration "4.9" ;
+    sc:working_range "CRX-20iA/L" ;
+    sc:yearOfConstruction "2022" .
+
+inst:equipmentresource_ur10e a sc:EquipmentResource,
+        owl:NamedIndividual ;
+    rdfs:label "ur10e" ;
+    sc:accuracy "119.85" ;
+    sc:achsbewegung_roboterarm_arbeitsradius "2" ;
+    sc:analog_in "2" ;
+    sc:analog_out "2" ;
+    sc:and_en_iso_10218_1 "2 A (Dual pin) 1 A (Single pin)" ;
+    sc:arbitraryMLP "Note: Every multilanguage property can be used."@en,
+        "Sample"@en ;
+    sc:au_sung "0,2 Nm" ;
+    sc:axis_movement "612.7" ;
+    sc:base "6" ;
+    sc:bewegungen_i_o_anschl_sse "16" ;
+    sc:cable_length_robot_arm "6 m (236 in)" ;
+    sc:capabilityComment "Drive screws; needs a ScrewDriver end-effector"@en,
+        "Move the TCP along a straight linear path (MoveL); precise Cartesian motion"@en,
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning"@en,
+        "Pick and place objects; needs PowerAir GripperControl"@en ;
+    sc:capabilityLevel "Compound",
+        "Primitive" ;
+    sc:category "3" ;
+    sc:cleanroom_classification "Class 5 at ≤ 40%*" ;
+    sc:composedOf "MoveJointSpace;MoveLinear" ;
+    sc:connector_type "M8 8-pin female" ;
+    sc:control_box_size_w_x_h_x_d "460 mm x 449 mm x 254 mm" ;
+    sc:countryOfOrigin "DE" ;
+    sc:dateOfManufacture "2022-01-01" ;
+    sc:denmark "universal-robots.com" ;
+    sc:description "Move the TCP along a straight linear path (MoveL); precise Cartesian motion",
+        "Move through a joint-space trajectory (MoveJC); fast, unbounded path planning" ;
+    sc:designationOfCertificateOrApproval "KEMA99IECEX1105/128" ;
+    sc:digital_in "A" ;
+    sc:digital_out "Stahl" ;
+    sc:display_resolution "1280 x 800 pixels" ;
+    sc:eigenschaften "100-240VAC, 47-440Hz" ;
+    sc:eigenschaften_freiheitsgrade "6 rotierende Gelenke" ;
+    sc:elbow "± 180°/s" ;
+    sc:electricalPower_Consumption "350 W" ;
+    sc:electricalSupply_Voltage "100-240 V" ;
+    sc:ellenbogen "24V 2A" ;
+    sc:en_iso_9409_1_50_4_m6_range "Powder coated steel" ;
+    sc:energivej_51 "2" ;
+    sc:environmentalAmbient_Temperature "0-50 degC" ;
+    sc:environmentalIp_Rating "IP54 IP" ;
+    sc:expiryDate "2022-01-01" ;
+    sc:f_t_sensor_kraft_x_y_z "F/T Sensor - Moment, x-y-z" ;
+    sc:fernsteuerung_nach_iso_10218_zerti_kate "EN ISO 13849-1, Cat 3 PLd, und" ;
+    sc:feuchtigkeit "1280 x 800 Pixel" ;
+    sc:firmwareVersion "1.0.0" ;
+    sc:flange_torque_sensor "12 kg (26.5 lbs)" ;
+    sc:force_sensing_tool "Torque, x-y-z" ;
+    sc:freiheitsgrade "6 rotierende Gelenke" ;
+    sc:fu "± 120°/Sek." ;
+    sc:genauigkeit "0,5 Nm" ;
+    sc:geschwindigkeit "Steuerfrequenz: 500 Hz ModbusTCP" ;
+    sc:gewicht "Max 13,6kg kg" ;
+    sc:gewicht_inkl_kabel "33,5kg kg" ;
+    sc:graphical_user_interface "ROS/ROS2" ;
+    sc:grund_che "PP-Kunststoff" ;
+    sc:handgelenk_1 "Abtastfrequenz: 500 Hz" ;
+    sc:handgelenk_2 "± 180°/Sek." ;
+    sc:handgelenk_3 "Signalfrequenz" ;
+    sc:hardwareVersion "1.0.0" ;
+    sc:humidity "45°" ;
+    sc:i_o_anschl_sse "16" ;
+    sc:i_o_ports "Mini DisplayPort" ;
+    sc:i_o_ports_digital_in "A" ;
+    sc:i_o_stromversorgung "Eigenschaften" ;
+    sc:id "12345678",
+        "urn:unimaas:infraflex:equipmentresource:ur10e" ;
+    sc:im_werkzeug_ip_klassi_kation "IP54" ;
+    sc:imageNote "Notes or explanations about the image provided"@en ;
+    sc:in_compliance_with "12/24 V" ;
+    sc:including_1_m_of_teach_pendant_cable "+0.030" ;
+    sc:ip_klassi_kation "IP44" ;
+    sc:iso_9283_8_axis_movement "612.7" ;
+    sc:issueDate "2022-01-01" ;
+    sc:kollaborationsbetrieb "17 erweiterte konﬁgurierbare Sicherheits" ;
+    sc:l_rmbelastung "Weniger als 65dB(A)" ;
+    sc:leistung_stromverbrauch "Ca. 350W, einem üblichen Programm mm" ;
+    sc:ma_e_schaltkasten "475mm x 423mm x 268mm mm" ;
+    sc:manufacturer "Universal Robots",
+        "Universal Robots"@en ;
+    sc:manufacturerProductFamily "\"Type ABC\""@en ;
+    sc:manufacturerProductRoot "\"flow meter\""@en ;
+    sc:manufacturerProductType "FM-ABC-1234" ;
+    sc:markingAdditionalText "0044" ;
+    sc:markingName "0173-1#07-DAA603#004" ;
+    sc:material "1,6kg kg" ;
+    sc:materials "(18.2 in x 17.6 in x 10 in)" ;
+    sc:maxPayload_kg 12.5 ;
+    sc:maxReach_mm 1300.0 ;
+    sc:max_tcp_speed "4 m/s" ;
+    sc:maximumRatedVoltage 240.0 ;
+    sc:maximum_power "615 W" ;
+    sc:me_bereich "10 Nm" ;
+    sc:minimumRatedVoltage 100.0 ;
+    sc:modbustcp_500_hz_signalfrequenz_handgelenk_2 "± 180°/Sek." ;
+    sc:moderate_operating_settings "350 W" ;
+    sc:movement "14" ;
+    sc:name "ur10e",
+        "UR10e"@en ;
+    sc:noise "< 65 dB(A)" ;
+    sc:numberOfFunctionalSafetySetsOfCharacteristics 1 ;
+    sc:operating_temperature_range "Ambient temperature" ;
+    sc:orderCodeOfManufacturer "FMABC1234" ;
+    sc:our_most_versatile_robot_the_ur10e_delivers_an "(11.8 in x 9.1 in x 1.97 in)" ;
+    sc:pL "PL d" ;
+    sc:performance "Ø 190 mm" ;
+    sc:physical "+0.03" ;
+    sc:power_consumption_average "Ethernet 1 Gb/s" ;
+    sc:precision "The control box is also available in an OEM version" ;
+    sc:pro_net_und_ethernetip_500_hz_handgelenk_3 "Signalfrequenz" ;
+    sc:productArticleNumberOfManufacturer "FM11-ABC22-123456" ;
+    sc:productClassName "Name of product class in the used classification system"@en ;
+    sc:programmierung "Graﬁsche Benutzeroberﬂäche auf 12 Zoll" ;
+    sc:programming "PROFINET device/PROFIsafe" ;
+    sc:providesCapability "CapabilityGrasping",
+        "CapabilityScrewing" ;
+    sc:quadrature_digital_inputs "4" ;
+    sc:r1_shoulder "± 120°/s" ;
+    sc:range "Powder coated steel" ;
+    sc:reichweite "1300mm mm" ;
+    sc:repeatability_mm 0.05 ;
+    sc:requiredExecutorSkill "GripperControl" ;
+    sc:requiredTool "ScrewDriver" ;
+    sc:robot_mounting "USB 2.0, USB 3.0" ;
+    sc:roboterhalterung "Jede" ;
+    sc:safetyCategory "3" ;
+    sc:safetyFunctional_Safety "EN ISO 13849-1 (PLd Category 3) Tool I/O power supply voltage 12/24 V" ;
+    sc:safetyPerformance_Level "PL d" ;
+    sc:safety_functions "A" ;
+    sc:schaltkasten_reichweite "1300mm mm" ;
+    sc:schulter "High-Speed Eingänge" ;
+    sc:selected_region_other_datasheet_p001_region_011 """Footprint Ø 190 mm
+Materials Aluminum, plastic, steel
+Tool flange interface M8 8-pin female,
+EN ISO-9409-1-50-4-M6
+Connector type M8 8-pin female
+Cable length (robot arm) 6 m (236 in)
+Weight including cable 33,5 kg (73.9 lbs)
+Humidity ≤ 90% RH (non-condensing)""" ;
+    sc:selected_region_other_datasheet_p001_region_012 """Control Box
+Features
+IP Classification IP44
+Operating temperature range Ambient temperature:
+0-50°C (32-122°F)
+Humidity ≤ 90% RH (non-condensing)
+I/O Ports
+Digital In 16
+Digital Out 16
+Analog In 2
+Analog Out 2
+Quadrature Digital Inputs 4
+I/O Power Supply 24V, 2A
+Industrial Protocols Modbus-TCP (Client/Sever)
+Ethernet/IP Adapter
+PROFINET device/PROFIsafe
+ROS/ROS2
+Hardware Interfaces Ethernet 1 Gb/s
+USB 2.0, USB 3.0
+Mini DisplayPort
+Injection Moulding Machine Interface
+(SPI AN-146 & Euromap-67)
+Power Source 100-240 VAC, 47-440 Hz
+Physical
+Control Box Size (W x H x D) 460 mm x 449 mm x 254 mm
+(18.2 in x 17.6 in x 10 in)
+Weight 12 kg (26.5 lbs)
+Materials Powder coated steel""" ;
+    sc:selected_region_other_datasheet_p001_region_013 """Teach Pendant
+Features
+IP classification IP54
+Humidity ≤ 90% RH (non-condensing)
+Display resolution 1280 x 800 pixels
+Physical
+Materials Plastic
+Teach Pendant size (W x H x D) 300 mm x 231 mm x 50 mm
+(11.8 in x 9.1 in x 1.97 in)
+Weight 1,8 kg (3.961 lbs)
+including 1 m of teach pendant cable
+Cable length 4,5 m (177.17 in)""" ;
+    sc:shoulder "± 120°/s" ;
+    sc:softwareVersion "1.0.0" ;
+    sc:specification "2" ;
+    sc:spezi_kation_traglast "10kg kg" ;
+    sc:stromverbrauch "Ca. 350W, einem üblichen Programm mm" ;
+    sc:teach_pendant "Interface for UR10e base flange" ;
+    sc:technical_DataNumber_Of_Axes "2 count" ;
+    sc:technical_DataPayload "12.5 kg" ;
+    sc:technical_DataReach "1300 mm" ;
+    sc:technical_DataRepeatability "10" ;
+    sc:technical_DataWeight "1.8 kg" ;
+    sc:technical_specification "Materials" ;
+    sc:technische_daten "Technische Daten" ;
+    sc:technische_daten_l_rmbelastung "Weniger als 65dB(A)" ;
+    sc:temperaturbereich "90%RH (nicht kondensierend)" ;
+    sc:textStatement "Statement by the manufacturer in text form, e.g. scope of validity of the statements, scopes of application, conditions of operation."@en ;
+    sc:to_your_application "Control Box" ;
+    sc:totalJobsShown 0 ;
+    sc:touchscreen_von_polyscope_mit_aufh_ngung "6" ;
+    sc:traglast "10kg kg" ;
+    sc:typische_tcp "USB ports: 1 USB 2.0, 1 USB 3.0" ;
+    sc:uRIOfTheProduct "https://example.com/assets/ur10e" ;
+    sc:uart_schnittstelle_9_6k_5mbps "Teach panel" ;
+    sc:umgebungs "0-50°C* degC" ;
+    sc:umgebungstemperaturbereich "0–50°C degC" ;
+    sc:uniqueFacilityIdentifier "987654321" ;
+    sc:universal_robots_a_s_wrist_1 "± 180°/s" ;
+    sc:universal_robots_com_ur10e "Technische Daten" ;
+    sc:updated_december_2024 "Features" ;
+    sc:ur10e "Digital Out" ;
+    sc:ur10e_4x "8.4" ;
+    sc:weight_including_cable "33,5 kg (73.9 lbs)" ;
+    sc:werkzeugverbindung_typ "6m" ;
+    sc:wiederholgenauigkeit "16" ;
+    sc:wrist_1 "± 180°/s" ;
+    sc:wrist_2 "± 180°/s" ;
+    sc:wrist_3 "800" ;
+    sc:yearOfConstruction "2022" ;
+    sc:zerti_kate "EN ISO 13849-1, Cat 3 PLd, und" .
+
+inst:processconfiguration_flashlight_cell5 a sc:ProcessConfiguration,
+        owl:NamedIndividual ;
+    rdfs:label "flashlight_cell5" ;
+    sc:hasInput inst:product_flashlight_housing,
+        inst:product_flashlight_pcb ;
+    sc:hasStep inst:processconfiguration_flashlight_cell5_Step_01_FlashlightPlacePCB,
+        inst:processconfiguration_flashlight_cell5_Step_02_FlashlightPlaceCoverClick,
+        inst:processconfiguration_flashlight_cell5_Step_03_FlashlightPlaceLensClick,
+        inst:processconfiguration_flashlight_cell5_Step_04_FlashlightMoveFlashlightBackClick ;
+    sc:id "CONF_FLASHLIGHT_CELL5",
+        "urn:unimaas:infraflex:processconfiguration:flashlight_cell5" ;
+    sc:isPerformedAt inst:site_cell5 ;
+    sc:name "Flashlight@cell5",
+        "flashlight_cell5" ;
+    sc:processInstancesNote "Execution instances recorded in TaskLog on urn:unimaas:infraflex:site:cell5. Job details in ExecutionLog on the arm shell assigned to cell5." ;
+    sc:requiresProcess inst:process_flashlight ;
+    sc:usesResource inst:device_cell5_powerair,
+        inst:equipmentresource_crx_20ia,
+        inst:equipmentresource_fingered_gripper .
+
+inst:processconfiguration_flashlight_cell5_Step_01_FlashlightPlacePCB a sc:ProcessConfiguration ;
+    rdfs:label "Step_01_FlashlightPlacePCB" ;
+    sc:isPerformedAt inst:site_cell5 ;
+    sc:requiresProcess inst:process_flashlight ;
+    sc:satisfiedBy "CapabilityGrasping" ;
+    sc:stepName "FlashlightPlacePCB" .
+
+inst:processconfiguration_flashlight_cell5_Step_02_FlashlightPlaceCoverClick a sc:ProcessConfiguration ;
+    rdfs:label "Step_02_FlashlightPlaceCoverClick" ;
+    sc:isPerformedAt inst:site_cell5 ;
+    sc:requiresProcess inst:process_flashlight ;
+    sc:satisfiedBy "CapabilityGrasping" ;
+    sc:stepName "FlashlightPlaceCoverClick" .
+
+inst:processconfiguration_flashlight_cell5_Step_03_FlashlightPlaceLensClick a sc:ProcessConfiguration ;
+    rdfs:label "Step_03_FlashlightPlaceLensClick" ;
+    sc:isPerformedAt inst:site_cell5 ;
+    sc:requiresProcess inst:process_flashlight ;
+    sc:satisfiedBy "CapabilityGrasping" ;
+    sc:stepName "FlashlightPlaceLensClick" .
+
+inst:processconfiguration_flashlight_cell5_Step_04_FlashlightMoveFlashlightBackClick a sc:ProcessConfiguration ;
+    rdfs:label "Step_04_FlashlightMoveFlashlightBackClick" ;
+    sc:isPerformedAt inst:site_cell5 ;
+    sc:requiresProcess inst:process_flashlight ;
+    sc:satisfiedBy "CapabilityGrasping" ;
+    sc:stepName "FlashlightMoveFlashlightBackClick" .
+
+inst:processconfiguration_flashlight_cell6 a sc:ProcessConfiguration,
+        owl:NamedIndividual ;
+    rdfs:label "flashlight_cell6" ;
+    sc:hasInput inst:product_flashlight_cover,
+        inst:product_flashlight_lens,
+        inst:product_flashlight_screw ;
+    sc:hasOutput inst:product_flashlight ;
+    sc:hasStep inst:processconfiguration_flashlight_cell6_Step_01_FlashlightPlacePCB,
+        inst:processconfiguration_flashlight_cell6_Step_02_FlashlightPlaceCoverClick,
+        inst:processconfiguration_flashlight_cell6_Step_03_FlashlightPlaceLensClick,
+        inst:processconfiguration_flashlight_cell6_Step_04_FlashlightMoveFlashlightBackClick ;
+    sc:id "CONF_FLASHLIGHT_CELL6",
+        "urn:unimaas:infraflex:processconfiguration:flashlight_cell6" ;
+    sc:isPerformedAt inst:site_cell6 ;
+    sc:name "Flashlight@cell6",
+        "flashlight_cell6" ;
+    sc:processInstancesNote "Execution instances recorded in TaskLog on urn:unimaas:infraflex:site:cell6. Job details in ExecutionLog on the arm shell assigned to cell6." ;
+    sc:requiresProcess inst:process_flashlight ;
+    sc:usesResource inst:device_cell6_powerair,
+        inst:equipmentresource_screwdriver,
+        inst:equipmentresource_suction_gripper,
+        inst:equipmentresource_ur10e .
+
+inst:processconfiguration_flashlight_cell6_Step_01_FlashlightPlacePCB a sc:ProcessConfiguration ;
+    rdfs:label "Step_01_FlashlightPlacePCB" ;
+    sc:isPerformedAt inst:site_cell6 ;
+    sc:requiresProcess inst:process_flashlight ;
+    sc:satisfiedBy "CapabilityGrasping" ;
+    sc:stepName "FlashlightPlacePCB" .
+
+inst:processconfiguration_flashlight_cell6_Step_02_FlashlightPlaceCoverClick a sc:ProcessConfiguration ;
+    rdfs:label "Step_02_FlashlightPlaceCoverClick" ;
+    sc:isPerformedAt inst:site_cell6 ;
+    sc:requiresProcess inst:process_flashlight ;
+    sc:satisfiedBy "CapabilityGrasping" ;
+    sc:stepName "FlashlightPlaceCoverClick" .
+
+inst:processconfiguration_flashlight_cell6_Step_03_FlashlightPlaceLensClick a sc:ProcessConfiguration ;
+    rdfs:label "Step_03_FlashlightPlaceLensClick" ;
+    sc:isPerformedAt inst:site_cell6 ;
+    sc:requiresProcess inst:process_flashlight ;
+    sc:satisfiedBy "CapabilityGrasping" ;
+    sc:stepName "FlashlightPlaceLensClick" .
+
+inst:processconfiguration_flashlight_cell6_Step_04_FlashlightMoveFlashlightBackClick a sc:ProcessConfiguration ;
+    rdfs:label "Step_04_FlashlightMoveFlashlightBackClick" ;
+    sc:isPerformedAt inst:site_cell6 ;
+    sc:requiresProcess inst:process_flashlight ;
+    sc:satisfiedBy "CapabilityGrasping" ;
+    sc:stepName "FlashlightMoveFlashlightBackClick" .
+
+inst:product_flashlight a sc:Product,
+        owl:NamedIndividual ;
+    rdfs:label "flashlight" ;
+    sc:hasComponent inst:product_flashlight_cover,
+        inst:product_flashlight_housing,
+        inst:product_flashlight_lens,
+        inst:product_flashlight_pcb,
+        inst:product_flashlight_screw,
+        1,
+        4 ;
+    sc:id "PROD_FLASHLIGHT_001",
+        "urn:unimaas:infraflex:product:flashlight" ;
+    sc:name "UniMaaS LED Flashlight",
+        "flashlight" ;
+    sc:productAspectDesignation "-FlashlightAssembly" ;
+    sc:requiresProcess inst:process_flashlight ;
+    rdfs:comment "Infraflex product: UniMaaS LED Flashlight"@en .
+
+inst:product_flashlight_cover a sc:Product,
+        owl:NamedIndividual ;
+    rdfs:label "flashlight_cover" ;
+    sc:id "PROD_PART_COVER",
+        "urn:unimaas:infraflex:product:flashlight_cover" ;
+    sc:name "Flashlight Bottom Cover",
+        "flashlight_cover" ;
+    sc:productAspectDesignation "-Cover" ;
+    rdfs:comment "Infraflex product: Flashlight Bottom Cover"@en .
+
+inst:product_flashlight_housing a sc:Product,
+        owl:NamedIndividual ;
+    rdfs:label "flashlight_housing" ;
+    sc:id "PROD_PART_HOUSING",
+        "urn:unimaas:infraflex:product:flashlight_housing" ;
+    sc:name "Flashlight Housing",
+        "flashlight_housing" ;
+    sc:productAspectDesignation "-Housing" ;
+    rdfs:comment "Infraflex product: Flashlight Housing"@en .
+
+inst:product_flashlight_lens a sc:Product,
+        owl:NamedIndividual ;
+    rdfs:label "flashlight_lens" ;
+    sc:id "PROD_PART_LENS",
+        "urn:unimaas:infraflex:product:flashlight_lens" ;
+    sc:name "Flashlight Optical Lens",
+        "flashlight_lens" ;
+    sc:productAspectDesignation "-Lens" ;
+    rdfs:comment "Infraflex product: Flashlight Optical Lens"@en .
+
+inst:product_flashlight_pcb a sc:Product,
+        owl:NamedIndividual ;
+    rdfs:label "flashlight_pcb" ;
+    sc:id "PROD_PART_PCB",
+        "urn:unimaas:infraflex:product:flashlight_pcb" ;
+    sc:name "Flashlight LED PCB",
+        "flashlight_pcb" ;
+    sc:productAspectDesignation "-PCB" ;
+    rdfs:comment "Infraflex product: Flashlight LED PCB"@en .
+
+inst:product_flashlight_screw a sc:Product,
+        owl:NamedIndividual ;
+    rdfs:label "flashlight_screw" ;
+    sc:id "PROD_PART_SCREW",
+        "urn:unimaas:infraflex:product:flashlight_screw" ;
+    sc:name "Flashlight M3 Screw",
+        "flashlight_screw" ;
+    sc:productAspectDesignation "-Screw" ;
+    rdfs:comment "Infraflex product: Flashlight M3 Screw"@en .
+
+inst:sensor_debonder_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "debonder_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/Debonder" ;
+    sc:id "SENS_DEBONDER",
+        "urn:unimaas:infraflex:sensor:debonder_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "Debonder Sensor",
+        "debonder_sensor" ;
+    sc:observes inst:characteristic_char_debonder_error_code,
+        inst:characteristic_char_debonder_operational_state ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "Debonder Telemetry" ;
+    rdfs:comment "Infraflex sensor: Debonder Sensor monitoring Infraflex/Executors/Debonder"@en .
+
+sc:Location a owl:Class ;
+    rdfs:label "Location" ;
+    rdfs:comment "MSC Location is aligned with BFO Site/physical location. When modelled as an identifier such as an address or GPS coordinate, it is related to IOF Physical Location Identifier." ;
+    skos:closeMatch bfo:BFO_0000029 ;
+    skos:relatedMatch iof-constr:PhysicalLocationIdentifier .
+
+sc:Supplier a owl:Class ;
+    rdfs:label "Supplier" ;
+    rdfs:comment "Supplier of resources" ;
+    rdfs:subClassOf sc:ConfigurableEntity .
+
+sc:hasOutput a owl:ObjectProperty ;
+    rdfs:label "has output" ;
+    rdfs:domain sc:ProcessConfiguration ;
+    rdfs:range sc:Product .
+
+inst:device_amr_mir200_1 a sc:Device,
+        owl:NamedIndividual ;
+    rdfs:label "amr_mir200_1" ;
+    sc:hasCharacteristic inst:characteristic_char_amr_mir200_1_battery_level,
+        inst:characteristic_char_amr_mir200_1_current_location,
+        inst:characteristic_char_amr_mir200_1_error_code,
+        inst:characteristic_char_amr_mir200_1_operational_state,
+        inst:characteristic_char_amr_mir200_1_position_x,
+        inst:characteristic_char_amr_mir200_1_position_y ;
+    sc:id "SN-INFRA-AMR_MIR200_1",
+        "urn:unimaas:infraflex:device:amr_mir200_1" ;
+    sc:manufacturer "Infraflex" ;
+    sc:name "AMR Unit",
+        "amr_mir200_1" ;
+    rdfs:comment "Infraflex device: AMR/MIR200_1 (AMR)"@en .
+
+inst:sensor_warehouse_003_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "warehouse_003_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/Warehouse003" ;
+    sc:id "SENS_WAREHOUSE_003",
+        "urn:unimaas:infraflex:sensor:warehouse_003_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "Warehouse_003 Sensor",
+        "warehouse_003_sensor" ;
+    sc:observes inst:characteristic_char_warehouse_003_emergency_stop,
+        inst:characteristic_char_warehouse_003_error_code,
+        inst:characteristic_char_warehouse_003_operational_state ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "Warehouse Telemetry" ;
+    rdfs:comment "Infraflex sensor: Warehouse_003 Sensor monitoring Infraflex/Executors/Warehouse003"@en .
+
+inst:sensor_cell4_turntable_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "cell4_turntable_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/Cell4/Turntable" ;
+    sc:id "SENS_CELL4_TURNTABLE",
+        "urn:unimaas:infraflex:sensor:cell4_turntable_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "Cell4_Turntable Sensor",
+        "cell4_turntable_sensor" ;
+    sc:observes inst:characteristic_char_cell4_turntable_error_code,
+        inst:characteristic_char_cell4_turntable_operational_state,
+        inst:characteristic_char_cell4_turntable_slot_empty,
+        inst:characteristic_char_cell4_turntable_slot_positions ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "Turntable Telemetry" ;
+    rdfs:comment "Infraflex sensor: Cell4_Turntable Sensor monitoring Infraflex/Executors/Cell4/Turntable"@en .
+
+inst:sensor_cell5_lift_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "cell5_lift_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/Cell5/Lift" ;
+    sc:id "SENS_CELL5_LIFT",
+        "urn:unimaas:infraflex:sensor:cell5_lift_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "Cell5_Lift Sensor",
+        "cell5_lift_sensor" ;
+    sc:observes inst:characteristic_char_cell5_lift_emergency_stop,
+        inst:characteristic_char_cell5_lift_error_code,
+        inst:characteristic_char_cell5_lift_operational_state,
+        inst:characteristic_char_cell5_lift_position ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "Lift Telemetry" ;
+    rdfs:comment "Infraflex sensor: Cell5_Lift Sensor monitoring Infraflex/Executors/Cell5/Lift"@en .
+
+inst:sensor_cell6_lift_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "cell6_lift_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/Cell6/Lift" ;
+    sc:id "SENS_CELL6_LIFT",
+        "urn:unimaas:infraflex:sensor:cell6_lift_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "Cell6_Lift Sensor",
+        "cell6_lift_sensor" ;
+    sc:observes inst:characteristic_char_cell6_lift_emergency_stop,
+        inst:characteristic_char_cell6_lift_error_code,
+        inst:characteristic_char_cell6_lift_operational_state,
+        inst:characteristic_char_cell6_lift_position ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "Lift Telemetry" ;
+    rdfs:comment "Infraflex sensor: Cell6_Lift Sensor monitoring Infraflex/Executors/Cell6/Lift"@en .
+
+inst:sensor_cell6_turntable_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "cell6_turntable_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/Cell6/Turntable" ;
+    sc:id "SENS_CELL6_TURNTABLE",
+        "urn:unimaas:infraflex:sensor:cell6_turntable_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "Cell6_Turntable Sensor",
+        "cell6_turntable_sensor" ;
+    sc:observes inst:characteristic_char_cell6_turntable_error_code,
+        inst:characteristic_char_cell6_turntable_operational_state,
+        inst:characteristic_char_cell6_turntable_slot_empty,
+        inst:characteristic_char_cell6_turntable_slot_positions ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "Turntable Telemetry" ;
+    rdfs:comment "Infraflex sensor: Cell6_Turntable Sensor monitoring Infraflex/Executors/Cell6/Turntable"@en .
+
+sc:Process a owl:Class ;
+    rdfs:label "Process" ;
+    rdfs:comment "MSC Process is aligned with IOF Manufacturing Process for physical manufacturing and assembly operations, and related to IOF Computing Process for virtual or digital processes." ;
+    rdfs:subClassOf sc:ConfigurableEntity ;
+    skos:closeMatch iof-constr:ManufacturingProcess ;
+    skos:relatedMatch iof-constr:AssemblyProcess,
+        iof-constr:ComputingProcess .
+
+inst:sensor_cell1_powerair_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "cell1_powerair_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/Cell1/PowerAir" ;
+    sc:id "SENS_CELL1_POWERAIR",
+        "urn:unimaas:infraflex:sensor:cell1_powerair_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "Cell1_PowerAir Sensor",
+        "cell1_powerair_sensor" ;
+    sc:observes inst:characteristic_char_cell1_powerair_air_error_code,
+        inst:characteristic_char_cell1_powerair_gripper_close,
+        inst:characteristic_char_cell1_powerair_operational_state,
+        inst:characteristic_char_cell1_powerair_power_tool_enable,
+        inst:characteristic_char_cell1_powerair_tool_attach ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "PowerAir Telemetry" ;
+    rdfs:comment "Infraflex sensor: Cell1_PowerAir Sensor monitoring Infraflex/Executors/Cell1/PowerAir"@en .
+
+inst:sensor_cell2_powerair_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "cell2_powerair_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/Cell2/PowerAir" ;
+    sc:id "SENS_CELL2_POWERAIR",
+        "urn:unimaas:infraflex:sensor:cell2_powerair_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "Cell2_PowerAir Sensor",
+        "cell2_powerair_sensor" ;
+    sc:observes inst:characteristic_char_cell2_powerair_air_error_code,
+        inst:characteristic_char_cell2_powerair_gripper_close,
+        inst:characteristic_char_cell2_powerair_operational_state,
+        inst:characteristic_char_cell2_powerair_power_tool_enable,
+        inst:characteristic_char_cell2_powerair_tool_attach ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "PowerAir Telemetry" ;
+    rdfs:comment "Infraflex sensor: Cell2_PowerAir Sensor monitoring Infraflex/Executors/Cell2/PowerAir"@en .
+
+inst:sensor_cell4_powerair_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "cell4_powerair_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/Cell4/PowerAir" ;
+    sc:id "SENS_CELL4_POWERAIR",
+        "urn:unimaas:infraflex:sensor:cell4_powerair_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "Cell4_PowerAir Sensor",
+        "cell4_powerair_sensor" ;
+    sc:observes inst:characteristic_char_cell4_powerair_air_error_code,
+        inst:characteristic_char_cell4_powerair_gripper_close,
+        inst:characteristic_char_cell4_powerair_operational_state,
+        inst:characteristic_char_cell4_powerair_power_tool_enable,
+        inst:characteristic_char_cell4_powerair_tool_attach ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "PowerAir Telemetry" ;
+    rdfs:comment "Infraflex sensor: Cell4_PowerAir Sensor monitoring Infraflex/Executors/Cell4/PowerAir"@en .
+
+inst:sensor_cell5_powerair_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "cell5_powerair_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/Cell5/PowerAir" ;
+    sc:id "SENS_CELL5_POWERAIR",
+        "urn:unimaas:infraflex:sensor:cell5_powerair_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "Cell5_PowerAir Sensor",
+        "cell5_powerair_sensor" ;
+    sc:observes inst:characteristic_char_cell5_powerair_air_error_code,
+        inst:characteristic_char_cell5_powerair_gripper_close,
+        inst:characteristic_char_cell5_powerair_operational_state,
+        inst:characteristic_char_cell5_powerair_power_tool_enable,
+        inst:characteristic_char_cell5_powerair_tool_attach ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "PowerAir Telemetry" ;
+    rdfs:comment "Infraflex sensor: Cell5_PowerAir Sensor monitoring Infraflex/Executors/Cell5/PowerAir"@en .
+
+inst:sensor_cell6_powerair_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "cell6_powerair_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/Cell6/PowerAir" ;
+    sc:id "SENS_CELL6_POWERAIR",
+        "urn:unimaas:infraflex:sensor:cell6_powerair_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "Cell6_PowerAir Sensor",
+        "cell6_powerair_sensor" ;
+    sc:observes inst:characteristic_char_cell6_powerair_air_error_code,
+        inst:characteristic_char_cell6_powerair_gripper_close,
+        inst:characteristic_char_cell6_powerair_operational_state,
+        inst:characteristic_char_cell6_powerair_power_tool_enable,
+        inst:characteristic_char_cell6_powerair_tool_attach ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "PowerAir Telemetry" ;
+    rdfs:comment "Infraflex sensor: Cell6_PowerAir Sensor monitoring Infraflex/Executors/Cell6/PowerAir"@en .
+
+inst:sensor_amr_mir200_1_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "amr_mir200_1_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/AMR/MIR200_1" ;
+    sc:id "SENS_AMR_MIR200_1",
+        "urn:unimaas:infraflex:sensor:amr_mir200_1_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "AMR_MIR200_1 Sensor",
+        "amr_mir200_1_sensor" ;
+    sc:observes inst:characteristic_char_amr_mir200_1_battery_level,
+        inst:characteristic_char_amr_mir200_1_current_location,
+        inst:characteristic_char_amr_mir200_1_error_code,
+        inst:characteristic_char_amr_mir200_1_operational_state,
+        inst:characteristic_char_amr_mir200_1_position_x,
+        inst:characteristic_char_amr_mir200_1_position_y ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "AMR Telemetry" ;
+    rdfs:comment "Infraflex sensor: AMR_MIR200_1 Sensor monitoring Infraflex/Executors/AMR/MIR200_1"@en .
+
+inst:sensor_amr_mir500_1_sensor a sc:Sensor,
+        owl:NamedIndividual ;
+    rdfs:label "amr_mir500_1_sensor" ;
+    sc:endpointAddress "Infraflex/Executors/AMR/MIR500_1" ;
+    sc:id "SENS_AMR_MIR500_1",
+        "urn:unimaas:infraflex:sensor:amr_mir500_1_sensor" ;
+    sc:interfaceType "MQTT" ;
+    sc:manufacturer "Infraflex Telemetry Unit" ;
+    sc:name "AMR_MIR500_1 Sensor",
+        "amr_mir500_1_sensor" ;
+    sc:observes inst:characteristic_char_amr_mir500_1_battery_level,
+        inst:characteristic_char_amr_mir500_1_current_location,
+        inst:characteristic_char_amr_mir500_1_error_code,
+        inst:characteristic_char_amr_mir500_1_operational_state,
+        inst:characteristic_char_amr_mir500_1_position_x,
+        inst:characteristic_char_amr_mir500_1_position_y ;
+    sc:samplingRate 1.0 ;
+    sc:sensorType "AMR Telemetry" ;
+    rdfs:comment "Infraflex sensor: AMR_MIR500_1 Sensor monitoring Infraflex/Executors/AMR/MIR500_1"@en .
+
+sc:ConfigurableEntity a owl:Class ;
+    rdfs:label "Configurable Entity" ;
+    rdfs:comment "Base class for entities that have characteristics" .
+
+inst:site_cell5 a sc:Site,
+        owl:NamedIndividual ;
+    rdfs:label "cell5" ;
+    sc:deviceType "Lift",
+        "PowerAir" ;
+    sc:hasCharacteristic inst:characteristic_char_cell5_available_capacity ;
+    sc:hasDevice inst:device_cell5_lift,
+        inst:device_cell5_powerair,
+        inst:equipmentresource_crx_20ia ;
+    sc:id "CELL5",
+        "urn:unimaas:infraflex:site:cell5" ;
+    sc:location "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F" ;
+    sc:locationAddress "UniMaaS Smart Factory, Cell5" ;
+    sc:locationAspectDesignation "+Cell5" ;
+    sc:mqttPath "Infraflex/Executors/Cell5/Lift",
+        "Infraflex/Executors/Cell5/PowerAir" ;
+    sc:name "Cell5",
+        "cell5" ;
+    sc:performs inst:processconfiguration_flashlight_cell5,
+        inst:processconfiguration_flashlight_cell5_Step_01_FlashlightPlacePCB,
+        inst:processconfiguration_flashlight_cell5_Step_02_FlashlightPlaceCoverClick,
+        inst:processconfiguration_flashlight_cell5_Step_03_FlashlightPlaceLensClick,
+        inst:processconfiguration_flashlight_cell5_Step_04_FlashlightMoveFlashlightBackClick ;
+    rdfs:comment "Infraflex production site Cell5"@en .
+
+inst:site_cell6 a sc:Site,
+        owl:NamedIndividual ;
+    rdfs:label "cell6" ;
+    sc:deviceType "Lift",
+        "PowerAir",
+        "Turntable" ;
+    sc:hasCharacteristic inst:characteristic_char_cell6_available_capacity ;
+    sc:hasDevice inst:device_cell6_lift,
+        inst:device_cell6_powerair,
+        inst:device_cell6_turntable,
+        inst:equipmentresource_dossan_h2017 ;
+    sc:id "CELL6",
+        "urn:unimaas:infraflex:site:cell6" ;
+    sc:location "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F" ;
+    sc:locationAddress "UniMaaS Smart Factory, Cell6" ;
+    sc:locationAspectDesignation "+Cell6" ;
+    sc:mqttPath "Infraflex/Executors/Cell6/Lift",
+        "Infraflex/Executors/Cell6/PowerAir",
+        "Infraflex/Executors/Cell6/Turntable" ;
+    sc:name "Cell6",
+        "cell6" ;
+    sc:performs inst:processconfiguration_flashlight_cell6,
+        inst:processconfiguration_flashlight_cell6_Step_01_FlashlightPlacePCB,
+        inst:processconfiguration_flashlight_cell6_Step_02_FlashlightPlaceCoverClick,
+        inst:processconfiguration_flashlight_cell6_Step_03_FlashlightPlaceLensClick,
+        inst:processconfiguration_flashlight_cell6_Step_04_FlashlightMoveFlashlightBackClick ;
+    rdfs:comment "Infraflex production site Cell6"@en .
+
+sc:LogisticRoute a owl:Class ;
+    rdfs:label "Logistic Route" ;
+    rdfs:comment "Transportation route between locations. MSC Logistic Route is aligned with IOF Material Location Change Process when interpreted as transportation activity, and with IOF Plan Specification when interpreted as a route specification." ;
+    skos:relatedMatch iof-constr:MaterialLocationChangeProcess,
+        iof-constr:PlanSpecification .
+
+sc:Resource a owl:Class ;
+    rdfs:label "Resource" ;
+    rdfs:comment "MSC Resource is aligned with IOF Material Resource at a lightweight mapping level. MSC Resource is broader because it may include material resources, workforce, software, and other assets required to perform processes." ;
+    rdfs:subClassOf sc:ConfigurableEntity ;
+    skos:closeMatch iof-constr:MaterialResource ;
+    skos:relatedMatch iof-constr:MaterialResourceRole .
+
+inst:process_flashlight a sc:Process,
+        owl:NamedIndividual ;
+    rdfs:label "flashlight" ;
+    sc:hasOutput inst:product_flashlight ;
+    sc:hasStep inst:process_flashlight_Step_01_FlashlightPlacePCB,
+        inst:process_flashlight_Step_02_FlashlightPlaceCoverClick,
+        inst:process_flashlight_Step_03_FlashlightPlaceLensClick,
+        inst:process_flashlight_Step_04_FlashlightMoveFlashlightBackClick ;
+    sc:id "PROC_FLASHLIGHT",
+        "urn:unimaas:infraflex:process:flashlight" ;
+    sc:isPerformedAt inst:processconfiguration_flashlight_cell5,
+        inst:processconfiguration_flashlight_cell6 ;
+    sc:name "Flashlight",
+        "flashlight" ;
+    sc:processType "Assembly" .
+
+sc:Site a owl:Class ;
+    rdfs:label "Manufacturing Site" ;
+    rdfs:comment "Physical location where processes are performed. MSC Site is aligned with BFO Site, used in IOF as physical location." ;
+    rdfs:subClassOf bfo:BFO_0000029,
+        sc:ConfigurableEntity ;
+    skos:closeMatch bfo:BFO_0000029 .
+
+sc:Product a owl:Class ;
+    rdfs:label "Product" ;
+    rdfs:comment "MSC Product is aligned with IOF Material Product. In MSC, a product may be an input to or output of manufacturing service-chain steps." ;
+    rdfs:subClassOf sc:ConfigurableEntity ;
+    skos:closeMatch iof-constr:MaterialProduct .
+
+sc:Device a owl:Class ;
+    rdfs:label "Device" ;
+    rdfs:comment "Equipment or machinery at a site. MSC Device is aligned with IOF Piece of Equipment and related to Engineered System and Material Artifact." ;
+    rdfs:subClassOf sc:ConfigurableEntity ;
+    skos:closeMatch iof-constr:PieceOfEquipment ;
+    skos:relatedMatch iof-constr:EngineeredSystem,
+        iof-constr:MaterialArtifact .
+
+sc:EquipmentResource a owl:Class ;
+    rdfs:label "Equipment Resource" ;
+    rdfs:comment "Equipment or machinery resource used in a manufacturing service chain." ;
+    rdfs:subClassOf sc:Resource ;
+    skos:closeMatch iof-constr:PieceOfEquipment ;
+    skos:relatedMatch iof-constr:EngineeredSystem,
+        iof-constr:MaterialArtifact .
+
+sc:Sensor a owl:Class ;
+    rdfs:label "Sensor" ;
+    rdfs:comment "Measurement device. MSC Sensor is aligned with IOF equipment and measurement capability patterns. A sensor is treated as equipment capable of participating in measurement processes." ;
+    skos:closeMatch iof-constr:PieceOfEquipment ;
+    skos:relatedMatch iof-constr:MeasurementCapability,
+        iof-constr:MeasurementProcess .
+
+sc:ProcessConfiguration a owl:Class ;
+    rdfs:label "Process Configuration" ;
+    rdfs:comment "MSC Process Configuration is aligned with IOF Plan Specification because it specifies a configured manufacturing service-chain step, binding the specific input and output parameters" ;
+    rdfs:subClassOf iof-constr:PlanSpecification ;
+    skos:closeMatch iof-constr:PlanSpecification .
+
+sc:Characteristic a owl:Class ;
+    rdfs:label "Characteristic" ;
+    rdfs:comment "MSC Characteristic is a lightweight abstraction for attributes of products, resources, devices, sites, or suppliers. It may correspond to an IOF Capability, IOF Process Characteristic, BFO Quality, or other specifically dependent continuant depending on context." ;
+    skos:relatedMatch bfo:BFO_0000019,
+        bfo:BFO_0000020,
+        iof-constr:Capability,
+        iof-constr:ProcessCharacteristic .
+

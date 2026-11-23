@@ -1,0 +1,461 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:process:kuka_press",
+      "idShort": "kuka_press",
+      "assetInformation": {
+        "assetKind": "Type",
+        "globalAssetId": "urn:asset:infraflex:process:kuka_press"
+      },
+      "submodels": [
+        {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:process:kuka_press:sm:processdefinition"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Process"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:process:kuka_press:sm:processdefinition",
+      "idShort": "processdefinition",
+      "kind": "Template",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://w3id.org/fm/infraflex#ProcessStep"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ProcessName",
+          "valueType": "xs:string",
+          "value": "KukaPress"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProcessIdentifier",
+          "valueType": "xs:string",
+          "value": "PROC_KUKAPRESS"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProcessType",
+          "valueType": "xs:string",
+          "value": "Assembly",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#Assembly"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Steps",
+          "value": [
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_01_PressBrakePistonAssembly",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepOrder",
+                  "valueType": "xs:int",
+                  "value": "1"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "PressBrakePistonAssembly"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "JobSkill",
+                  "valueType": "xs:string",
+                  "value": "KukaGrabDropTool",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#KukaGrabDropTool"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "RequiredCapability",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#ProcessStep"
+                  }
+                ]
+              }
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_02_PressBrakeCoverAssembly",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepOrder",
+                  "valueType": "xs:int",
+                  "value": "2"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "PressBrakeCoverAssembly"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "JobSkill",
+                  "valueType": "xs:string",
+                  "value": "KukaPickAndPlace",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#KukaPickAndPlace"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "RequiredCapability",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#ProcessStep"
+                  }
+                ]
+              }
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_03_KukaGrabToolFromSkid",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepOrder",
+                  "valueType": "xs:int",
+                  "value": "3"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "KukaGrabToolFromSkid"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "JobSkill",
+                  "valueType": "xs:string",
+                  "value": "KukaGrabDropTool",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#KukaGrabDropTool"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "RequiredCapability",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#ProcessStep"
+                  }
+                ]
+              }
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_04_PressBrakePistonDisassembly",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepOrder",
+                  "valueType": "xs:int",
+                  "value": "4"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "PressBrakePistonDisassembly"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "JobSkill",
+                  "valueType": "xs:string",
+                  "value": "KukaGrabDropTool",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#KukaGrabDropTool"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "RequiredCapability",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#ProcessStep"
+                  }
+                ]
+              }
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_05_KukaDropToolToSkid",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepOrder",
+                  "valueType": "xs:int",
+                  "value": "5"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "KukaDropToolToSkid"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "JobSkill",
+                  "valueType": "xs:string",
+                  "value": "KukaGrabDropTool",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#KukaGrabDropTool"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "RequiredCapability",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#ProcessStep"
+                  }
+                ]
+              }
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_06_PressBrakeCoverDisassembly",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepOrder",
+                  "valueType": "xs:int",
+                  "value": "6"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "PressBrakeCoverDisassembly"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "JobSkill",
+                  "valueType": "xs:string",
+                  "value": "KukaPickAndPlace",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#KukaPickAndPlace"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "RequiredCapability",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#ProcessStep"
+                  }
+                ]
+              }
+            }
+          ],
+          "description": [
+            {
+              "language": "en",
+              "text": "Ordered sequence of process steps. Each step declares a required capability derived from the job skill observed in execution data."
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#ProcessStep"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Configurations",
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "Note",
+              "valueType": "xs:string",
+              "value": "No AAS cell shell found for the executing resources"
+            }
+          ],
+          "description": [
+            {
+              "language": "en",
+              "text": "References to ProcessConfiguration shells that assign this definition to specific cells"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

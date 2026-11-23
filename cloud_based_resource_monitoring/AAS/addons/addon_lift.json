@@ -1,0 +1,196 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:equipmentresource:addon_lift",
+      "idShort": "addon_lift",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex cell add-on: lift table"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Type",
+        "globalAssetId": "urn:asset:infraflex:equipmentresource:addon_lift"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:equipmentresource:addon_lift:sm:resourcesubmodel"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:equipmentresource:addon_lift:sm:technicaldata"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#EquipmentResource"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:equipmentresource:addon_lift:sm:resourcesubmodel",
+      "idShort": "ResourceSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#EquipmentResource"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ResourceName",
+          "valueType": "xs:string",
+          "value": "Add-On Lift"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ResourceIdentifier",
+          "valueType": "xs:string",
+          "value": "RES_ADDON_LIFT"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ResourceType",
+          "valueType": "xs:string",
+          "value": "Equipment"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "AvailableQuantity",
+          "valueType": "xs:double",
+          "value": "1.0"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "UnitOfMeasure",
+          "valueType": "xs:string",
+          "value": "unit"
+        }
+      ]
+    },
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:equipmentresource:addon_lift:sm:technicaldata",
+      "idShort": "technicaldata",
+      "kind": "Template",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://w3id.org/fm/infraflex#AddOnLift"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "AddOnProperties",
+          "description": [
+            {
+              "language": "en",
+              "text": "Table and lift dimensions"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "TableWidth",
+              "valueType": "xs:decimal",
+              "value": "600.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#addOnTableSizeWidth"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "mm"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "idShort": "TableLength",
+              "valueType": "xs:decimal",
+              "value": "800.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#addOnTableSizeLength"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "mm"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "idShort": "LiftStrokeHeight",
+              "valueType": "xs:decimal",
+              "value": "300.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#addOnLiftStrokeHeight"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "mm"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

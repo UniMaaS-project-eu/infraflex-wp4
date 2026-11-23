@@ -1,0 +1,262 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:equipmentresource:fingered_gripper",
+      "idShort": "fingered_gripper",
+      "description": [
+        {
+          "language": "en",
+          "text": "Fingered (jaw) gripper \u2014 Infraflex equipment resource"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Type",
+        "globalAssetId": "urn:asset:infraflex:equipmentresource:fingered_gripper"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:equipmentresource:fingered_gripper:sm:resourcesubmodel"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:equipmentresource:fingered_gripper:sm:technicaldata"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#EquipmentResource"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:equipmentresource:fingered_gripper:sm:resourcesubmodel",
+      "idShort": "ResourceSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#EquipmentResource"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ResourceName",
+          "valueType": "xs:string",
+          "value": "Fingered Gripper"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ResourceIdentifier",
+          "valueType": "xs:string",
+          "value": "RES_TOOL_FINGERED_GRIPPER"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ResourceType",
+          "valueType": "xs:string",
+          "value": "Equipment"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "AvailableQuantity",
+          "valueType": "xs:double",
+          "value": "1.0"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "UnitOfMeasure",
+          "valueType": "xs:string",
+          "value": "unit"
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Characteristics",
+          "description": [
+            {
+              "language": "en",
+              "text": "Characteristics of this Resource (sc:hasCharacteristic)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_Payload",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_fingered_gripper_payload"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              }
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:equipmentresource:fingered_gripper:sm:technicaldata",
+      "idShort": "technicaldata",
+      "kind": "Template",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://w3id.org/fm/infraflex#FingeredGripper"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "GripperProperties",
+          "description": [
+            {
+              "language": "en",
+              "text": "Mechanical and force properties"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "GripperPayload",
+              "valueType": "xs:decimal",
+              "value": "10.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#gripperPayload"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "kg"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "idShort": "GripperJawStroke",
+              "valueType": "xs:decimal",
+              "value": "50.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#gripperJawStroke"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "mm"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "idShort": "GripperForceMin",
+              "valueType": "xs:decimal",
+              "value": "20.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#gripperForceMin"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "N"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "idShort": "GripperForceMax",
+              "valueType": "xs:decimal",
+              "value": "180.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#gripperForceMax"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "N"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

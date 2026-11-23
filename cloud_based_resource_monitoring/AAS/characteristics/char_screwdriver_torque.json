@@ -1,0 +1,150 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:characteristic:char_screwdriver_torque",
+      "idShort": "char_screwdriver_torque",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex characteristic: ScrewDriverMaxTorque (CHAR_TOOL_SD_TORQUE)"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:asset:infraflex:characteristic:char_screwdriver_torque"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:characteristic:char_screwdriver_torque:sm:characteristicsubmodel"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Characteristic"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:characteristic:char_screwdriver_torque:sm:characteristicsubmodel",
+      "idShort": "CharacteristicSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Characteristic"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Characteristic from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "ScrewDriverMaxTorque Characteristic Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ScrewDriverMaxTorque",
+          "valueType": "xs:double",
+          "value": "8.5"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "CharacteristicIdentifier",
+          "valueType": "xs:string",
+          "value": "CHAR_TOOL_SD_TORQUE"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "CharacteristicValue",
+          "valueType": "xs:double",
+          "value": "8.5"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "DataType",
+          "valueType": "xs:string",
+          "value": "double"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "Unit",
+          "valueType": "xs:string",
+          "value": "Nm"
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "CharacterizesEntity",
+          "description": [
+            {
+              "language": "en",
+              "text": "ConfigurableEntity (Device, Resource, Site) that has this Characteristic"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Entity_Reference",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:equipmentresource:screwdriver"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic_inverse"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Entity possessing this characteristic (ScrewDriverMaxTorque)"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic_inverse"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

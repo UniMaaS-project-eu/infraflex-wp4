@@ -1,0 +1,373 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:device:cell4_turntable",
+      "idShort": "cell4_turntable",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex device: Cell4/Turntable (Turntable)"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:asset:infraflex:device:cell4_turntable",
+        "assetType": "https://w3id.org/fm/infraflex#TurntableExecutor"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:device:cell4_turntable:sm:devicesubmodel"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:device:cell4_turntable:sm:livedata"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Device"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:device:cell4_turntable:sm:devicesubmodel",
+      "idShort": "DeviceSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Device"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Device from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Cell4_Turntable Device Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Nameplate",
+          "description": [
+            {
+              "language": "en",
+              "text": "Identifying information about this Device"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "ManufacturerName",
+              "valueType": "xs:string",
+              "value": "Infraflex"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "ManufacturerProductDesignation",
+              "valueType": "xs:string",
+              "value": "Turntable Unit"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "SerialNumber",
+              "valueType": "xs:string",
+              "value": "SN-INFRA-CELL4_TURNTABLE"
+            }
+          ]
+        },
+        {
+          "modelType": "ReferenceElement",
+          "idShort": "PartOfSite",
+          "value": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "urn:unimaas:infraflex:site:cell4"
+              }
+            ]
+          },
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasDevice_inverse"
+              }
+            ]
+          },
+          "description": [
+            {
+              "language": "en",
+              "text": "Site hosting this Device (cell4)"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Characteristics",
+          "description": [
+            {
+              "language": "en",
+              "text": "Characteristics of this Device (sc:hasCharacteristic)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_1",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell4_turntable_operational_state"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell4_turntable_operational_state"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_2",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell4_turntable_slot_empty"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell4_turntable_slot_empty"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_3",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell4_turntable_slot_positions"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell4_turntable_slot_positions"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_4",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell4_turntable_error_code"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observable characteristic char_cell4_turntable_error_code"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:device:cell4_turntable:sm:livedata",
+      "idShort": "livedata",
+      "kind": "Instance",
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "OperationalState",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#operationalState"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "SlotEmpty",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#slotEmpty"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "SlotPositions",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#slotPositions"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ErrorCode",
+          "valueType": "xs:int",
+          "value": ""
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ErrorMsg",
+          "valueType": "xs:string",
+          "value": ""
+        },
+        {
+          "modelType": "Property",
+          "idShort": "CurrentSkill",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#currentSkill"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "TaskState",
+          "valueType": "xs:string",
+          "value": "",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#taskState"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "Property",
+          "idShort": "LastUpdate",
+          "valueType": "xs:string",
+          "value": ""
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

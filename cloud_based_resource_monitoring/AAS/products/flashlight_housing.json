@@ -1,0 +1,89 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:product:flashlight_housing",
+      "idShort": "flashlight_housing",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex product: Flashlight Housing"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Type",
+        "globalAssetId": "urn:asset:infraflex:product:flashlight_housing"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:product:flashlight_housing:sm:productsubmodel"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Product"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:product:flashlight_housing:sm:productsubmodel",
+      "idShort": "ProductSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Product"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Product from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Flashlight Housing Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ProductName",
+          "valueType": "xs:string",
+          "value": "Flashlight Housing"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProductIdentifier",
+          "valueType": "xs:string",
+          "value": "PROD_PART_HOUSING"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProductAspectDesignation",
+          "valueType": "xs:string",
+          "value": "-Housing"
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

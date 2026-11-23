@@ -1,0 +1,806 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:site:cell5",
+      "idShort": "cell5",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex production site Cell5"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:asset:infraflex:site:cell5"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:site:cell5:sm:sitesubmodel"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:site:cell5:sm:configuration"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Site"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:site:cell5:sm:sitesubmodel",
+      "idShort": "SiteSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Site"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Manufacturing Site from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Cell5 Site Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "SiteName",
+          "valueType": "xs:string",
+          "value": "Cell5"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "SiteIdentifier",
+          "valueType": "xs:string",
+          "value": "CELL5"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "LocationAddress",
+          "valueType": "xs:string",
+          "value": "UniMaaS Smart Factory, Cell5"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "LocationAspectDesignation",
+          "valueType": "xs:string",
+          "value": "+Cell5"
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Devices",
+          "description": [
+            {
+              "language": "en",
+              "text": "Devices at this Site (sc:hasDevice)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Device_1",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:equipmentresource:crx_20ia"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasDevice"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Device at Cell5 (crx_20ia)"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Device_2",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:device:cell5_powerair"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasDevice"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Device at Cell5 (cell5_powerair)"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Device_3",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:device:cell5_lift"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasDevice"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Device at Cell5 (cell5_lift)"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasDevice"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Characteristics",
+          "description": [
+            {
+              "language": "en",
+              "text": "Characteristics of this Site (sc:hasCharacteristic)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Characteristic_AvailableCapacity",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_cell5_available_capacity"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Available processing capacity of Cell5"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasCharacteristic"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:site:cell5:sm:configuration",
+      "idShort": "configuration",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://w3id.org/fm/infraflex#Cell"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "RobotArm",
+          "description": [
+            {
+              "language": "en",
+              "text": "Robot arm installed in this cell"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "RobotArm",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:equipmentresource:crx_20ia"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Robot arm installed in Cell5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Executors",
+          "description": [
+            {
+              "language": "en",
+              "text": "Peripheral executor devices"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "PowerAir",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "PowerAir executor in Cell5"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "DeviceType",
+                  "valueType": "xs:string",
+                  "value": "PowerAir",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/asset/type/1/0"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "MqttPath",
+                  "valueType": "xs:string",
+                  "value": "Infraflex/Executors/Cell5/PowerAir",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/communication/endpoint/1/0"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "DeviceShell",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:device:cell5_powerair"
+                      }
+                    ]
+                  },
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "AAS shell for PowerAir in Cell5"
+                    }
+                  ]
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "OperationalState",
+                  "valueType": "xs:string",
+                  "value": "",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#operationalState"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "CurrentSkill",
+                  "valueType": "xs:string",
+                  "value": "",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#currentSkill"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Lift",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Lift executor in Cell5"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "DeviceType",
+                  "valueType": "xs:string",
+                  "value": "Lift",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/asset/type/1/0"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "MqttPath",
+                  "valueType": "xs:string",
+                  "value": "Infraflex/Executors/Cell5/Lift",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/communication/endpoint/1/0"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "DeviceShell",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:device:cell5_lift"
+                      }
+                    ]
+                  },
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "AAS shell for Lift in Cell5"
+                    }
+                  ]
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "OperationalState",
+                  "valueType": "xs:string",
+                  "value": "",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#operationalState"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "CurrentSkill",
+                  "valueType": "xs:string",
+                  "value": "",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#currentSkill"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "CellAddOnSubs",
+          "description": [
+            {
+              "language": "en",
+              "text": "Add-on peripheral slots (A\u2013F)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "SlotA",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Add-on slot A"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "Location",
+                  "valueType": "xs:string",
+                  "value": "A",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnLocation"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "InstalledAddOnShellId",
+                  "valueType": "xs:string",
+                  "value": "",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnAddOn"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "SlotB",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Add-on slot B"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "Location",
+                  "valueType": "xs:string",
+                  "value": "B",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnLocation"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "InstalledAddOnShellId",
+                  "valueType": "xs:string",
+                  "value": "",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnAddOn"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "SlotC",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Add-on slot C"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "Location",
+                  "valueType": "xs:string",
+                  "value": "C",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnLocation"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "InstalledAddOnShellId",
+                  "valueType": "xs:string",
+                  "value": "",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnAddOn"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "SlotD",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Add-on slot D"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "Location",
+                  "valueType": "xs:string",
+                  "value": "D",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnLocation"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "InstalledAddOnShellId",
+                  "valueType": "xs:string",
+                  "value": "",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnAddOn"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "SlotE",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Add-on slot E"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "Location",
+                  "valueType": "xs:string",
+                  "value": "E",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnLocation"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "InstalledAddOnShellId",
+                  "valueType": "xs:string",
+                  "value": "",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnAddOn"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "SlotF",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Add-on slot F"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "Location",
+                  "valueType": "xs:string",
+                  "value": "F",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnLocation"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "InstalledAddOnShellId",
+                  "valueType": "xs:string",
+                  "value": "",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#cellAddOnAddOn"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "CellTools",
+          "description": [
+            {
+              "language": "en",
+              "text": "Tools available in this cell"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "Tool1ShellId",
+              "valueType": "xs:string",
+              "value": "",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#cellTool"
+                  }
+                ]
+              }
+            },
+            {
+              "modelType": "Property",
+              "idShort": "Tool2ShellId",
+              "valueType": "xs:string",
+              "value": "",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#cellTool"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

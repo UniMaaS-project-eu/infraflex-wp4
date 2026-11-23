@@ -1,0 +1,202 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:sensor:debonder_sensor",
+      "idShort": "debonder_sensor",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex sensor: Debonder Sensor monitoring Infraflex/Executors/Debonder"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:asset:infraflex:sensor:debonder_sensor"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:sensor:debonder_sensor:sm:sensorsubmodel"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Sensor"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:sensor:debonder_sensor:sm:sensorsubmodel",
+      "idShort": "SensorSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Sensor"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Sensor from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Debonder Sensor Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "SensorName",
+          "valueType": "xs:string",
+          "value": "Debonder Sensor"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "SensorIdentifier",
+          "valueType": "xs:string",
+          "value": "SENS_DEBONDER"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "SensorType",
+          "valueType": "xs:string",
+          "value": "Debonder Telemetry"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ManufacturerName",
+          "valueType": "xs:string",
+          "value": "Infraflex Telemetry Unit"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "SamplingRate",
+          "valueType": "xs:double",
+          "value": "1.0"
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "ObservedCharacteristics",
+          "description": [
+            {
+              "language": "en",
+              "text": "Characteristics observed by this Sensor (sc:observes)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Observed_1",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_debonder_operational_state"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#observes"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observed characteristic char_debonder_operational_state"
+                }
+              ]
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Observed_2",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:characteristic:char_debonder_error_code"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#observes"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Observed characteristic char_debonder_error_code"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#observes"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "InterfaceDescription",
+          "description": [
+            {
+              "language": "en",
+              "text": "Communication interface and endpoint configuration"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "InterfaceType",
+              "valueType": "xs:string",
+              "value": "MQTT"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "EndpointAddress",
+              "valueType": "xs:string",
+              "value": "Infraflex/Executors/Debonder"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

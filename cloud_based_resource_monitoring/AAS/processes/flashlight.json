@@ -1,0 +1,395 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:process:flashlight",
+      "idShort": "flashlight",
+      "assetInformation": {
+        "assetKind": "Type",
+        "globalAssetId": "urn:asset:infraflex:process:flashlight"
+      },
+      "submodels": [
+        {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:process:flashlight:sm:processdefinition"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Process"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:process:flashlight:sm:processdefinition",
+      "idShort": "processdefinition",
+      "kind": "Template",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://w3id.org/fm/infraflex#ProcessStep"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ProcessName",
+          "valueType": "xs:string",
+          "value": "Flashlight"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProcessIdentifier",
+          "valueType": "xs:string",
+          "value": "PROC_FLASHLIGHT"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProcessType",
+          "valueType": "xs:string",
+          "value": "Assembly",
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#Assembly"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Steps",
+          "value": [
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_01_FlashlightPlacePCB",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepOrder",
+                  "valueType": "xs:int",
+                  "value": "1"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "FlashlightPlacePCB"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "JobSkill",
+                  "valueType": "xs:string",
+                  "value": "PickAndPlace",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#PickAndPlace"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "RequiredCapability",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#ProcessStep"
+                  }
+                ]
+              }
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_02_FlashlightPlaceCoverClick",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepOrder",
+                  "valueType": "xs:int",
+                  "value": "2"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "FlashlightPlaceCoverClick"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "JobSkill",
+                  "valueType": "xs:string",
+                  "value": "PickAndPlace",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#PickAndPlace"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "RequiredCapability",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#ProcessStep"
+                  }
+                ]
+              }
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_03_FlashlightPlaceLensClick",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepOrder",
+                  "valueType": "xs:int",
+                  "value": "3"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "FlashlightPlaceLensClick"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "JobSkill",
+                  "valueType": "xs:string",
+                  "value": "PickAndPlace",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#PickAndPlace"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "RequiredCapability",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#ProcessStep"
+                  }
+                ]
+              }
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Step_04_FlashlightMoveFlashlightBackClick",
+              "value": [
+                {
+                  "modelType": "Property",
+                  "idShort": "StepOrder",
+                  "valueType": "xs:int",
+                  "value": "4"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "StepName",
+                  "valueType": "xs:string",
+                  "value": "FlashlightMoveFlashlightBackClick"
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "JobSkill",
+                  "valueType": "xs:string",
+                  "value": "PickAndPlace",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#PickAndPlace"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "RequiredCapability",
+                  "valueType": "xs:string",
+                  "value": "CapabilityGrasping",
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://w3id.org/fm/infraflex#CapabilityGrasping"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#ProcessStep"
+                  }
+                ]
+              }
+            }
+          ],
+          "description": [
+            {
+              "language": "en",
+              "text": "Ordered sequence of process steps. Each step declares a required capability derived from the job skill observed in execution data."
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://w3id.org/fm/infraflex#ProcessStep"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Configurations",
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Config_cell5",
+              "value": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "urn:unimaas:infraflex:processconfiguration:flashlight_cell5"
+                  }
+                ]
+              }
+            },
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Config_cell6",
+              "value": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "urn:unimaas:infraflex:processconfiguration:flashlight_cell6"
+                  }
+                ]
+              }
+            }
+          ],
+          "description": [
+            {
+              "language": "en",
+              "text": "References to ProcessConfiguration shells that assign this definition to specific cells"
+            }
+          ]
+        },
+        {
+          "modelType": "ReferenceElement",
+          "idShort": "ProcessOutput",
+          "value": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "urn:unimaas:infraflex:product:flashlight"
+              }
+            ]
+          },
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasOutput"
+              }
+            ]
+          },
+          "description": [
+            {
+              "language": "en",
+              "text": "Manufactured output product of this process"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

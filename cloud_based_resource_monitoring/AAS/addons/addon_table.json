@@ -1,0 +1,173 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:equipmentresource:addon_table",
+      "idShort": "addon_table",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex cell add-on: work table"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Type",
+        "globalAssetId": "urn:asset:infraflex:equipmentresource:addon_table"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:equipmentresource:addon_table:sm:resourcesubmodel"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:equipmentresource:addon_table:sm:technicaldata"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#EquipmentResource"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:equipmentresource:addon_table:sm:resourcesubmodel",
+      "idShort": "ResourceSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#EquipmentResource"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ResourceName",
+          "valueType": "xs:string",
+          "value": "Add-On Table"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ResourceIdentifier",
+          "valueType": "xs:string",
+          "value": "RES_ADDON_TABLE"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ResourceType",
+          "valueType": "xs:string",
+          "value": "Equipment"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "AvailableQuantity",
+          "valueType": "xs:double",
+          "value": "1.0"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "UnitOfMeasure",
+          "valueType": "xs:string",
+          "value": "unit"
+        }
+      ]
+    },
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:equipmentresource:addon_table:sm:technicaldata",
+      "idShort": "technicaldata",
+      "kind": "Template",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://w3id.org/fm/infraflex#AddOnTable"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "AddOnProperties",
+          "description": [
+            {
+              "language": "en",
+              "text": "Table dimensions"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "TableWidth",
+              "valueType": "xs:decimal",
+              "value": "600.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#addOnTableSizeWidth"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "mm"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "idShort": "TableLength",
+              "valueType": "xs:decimal",
+              "value": "800.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#addOnTableSizeLength"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "mm"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

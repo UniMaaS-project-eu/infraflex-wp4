@@ -1,0 +1,194 @@
+{
+  "mqtt": {
+    "host": "localhost",
+    "port": 1883,
+    "username": "infraflex",
+    "password": "infraflex",
+    "base_topic": "Infraflex/Executors"
+  },
+  "kafka": {
+    "bootstrap_servers": "localhost:19092",
+    "topic": "infraflex.vo.property.updates"
+  },
+  "basyx": {
+    "aas_registry": "http://localhost:8082",
+    "aas_repo": "http://localhost:8081",
+    "submodel_repo": "http://localhost:8081"
+  },
+  "ontology": {
+    "definitions_dir": "../../ontologies",
+    "data_dir": "../../ontologies/instances",
+    "output_dir": "../../ontologies/instances",
+    "aas_dirs": {
+      "arms":            "../../AAS/arms",
+      "tools":           "../../AAS/tools",
+      "addons":          "../../AAS/addons",
+      "cells":           "../../AAS/cells",
+      "executors":       "../../AAS/executors",
+      "sensors":         "../../AAS/sensors",
+      "characteristics": "../../AAS/characteristics",
+      "products":        "../../AAS/products",
+      "routes":          "../../AAS/routes",
+      "processes":       "../../AAS/processes"
+    }
+  },
+  "graphdb": {
+    "url": "http://localhost:7200",
+    "repository": "infraflex"
+  },
+  "devices": [
+    {
+      "mqtt_path": "Cell1/PowerAir",
+      "type": "PowerAir",
+      "vo_id": "Cell1_PowerAir",
+      "aas_shell_id": "urn:unimaas:infraflex:device:cell1_powerair",
+      "aas_submodel_id": "urn:aas:infraflex:device:cell1_powerair:sm:livedata"
+    },
+    {
+      "mqtt_path": "Cell2/PowerAir",
+      "type": "PowerAir",
+      "vo_id": "Cell2_PowerAir",
+      "aas_shell_id": "urn:unimaas:infraflex:device:cell2_powerair",
+      "aas_submodel_id": "urn:aas:infraflex:device:cell2_powerair:sm:livedata"
+    },
+    {
+      "mqtt_path": "Cell4/PowerAir",
+      "type": "PowerAir",
+      "vo_id": "Cell4_PowerAir",
+      "aas_shell_id": "urn:unimaas:infraflex:device:cell4_powerair",
+      "aas_submodel_id": "urn:aas:infraflex:device:cell4_powerair:sm:livedata"
+    },
+    {
+      "mqtt_path": "Cell5/PowerAir",
+      "type": "PowerAir",
+      "vo_id": "Cell5_PowerAir",
+      "aas_shell_id": "urn:unimaas:infraflex:device:cell5_powerair",
+      "aas_submodel_id": "urn:aas:infraflex:device:cell5_powerair:sm:livedata"
+    },
+    {
+      "mqtt_path": "Cell6/PowerAir",
+      "type": "PowerAir",
+      "vo_id": "Cell6_PowerAir",
+      "aas_shell_id": "urn:unimaas:infraflex:device:cell6_powerair",
+      "aas_submodel_id": "urn:aas:infraflex:device:cell6_powerair:sm:livedata"
+    },
+    {
+      "mqtt_path": "Cell5/Lift",
+      "type": "Lift",
+      "vo_id": "Cell5_Lift",
+      "aas_shell_id": "urn:unimaas:infraflex:device:cell5_lift",
+      "aas_submodel_id": "urn:aas:infraflex:device:cell5_lift:sm:livedata"
+    },
+    {
+      "mqtt_path": "Cell6/Lift",
+      "type": "Lift",
+      "vo_id": "Cell6_Lift",
+      "aas_shell_id": "urn:unimaas:infraflex:device:cell6_lift",
+      "aas_submodel_id": "urn:aas:infraflex:device:cell6_lift:sm:livedata"
+    },
+    {
+      "mqtt_path": "Cell4/Turntable",
+      "type": "Turntable",
+      "vo_id": "Cell4_Turntable",
+      "aas_shell_id": "urn:unimaas:infraflex:device:cell4_turntable",
+      "aas_submodel_id": "urn:aas:infraflex:device:cell4_turntable:sm:livedata"
+    },
+    {
+      "mqtt_path": "Cell6/Turntable",
+      "type": "Turntable",
+      "vo_id": "Cell6_Turntable",
+      "aas_shell_id": "urn:unimaas:infraflex:device:cell6_turntable",
+      "aas_submodel_id": "urn:aas:infraflex:device:cell6_turntable:sm:livedata"
+    },
+    {
+      "mqtt_path": "AMR/MIR200_1",
+      "type": "AMR",
+      "vo_id": "AMR_MIR200_1",
+      "aas_shell_id": "urn:unimaas:infraflex:device:amr_mir200_1",
+      "aas_submodel_id": "urn:aas:infraflex:device:amr_mir200_1:sm:livedata"
+    },
+    {
+      "mqtt_path": "AMR/MIR500_1",
+      "type": "AMR",
+      "vo_id": "AMR_MIR500_1",
+      "aas_shell_id": "urn:unimaas:infraflex:device:amr_mir500_1",
+      "aas_submodel_id": "urn:aas:infraflex:device:amr_mir500_1:sm:livedata"
+    },
+    {
+      "mqtt_path": "Warehouse003",
+      "type": "Warehouse",
+      "vo_id": "Warehouse_003",
+      "aas_shell_id": "urn:unimaas:infraflex:device:warehouse_003",
+      "aas_submodel_id": "urn:aas:infraflex:device:warehouse_003:sm:livedata"
+    },
+    {
+      "mqtt_path": "Debonder",
+      "type": "Debonder",
+      "vo_id": "Debonder",
+      "aas_shell_id": "urn:unimaas:infraflex:device:debonder",
+      "aas_submodel_id": "urn:aas:infraflex:device:debonder:sm:livedata"
+    }
+  ],
+  "property_mappings": {
+    "PowerAir": {
+      "state": "OperationalState",
+      "air.gripper_close": "GripperClose",
+      "air.tool_attach": "ToolAttach",
+      "air.error_code": "AirErrorCode",
+      "air.error_msg": "AirErrorMsg",
+      "power.tool_enable": "PowerToolEnable",
+      "task.skill": "CurrentSkill",
+      "task.state": "TaskState",
+      "task.duration": "TaskDuration"
+    },
+    "Lift": {
+      "state": "OperationalState",
+      "position": "Position",
+      "service": "ServiceMode",
+      "error_code": "ErrorCode",
+      "error_msg": "ErrorMsg",
+      "c_stop": "ControlStop",
+      "e_stop": "EmergencyStop",
+      "lowering_enable": "LoweringEnable",
+      "task.skill": "CurrentSkill",
+      "task.state": "TaskState"
+    },
+    "Turntable": {
+      "state": "OperationalState",
+      "slot_empty": "SlotEmpty",
+      "slot_positions": "SlotPositions",
+      "error_code": "ErrorCode",
+      "error_msg": "ErrorMsg",
+      "task.skill": "CurrentSkill",
+      "task.state": "TaskState"
+    },
+    "AMR": {
+      "state": "OperationalState",
+      "battery": "BatteryLevel",
+      "location": "CurrentLocation",
+      "position.x": "PositionX",
+      "position.y": "PositionY",
+      "position.orientation": "Orientation",
+      "error_code": "ErrorCode",
+      "error_msg": "ErrorMsg",
+      "task.skill": "CurrentSkill",
+      "task.state": "TaskState"
+    },
+    "Warehouse": {
+      "state": "OperationalState",
+      "error_code": "ErrorCode",
+      "error_msg": "ErrorMsg",
+      "e_stop": "EmergencyStop",
+      "v24_io_status": "IOStatus",
+      "task.skill": "CurrentSkill",
+      "task.state": "TaskState"
+    },
+    "Debonder": {
+      "state": "OperationalState",
+      "error_code": "ErrorCode",
+      "error_msg": "ErrorMsg",
+      "task.skill": "CurrentSkill",
+      "task.state": "TaskState"
+    }
+  }
+}

@@ -1,0 +1,368 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:product:flashlight",
+      "idShort": "flashlight",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex product: UniMaaS LED Flashlight"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:asset:infraflex:product:flashlight"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:product:flashlight:sm:productsubmodel"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Product"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:product:flashlight:sm:productsubmodel",
+      "idShort": "ProductSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Product"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Product from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "UniMaaS LED Flashlight Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ProductName",
+          "valueType": "xs:string",
+          "value": "UniMaaS LED Flashlight"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProductIdentifier",
+          "valueType": "xs:string",
+          "value": "PROD_FLASHLIGHT_001"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProductAspectDesignation",
+          "valueType": "xs:string",
+          "value": "-FlashlightAssembly"
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "Components",
+          "description": [
+            {
+              "language": "en",
+              "text": "Component products that make up this product (sc:hasComponent)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Component_1",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Component part #1"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "ComponentProduct",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:product:flashlight_housing"
+                      }
+                    ]
+                  },
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "http://unimaas-project.eu/MSCOntology#hasComponent"
+                      }
+                    ]
+                  },
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Part component flashlight_housing"
+                    }
+                  ]
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "Quantity",
+                  "valueType": "xs:integer",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Component_2",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Component part #2"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "ComponentProduct",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:product:flashlight_cover"
+                      }
+                    ]
+                  },
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "http://unimaas-project.eu/MSCOntology#hasComponent"
+                      }
+                    ]
+                  },
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Part component flashlight_cover"
+                    }
+                  ]
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "Quantity",
+                  "valueType": "xs:integer",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Component_3",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Component part #3"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "ComponentProduct",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:product:flashlight_pcb"
+                      }
+                    ]
+                  },
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "http://unimaas-project.eu/MSCOntology#hasComponent"
+                      }
+                    ]
+                  },
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Part component flashlight_pcb"
+                    }
+                  ]
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "Quantity",
+                  "valueType": "xs:integer",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Component_4",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Component part #4"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "ComponentProduct",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:product:flashlight_lens"
+                      }
+                    ]
+                  },
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "http://unimaas-project.eu/MSCOntology#hasComponent"
+                      }
+                    ]
+                  },
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Part component flashlight_lens"
+                    }
+                  ]
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "Quantity",
+                  "valueType": "xs:integer",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementCollection",
+              "idShort": "Component_5",
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Component part #5"
+                }
+              ],
+              "value": [
+                {
+                  "modelType": "ReferenceElement",
+                  "idShort": "ComponentProduct",
+                  "value": {
+                    "type": "ModelReference",
+                    "keys": [
+                      {
+                        "type": "AssetAdministrationShell",
+                        "value": "urn:unimaas:infraflex:product:flashlight_screw"
+                      }
+                    ]
+                  },
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "http://unimaas-project.eu/MSCOntology#hasComponent"
+                      }
+                    ]
+                  },
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Part component flashlight_screw"
+                    }
+                  ]
+                },
+                {
+                  "modelType": "Property",
+                  "idShort": "Quantity",
+                  "valueType": "xs:integer",
+                  "value": "4"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasComponent"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "ReferenceElement",
+          "idShort": "RequiresProcess",
+          "value": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "urn:unimaas:infraflex:process:flashlight"
+              }
+            ]
+          },
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#requiresProcess"
+              }
+            ]
+          },
+          "description": [
+            {
+              "language": "en",
+              "text": "Process that manufactures or assemblies this product"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

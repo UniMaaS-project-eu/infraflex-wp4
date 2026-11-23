@@ -1,0 +1,173 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:equipmentresource:addon_conveyor",
+      "idShort": "addon_conveyor",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex cell add-on: conveyor"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Type",
+        "globalAssetId": "urn:asset:infraflex:equipmentresource:addon_conveyor"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:equipmentresource:addon_conveyor:sm:resourcesubmodel"
+            }
+          ]
+        },
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:equipmentresource:addon_conveyor:sm:technicaldata"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#EquipmentResource"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:equipmentresource:addon_conveyor:sm:resourcesubmodel",
+      "idShort": "ResourceSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#EquipmentResource"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ResourceName",
+          "valueType": "xs:string",
+          "value": "Add-On Conveyor"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ResourceIdentifier",
+          "valueType": "xs:string",
+          "value": "RES_ADDON_CONVEYOR"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ResourceType",
+          "valueType": "xs:string",
+          "value": "Equipment"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "AvailableQuantity",
+          "valueType": "xs:double",
+          "value": "1.0"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "UnitOfMeasure",
+          "valueType": "xs:string",
+          "value": "unit"
+        }
+      ]
+    },
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:equipmentresource:addon_conveyor:sm:technicaldata",
+      "idShort": "technicaldata",
+      "kind": "Template",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://w3id.org/fm/infraflex#AddOnConveyor"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "AddOnProperties",
+          "description": [
+            {
+              "language": "en",
+              "text": "Conveyor dimensions"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "ConveyorWidth",
+              "valueType": "xs:decimal",
+              "value": "400.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#addOnConveyorWidth"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "mm"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "idShort": "ConveyorStroke",
+              "valueType": "xs:decimal",
+              "value": "1200.0",
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://w3id.org/fm/infraflex#addOnConveyorStroke"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "modelType": "Qualifier",
+                  "type": "Unit",
+                  "valueType": "xs:string",
+                  "value": "mm"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

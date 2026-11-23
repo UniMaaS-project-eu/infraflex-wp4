@@ -1,0 +1,89 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:product:flashlight_pcb",
+      "idShort": "flashlight_pcb",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex product: Flashlight LED PCB"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Type",
+        "globalAssetId": "urn:asset:infraflex:product:flashlight_pcb"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:product:flashlight_pcb:sm:productsubmodel"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Product"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:product:flashlight_pcb:sm:productsubmodel",
+      "idShort": "ProductSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#Product"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Product from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Flashlight LED PCB Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "ProductName",
+          "valueType": "xs:string",
+          "value": "Flashlight LED PCB"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProductIdentifier",
+          "valueType": "xs:string",
+          "value": "PROD_PART_PCB"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "ProductAspectDesignation",
+          "valueType": "xs:string",
+          "value": "-PCB"
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

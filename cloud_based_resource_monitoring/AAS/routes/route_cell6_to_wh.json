@@ -1,0 +1,245 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "id": "urn:unimaas:infraflex:logisticroute:route_cell6_to_wh",
+      "idShort": "route_cell6_to_wh",
+      "description": [
+        {
+          "language": "en",
+          "text": "Infraflex logistic route: Cell 6 to Warehouse Logistics Route"
+        }
+      ],
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "urn:asset:infraflex:logisticroute:route_cell6_to_wh"
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "urn:aas:infraflex:logisticroute:route_cell6_to_wh:sm:logisticroutesubmodel"
+            }
+          ]
+        }
+      ],
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#LogisticRoute"
+          }
+        ]
+      }
+    }
+  ],
+  "submodels": [
+    {
+      "modelType": "Submodel",
+      "id": "urn:aas:infraflex:logisticroute:route_cell6_to_wh:sm:logisticroutesubmodel",
+      "idShort": "LogisticRouteSubmodel",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "http://unimaas-project.eu/MSCOntology#LogisticRoute"
+          }
+        ]
+      },
+      "description": [
+        {
+          "language": "en",
+          "text": "Submodel representing a Logistic Route from the MSCOntology"
+        }
+      ],
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Cell 6 to Warehouse Logistics Route Submodel"
+        }
+      ],
+      "submodelElements": [
+        {
+          "modelType": "Property",
+          "idShort": "RouteIdentifier",
+          "valueType": "xs:string",
+          "value": "ROUTE_CELL6_WH"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "RouteName",
+          "valueType": "xs:string",
+          "value": "Cell 6 to Warehouse Logistics Route"
+        },
+        {
+          "modelType": "Property",
+          "idShort": "RouteStatus",
+          "valueType": "xs:string",
+          "value": "Active"
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "StartingPoint",
+          "description": [
+            {
+              "language": "en",
+              "text": "Origin location of the route (sc:hasStartingPoint)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Location_Start",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:site:cell6"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasStartingPoint"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Start site cell6"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasStartingPoint"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "EndingPoint",
+          "description": [
+            {
+              "language": "en",
+              "text": "Destination location of the route (sc:hasEndingPoint)"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "ReferenceElement",
+              "idShort": "Location_End",
+              "value": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "AssetAdministrationShell",
+                    "value": "urn:unimaas:infraflex:device:warehouse_003"
+                  }
+                ]
+              },
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "http://unimaas-project.eu/MSCOntology#hasEndingPoint"
+                  }
+                ]
+              },
+              "description": [
+                {
+                  "language": "en",
+                  "text": "End site warehouse_003"
+                }
+              ]
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#hasEndingPoint"
+              }
+            ]
+          }
+        },
+        {
+          "modelType": "ReferenceElement",
+          "idShort": "UsesResource",
+          "value": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "AssetAdministrationShell",
+                "value": "urn:unimaas:infraflex:device:amr_mir500_1"
+              }
+            ]
+          },
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "http://unimaas-project.eu/MSCOntology#usesResource"
+              }
+            ]
+          },
+          "description": [
+            {
+              "language": "en",
+              "text": "Transportation resource amr_mir500_1"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "TransportCharacteristics",
+          "description": [
+            {
+              "language": "en",
+              "text": "Properties and characteristics of transportation"
+            }
+          ],
+          "value": [
+            {
+              "modelType": "Property",
+              "idShort": "TransportationMode",
+              "valueType": "xs:string",
+              "value": "AMR"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "Distance",
+              "valueType": "xs:double",
+              "value": "25.0"
+            },
+            {
+              "modelType": "Property",
+              "idShort": "DistanceUnit",
+              "valueType": "xs:string",
+              "value": "m"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conceptDescriptions": []
+}

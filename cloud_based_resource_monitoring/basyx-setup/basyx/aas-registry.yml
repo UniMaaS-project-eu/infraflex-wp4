@@ -1,0 +1,10 @@
+basyx:
+  cors:
+    allowed-origins: '*'
+    allowed-methods: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
+spring:
+  mongodb:
+    uri: mongodb://mongoAdmin:mongoPassword@mongo:27017/aas-registry?authSource=admin
+  data:
+    mongodb:
+      uri: mongodb://mongoAdmin:mongoPassword@mongo:27017/aas-registry?authSource=admin

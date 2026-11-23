@@ -1,0 +1,19 @@
+# Multi-stage Dockerfile for digital-thread (built from ids-mvd-dms)
+FROM gradle:8.12-jdk17-jammy AS builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN chmod +x gradlew && \
+    ./gradlew :launchers:digital-thread:shadowJar --no-daemon --stacktrace
+
+FROM eclipse-temurin:23-jre-alpine
+
+WORKDIR /app
+
+RUN apk --no-cache add curl jq
+
+COPY --from=builder /app/launchers/digital-thread/build/libs/digital-thread.jar /app/digital-thread.jar
+
+ENTRYPOINT ["java", "-jar", "/app/digital-thread.jar", "--log-level=debug"]
