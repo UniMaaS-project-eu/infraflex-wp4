@@ -61,7 +61,7 @@ This starts:
 - **AAS Registry** (port 8082)
 - **Submodel Registry** (port 8083)
 - **MongoDB** (internal)
-- **Mosquitto** MQTT broker (port 1883) — *local broker only; Infraflex uses its own at `infraflex-nuc11phi7.infraflex.lan:1883`*
+- **Mosquitto** MQTT broker (port 1883)
 - **Redpanda** Kafka-compatible broker (port 19092)
 - **AAS Web UI** (port 3000)
 - **`unimaas-infraflex`** — `vo_manager.py`, `aas_consumer.py`, and `infraflex2kg.py`

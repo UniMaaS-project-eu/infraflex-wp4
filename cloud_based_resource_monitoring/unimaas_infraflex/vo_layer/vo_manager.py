@@ -456,7 +456,8 @@ class VOManager:
     def _start_mqtt(self):
         mqtt_cfg = self.cfg["mqtt"]
         client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id="infraflex-vo-manager")
-        client.username_pw_set(mqtt_cfg["username"], mqtt_cfg["password"])
+        if mqtt_cfg.get("username"):
+            client.username_pw_set(mqtt_cfg["username"], mqtt_cfg.get("password", ""))
 
         def on_connect(c, userdata, flags, reason_code, *_extra):
             rc = reason_code if isinstance(reason_code, int) else getattr(reason_code, "value", 0)

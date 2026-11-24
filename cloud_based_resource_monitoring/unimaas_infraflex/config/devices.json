@@ -2,8 +2,8 @@
   "mqtt": {
     "host": "localhost",
     "port": 1883,
-    "username": "infraflex",
-    "password": "infraflex",
+    "username": "",
+    "password": "",
     "base_topic": "Infraflex/Executors"
   },
   "kafka": {

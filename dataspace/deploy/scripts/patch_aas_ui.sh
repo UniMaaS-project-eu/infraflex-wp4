@@ -66,7 +66,7 @@ cat > /tmp/basyx-host-fix.js <<'EOF'
   } catch (e) {}
 
   // 2. Intercept Response.prototype.json and Response.prototype.text so descriptor
-  //    endpoints ("href": "http://10.32.137.205:8081/...") returned by the registries
+  //    endpoints ("href": "http://<EXTERNAL_HOST>:8081/...") returned by the registries
   //    always match the browser's active hostname origin.
   if (typeof Response !== "undefined" && Response.prototype) {
     var origText = Response.prototype.text;

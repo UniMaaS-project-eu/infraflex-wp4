@@ -28,7 +28,7 @@ This folder contains a self-contained deployment bundle to clone and deploy all 
 - `./deploy.sh build` — Builds all Docker images (including multi-stage Gradle builds for `standalone-federated-catalog` and `digital-thread` via `dockerfiles/`).
 - `./deploy.sh up` — Starts all services on the shared `edc-network` via `docker compose up -d`.
 - `./deploy.sh init` — Initializes Postgres (`inserted_assets`) and GraphDB (`centralKG`), and runs `./deploy.sh pull-data`.
-- `./deploy.sh pull-data` — Prepares and uploads all AAS shells/submodels into BaSyx (`:8081`, `:8082`, `:8083`), harvests the 40+ scenarios from TimescaleDB (`10.102.0.70:5432`) into InfraPlay (`:8090`), pulls recent `ExecutionLog`/`TaskLog` records into BaSyx, and preloads the provider RDF dataset into Jena Fuseki (`:3032`).
+- `./deploy.sh pull-data` — Prepares and uploads all AAS shells/submodels into BaSyx (`:8081`, `:8082`, `:8083`) and preloads the provider RDF dataset into Jena Fuseki (`:3032`).
 - `./deploy.sh status` — Displays the status and health of all containers.
 - `./deploy.sh logs [service]` — Tails logs of all services or a specific service.
 - `./deploy.sh down` / `./deploy.sh down-v` — Stops and removes containers (and volumes with `down-v`).
