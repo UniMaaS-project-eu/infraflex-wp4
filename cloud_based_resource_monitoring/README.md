@@ -60,6 +60,76 @@ docker compose up -d --build
 
 ---
 
+## SPARQL Queries for the Local Infraflex Knowledge Graph (`:7200` / `infraflex`)
+
+Open the Ontotext GraphDB Workbench at `http://localhost:7200` (or `http://<EXTERNAL_HOST>:7201` when deployed via `dataspace/deploy`), select the **`infraflex`** repository, and run:
+
+```sparql
+PREFIX sc: <http://unimaas-project.eu/MSCOntology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# 1. Count all MSC Ontology entity types in the local Infraflex KG
+SELECT ?mscClass (COUNT(DISTINCT ?entity) AS ?count) WHERE {
+    ?entity a ?mscClass .
+    FILTER(STRSTARTS(STR(?mscClass), "http://unimaas-project.eu/MSCOntology#"))
+}
+GROUP BY ?mscClass
+ORDER BY DESC(?count)
+
+# 2. Manufacturing Cells (sc:Site) and their mounted Devices / Robot Arms
+SELECT ?cellName ?deviceName ?deviceType WHERE {
+    ?cell a sc:Site ;
+          rdfs:label ?cellName ;
+          sc:hasDevice ?dev .
+    ?dev a ?deviceType ;
+         rdfs:label ?deviceName .
+    FILTER(?deviceType IN (sc:Device, sc:EquipmentResource))
+}
+ORDER BY ?cellName ?deviceName
+
+# 3. Live operational state, active skill, and last sync timestamp of all shopfloor devices
+SELECT ?device ?state ?skill ?taskState ?errorCode ?lastSync WHERE {
+    ?d a sc:Device ;
+       rdfs:label ?device .
+    OPTIONAL { ?d sc:operationalState ?state }
+    OPTIONAL { ?d sc:currentSkill ?skill }
+    OPTIONAL { ?d sc:taskState ?taskState }
+    OPTIONAL { ?d sc:errorCode ?errorCode }
+    OPTIONAL { ?d sc:lastUpdated ?lastSync }
+}
+ORDER BY DESC(?lastSync) ?device
+
+# 4. Sensors and the Characteristics they observe (with current values and units)
+SELECT ?sensorName ?sensorType ?charName ?value ?unit WHERE {
+    ?sensor a sc:Sensor ;
+            rdfs:label ?sensorName ;
+            sc:observes ?char .
+    OPTIONAL { ?sensor sc:sensorType ?sensorType }
+    ?char rdfs:label ?charName .
+    OPTIONAL { ?char sc:characteristicValue ?value }
+    OPTIONAL { ?char sc:unit ?unit }
+}
+ORDER BY ?sensorName ?charName
+
+# 5. Process configurations per cell and the equipment resources they use
+SELECT ?configName ?processName ?siteName ?resourceName WHERE {
+    ?cfg a sc:ProcessConfiguration ;
+         rdfs:label ?configName .
+    OPTIONAL { ?cfg sc:requiresProcess/rdfs:label ?processName }
+    OPTIONAL { ?cfg sc:isPerformedAt/rdfs:label ?siteName }
+    OPTIONAL { ?cfg sc:usesResource/rdfs:label ?resourceName }
+}
+ORDER BY ?configName ?resourceName
+```
+
+Or query directly from the terminal via `curl`:
+
+```bash
+curl -s -G "http://localhost:7200/repositories/infraflex"   -H "Accept: application/sparql-results+json"   --data-urlencode "query=PREFIX sc: <http://unimaas-project.eu/MSCOntology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?device ?state ?skill ?lastSync WHERE { ?d a sc:Device ; rdfs:label ?device . OPTIONAL { ?d sc:operationalState ?state } OPTIONAL { ?d sc:currentSkill ?skill } OPTIONAL { ?d sc:lastUpdated ?lastSync } } ORDER BY ?device"
+```
+
+---
+
 ## Directory Structure
 
 ```

@@ -24,7 +24,17 @@ if [[ -f "${DEPLOY_DIR}/.env" ]]; then
 fi
 
 REPOS_PATH="$(mkdir -p "${REPOS_DIR:-./repos}" && cd "${REPOS_DIR:-./repos}" && pwd)"
-INFRAFLEX_DIR="${REPOS_PATH}/unimaas-infraflex"
+if [[ -z "${INFRAFLEX_DIR:-}" ]]; then
+  if [[ -d "${DEPLOY_DIR}/../../cloud_based_resource_monitoring/basyx-setup" ]]; then
+    INFRAFLEX_DIR="$(cd "${DEPLOY_DIR}/../../cloud_based_resource_monitoring" && pwd)"
+  elif [[ -d "${DEPLOY_DIR}/../basyx-setup" ]]; then
+    INFRAFLEX_DIR="$(cd "${DEPLOY_DIR}/.." && pwd)"
+  else
+    INFRAFLEX_DIR="$(cd "${DEPLOY_DIR}/../../cloud_based_resource_monitoring" && pwd)"
+  fi
+elif [[ "${INFRAFLEX_DIR}" != /* ]]; then
+  INFRAFLEX_DIR="$(cd "${DEPLOY_DIR}/${INFRAFLEX_DIR}" && pwd)"
+fi
 DMS_DIR="${REPOS_PATH}/ids-mvd-dms"
 
 echo "=================================================================="

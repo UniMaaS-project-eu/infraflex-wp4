@@ -157,63 +157,97 @@ cd kg
 python infraflex2kg.py
 ```
 
-Polls BaSyx every 3 s. For each Infraflex shell it finds:
+Polls BaSyx every 3 s and synchronizes all AAS shells and live submodels into the `infraflex` repository in Ontotext GraphDB using the **UniMaaS Manufacturing Service Chain (`MSC`) Ontology** (`http://unimaas-project.eu/MSCOntology#`):
 
-| Shell kind | GraphDB entity | Key properties / predicates |
+| AAS Category | MSC Ontology Class | Key MSC Properties / Predicates |
 |---|---|---|
-| Cell AAS | `infraflex:Cell` | `rdfs:label`; `infraflex:hasArm` → RobotArm |
-| Robot arm AASX | `infraflex:RobotArm` | manufacturer, model, payload, reach, … |
-| Executor AAS | `infraflex:ExecutorDevice` | executorType, cell, operationalState, position, batteryLevel, … |
+| `AAS/cells/` | `sc:Site` | `sc:id`, `sc:name`, `sc:locationAddress`, `sc:hasDevice`, `sc:performs` |
+| `AAS/executors/` | `sc:Device` | `sc:id`, `sc:name`, `sc:manufacturer`, `sc:hasCharacteristic`, `sc:operationalState`, `sc:currentSkill`, `sc:taskState`, `sc:batteryLevel`, `sc:position`, `sc:lastUpdated` |
+| `AAS/arms/`, `tools/`, `addons/` | `sc:EquipmentResource` | `sc:id`, `sc:name`, `sc:resourceType`, `sc:manufacturer`, `sc:maxPayload_kg`, `sc:maxReach_mm`, `sc:providesCapability` |
+| `AAS/sensors/` | `sc:Sensor` | `sc:id`, `sc:name`, `sc:sensorType`, `sc:samplingRate`, `sc:observes` |
+| `AAS/characteristics/` | `sc:Characteristic` | `sc:id`, `sc:name`, `sc:characteristicValue`, `sc:dataType`, `sc:unit`, `sc:isObservedBy` |
+| `AAS/products/` | `sc:Product` | `sc:id`, `sc:name`, `sc:availableQuantity`, `sc:hasComponent`, `sc:requiresProcess` |
+| `AAS/processes/` | `sc:Process`, `sc:ProcessConfiguration` | `sc:id`, `sc:name`, `sc:processType`, `sc:isPerformedAt`, `sc:requiresProcess`, `sc:usesResource` |
+| `AAS/routes/` | `sc:LogisticRoute` | `sc:id`, `sc:name`, `sc:hasStartingPoint`, `sc:hasEndingPoint`, `sc:transportationMode`, `sc:routeStatus` |
 
-Useful SPARQL queries once it's running (open GraphDB Workbench at http://localhost:7200):
+Useful SPARQL queries once it's running (open GraphDB Workbench at `http://localhost:7200` or `http://<EXTERNAL_HOST>:7201` and select the `infraflex` repository):
 
 ```sparql
-PREFIX infraflex: <https://w3id.org/fm/infraflex#>
+PREFIX sc: <http://unimaas-project.eu/MSCOntology#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-# Full graph — see cells, mounted arms, and executors:
-SELECT ?cell ?arm ?executor WHERE {
-    ?c a infraflex:Cell ; rdfs:label ?cell .
-    OPTIONAL { ?c infraflex:hasArm ?a . ?a rdfs:label ?arm }
-    OPTIONAL { ?c infraflex:hasExecutor ?e . ?e rdfs:label ?executor }
+# 1. Count all MSC Ontology entity types in the local Infraflex KG:
+SELECT ?mscClass (COUNT(DISTINCT ?entity) AS ?count) WHERE {
+    ?entity a ?mscClass .
+    FILTER(STRSTARTS(STR(?mscClass), "http://unimaas-project.eu/MSCOntology#"))
 }
-ORDER BY ?cell
+GROUP BY ?mscClass
+ORDER BY DESC(?count)
 
-# Live operational state of all executors:
-SELECT ?cell ?type ?state ?skill WHERE {
-    ?c infraflex:hasExecutor ?e ; rdfs:label ?cell .
-    ?e infraflex:executorType ?type .
-    OPTIONAL { ?e infraflex:operationalState ?state }
-    OPTIONAL { ?e infraflex:currentSkill ?skill }
+# 2. Manufacturing cells (sc:Site) and their mounted devices / robot arms:
+SELECT ?cellName ?deviceName ?deviceType WHERE {
+    ?cell a sc:Site ;
+          rdfs:label ?cellName ;
+          sc:hasDevice ?dev .
+    ?dev a ?deviceType ;
+         rdfs:label ?deviceName .
+    FILTER(?deviceType IN (sc:Device, sc:EquipmentResource))
 }
-ORDER BY ?cell ?type
+ORDER BY ?cellName ?deviceName
 
-# AMR position and battery state:
-SELECT ?amr ?state ?battery ?skill WHERE {
-    ?e a infraflex:AMRExecutor ; rdfs:label ?amr .
-    OPTIONAL { ?e infraflex:operationalState ?state }
-    OPTIONAL { ?e infraflex:batteryLevel ?battery }
-    OPTIONAL { ?e infraflex:currentSkill ?skill }
+# 3. Live operational state, active skill, and sync timestamps of all shopfloor devices:
+SELECT ?device ?state ?skill ?taskState ?lastSync WHERE {
+    ?e a sc:Device ;
+       rdfs:label ?device .
+    OPTIONAL { ?e sc:operationalState ?state }
+    OPTIONAL { ?e sc:currentSkill ?skill }
+    OPTIONAL { ?e sc:taskState ?taskState }
+    OPTIONAL { ?e sc:lastUpdated ?lastSync }
 }
+ORDER BY DESC(?lastSync) ?device
 
-# Live device telemetry and synchronization timestamps:
-SELECT ?device ?type ?state ?skill ?lastSync WHERE {
-    ?e a infraflex:ExecutorDevice ;
-       rdfs:label ?device ;
-       infraflex:executorType ?type .
-    OPTIONAL { ?e infraflex:operationalState ?state }
-    OPTIONAL { ?e infraflex:currentSkill ?skill }
-    OPTIONAL { ?e infraflex:lastUpdated ?lastSync }
+# 4. AMR position, location, and battery state:
+SELECT ?amr ?state ?battery ?location ?posX ?posY ?skill WHERE {
+    ?e a sc:Device ;
+       rdfs:label ?amr .
+    FILTER(CONTAINS(LCASE(?amr), "amr"))
+    OPTIONAL { ?e sc:operationalState ?state }
+    OPTIONAL { ?e sc:batteryLevel ?battery }
+    OPTIONAL { ?e sc:currentLocation ?location }
+    OPTIONAL { ?e sc:positionX ?posX }
+    OPTIONAL { ?e sc:positionY ?posY }
+    OPTIONAL { ?e sc:currentSkill ?skill }
 }
-ORDER BY DESC(?lastSync)
+ORDER BY ?amr
+
+# 5. Sensors and observed characteristics (with values and units):
+SELECT ?sensorName ?charName ?value ?unit WHERE {
+    ?s a sc:Sensor ;
+       rdfs:label ?sensorName ;
+       sc:observes ?c .
+    ?c rdfs:label ?charName .
+    OPTIONAL { ?c sc:characteristicValue ?value }
+    OPTIONAL { ?c sc:unit ?unit }
+}
+ORDER BY ?sensorName ?charName
+
+# 6. Process configurations per cell and the equipment resources they use:
+SELECT ?configName ?processName ?siteName ?resourceName WHERE {
+    ?cfg a sc:ProcessConfiguration ;
+         rdfs:label ?configName .
+    OPTIONAL { ?cfg sc:requiresProcess/rdfs:label ?processName }
+    OPTIONAL { ?cfg sc:isPerformedAt/rdfs:label ?siteName }
+    OPTIONAL { ?cfg sc:usesResource/rdfs:label ?resourceName }
+}
+ORDER BY ?configName ?resourceName
 ```
 
-Or query live GraphDB data directly from the terminal via SPARQL REST API:
+Or query live GraphDB data directly from the terminal via SPARQL REST API (use port `7200` for standalone or `7201` for unified deployment):
 
 ```bash
-curl -s -X POST http://localhost:7200/repositories/infraflex \
+curl -s -G "http://localhost:7200/repositories/infraflex" \
   -H "Accept: application/sparql-results+json" \
-  --data-urlencode "query=PREFIX infraflex: <https://w3id.org/fm/infraflex#> SELECT ?device ?type ?state ?skill WHERE { ?e a infraflex:ExecutorDevice ; rdfs:label ?device ; infraflex:executorType ?type . OPTIONAL { ?e infraflex:operationalState ?state } OPTIONAL { ?e infraflex:currentSkill ?skill } }"
+  --data-urlencode "query=PREFIX sc: <http://unimaas-project.eu/MSCOntology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?device ?state ?skill ?lastSync WHERE { ?e a sc:Device ; rdfs:label ?device . OPTIONAL { ?e sc:operationalState ?state } OPTIONAL { ?e sc:currentSkill ?skill } OPTIONAL { ?e sc:lastUpdated ?lastSync } } ORDER BY ?device"
 ```
 
 ---

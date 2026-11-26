@@ -11,8 +11,8 @@ services:
       - SERVER_PORT=8081
       - BASYX_EXTERNALURL=http://${EXTERNAL_HOST:-localhost}:${AAS_ENV_PORT:-8081}
     volumes:
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/aas:/application/aas
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/basyx/aas-env.properties:/application/application.properties
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/basyx-setup/aas:/application/aas
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/basyx-setup/basyx/aas-env.properties:/application/application.properties
     ports:
       - "${AAS_ENV_PORT:-8081}:8081"
     restart: unless-stopped
@@ -36,7 +36,7 @@ services:
     environment:
       - SERVER_PORT=8080
     volumes:
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/basyx/aas-registry.yml:/workspace/config/application.yml
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/basyx-setup/basyx/aas-registry.yml:/workspace/config/application.yml
     restart: unless-stopped
     networks:
       - edc-network
@@ -52,7 +52,7 @@ services:
     environment:
       - SERVER_PORT=8080
     volumes:
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/basyx/sm-registry.yml:/workspace/config/application.yml
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/basyx-setup/basyx/sm-registry.yml:/workspace/config/application.yml
     restart: unless-stopped
     networks:
       - edc-network
@@ -66,7 +66,7 @@ services:
     environment:
       - SERVER_PORT=8081
     volumes:
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/basyx/aas-discovery.properties:/application/application.properties
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/basyx-setup/basyx/aas-discovery.properties:/application/application.properties
     ports:
       - "${AAS_DISCOVERY_PORT:-8084}:8081"
     restart: unless-stopped
@@ -97,7 +97,7 @@ services:
     ports:
       - "${MOSQUITTO_PORT:-1883}:1883"
     volumes:
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/mosquitto:/mosquitto
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/basyx-setup/mosquitto:/mosquitto
     restart: unless-stopped
     networks:
       - edc-network
@@ -138,7 +138,7 @@ services:
     ports:
       - "${DASHBOARD_API_PORT:-8085}:8085"
     volumes:
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/basyx-setup/basyx/aas-dashboard.yml:/application.yml
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/basyx-setup/basyx/aas-dashboard.yml:/application.yml
     restart: unless-stopped
     networks:
       - edc-network
@@ -202,7 +202,7 @@ services:
 
   unimaas-infraflex:
     build:
-      context: ${REPOS_DIR:-./repos}/unimaas-infraflex
+      context: ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}
       dockerfile: Dockerfile
     container_name: unimaas-infraflex
     environment:
@@ -215,10 +215,9 @@ services:
       GRAPHDB_URL: http://infraflex-graphdb:7200
       GRAPHDB_REPOSITORY: ${INFRAFLEX_GRAPHDB_REPO:-infraflex}
     volumes:
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/unimaas_infraflex:/app/unimaas_infraflex
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/scripts:/app/scripts
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/AAS:/app/AAS
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/ontologies:/app/ontologies
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/unimaas_infraflex:/app/unimaas_infraflex
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/AAS:/app/AAS
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/ontologies:/app/ontologies
     restart: unless-stopped
     networks:
       - edc-network
@@ -234,7 +233,7 @@ services:
 
   infraplay:
     build:
-      context: ${REPOS_DIR:-./repos}/unimaas-infraflex
+      context: ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}
       dockerfile: Dockerfile
     container_name: infraplay
     working_dir: /app
@@ -246,8 +245,8 @@ services:
     ports:
       - "${INFRAPLAY_PORT:-8090}:8090"
     volumes:
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/infraplay:/app/infraplay
-      - ${REPOS_DIR:-./repos}/unimaas-infraflex/AAS:/app/AAS
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/infraplay:/app/infraplay
+      - ${INFRAFLEX_DIR:-../../cloud_based_resource_monitoring}/AAS:/app/AAS
     restart: unless-stopped
     networks:
       - edc-network
@@ -369,6 +368,11 @@ services:
           - edc-proxy-connector1
           - proxy-connector1
     restart: unless-stopped
+    depends_on:
+      connector1:
+        condition: service_started
+      ih-connector1:
+        condition: service_started
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1"]
       interval: 10s
@@ -631,6 +635,10 @@ services:
         condition: service_completed_successfully
     volumes:
       - vault_init_data_connector1:/vault-token:ro
+      - ${REPOS_DIR:-./repos}/ed-node/shared-storage:/shared-storage
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "${EXTERNAL_HOST:-localhost}:host-gateway"
     environment:
       - EDC_HOSTNAME=edc-connector-connector1
       - EDC_IAM_ISSUER_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
@@ -647,7 +655,7 @@ services:
       - EDC_DATAPLANE_SIGNALING_API_URL=http://connector1:9092/api/signaling
       - EDC_DATAPLANE_TOKEN_VALIDATION_ENDPOINT=http://connector1:8083/api/control/v3/dataplane/token
       - EDC_CONTROLPLANE_VALIDATION_ENDPOINT=http://connector1:8083/api/control/v3/dataplane/token
-      - EDC_DATAPLANE_PROXY_PUBLIC_ENDPOINT=http://connector1:11001/api/public
+      - EDC_DATAPLANE_PROXY_PUBLIC_ENDPOINT=${NGINX_PROTOCOL:-http}://${EXTERNAL_HOST:-localhost}:${CONNECTOR1_NGINX_PORT:-9876}/api/public
       - EDC_DATAPLANE_API_INSTANCE_ID=${CONNECTOR1_DID:-did:web:edc-proxy-connector1%3A80:connector1}
       - EDC_DPF_SELECTOR_URL=http://connector1:8083/api/control/v3/dataplanes
       - EDC_LOG_LEVEL=DEBUG
@@ -714,6 +722,11 @@ services:
           - edc-proxy-connector2
           - proxy-connector2
     restart: unless-stopped
+    depends_on:
+      connector2:
+        condition: service_started
+      ih-connector2:
+        condition: service_started
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1"]
       interval: 10s
@@ -976,6 +989,10 @@ services:
         condition: service_completed_successfully
     volumes:
       - vault_init_data_connector2:/vault-token:ro
+      - ${REPOS_DIR:-./repos}/ed-node/shared-storage:/shared-storage
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "${EXTERNAL_HOST:-localhost}:host-gateway"
     environment:
       - EDC_HOSTNAME=edc-connector-connector2
       - EDC_IAM_ISSUER_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
@@ -992,7 +1009,7 @@ services:
       - EDC_DATAPLANE_SIGNALING_API_URL=http://connector2:9092/api/signaling
       - EDC_DATAPLANE_TOKEN_VALIDATION_ENDPOINT=http://connector2:8083/api/control/v3/dataplane/token
       - EDC_CONTROLPLANE_VALIDATION_ENDPOINT=http://connector2:8083/api/control/v3/dataplane/token
-      - EDC_DATAPLANE_PROXY_PUBLIC_ENDPOINT=http://connector2:11001/api/public
+      - EDC_DATAPLANE_PROXY_PUBLIC_ENDPOINT=${NGINX_PROTOCOL:-http}://${EXTERNAL_HOST:-localhost}:${CONNECTOR2_NGINX_PORT:-9877}/api/public
       - EDC_DATAPLANE_API_INSTANCE_ID=${CONNECTOR2_DID:-did:web:edc-proxy-connector2%3A80:connector2}
       - EDC_DPF_SELECTOR_URL=http://connector2:8083/api/control/v3/dataplanes
       - EDC_LOG_LEVEL=DEBUG
@@ -1059,6 +1076,11 @@ services:
           - edc-proxy-${ED_NODE_INSTANCE_NAME:-connectorcp}
           - proxy-${ED_NODE_INSTANCE_NAME:-connectorcp}
     restart: unless-stopped
+    depends_on:
+      connector:
+        condition: service_started
+      ih-connector:
+        condition: service_started
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1"]
       interval: 10s
@@ -1321,6 +1343,10 @@ services:
         condition: service_completed_successfully
     volumes:
       - vault_init_data:/vault-token:ro
+      - ${REPOS_DIR:-./repos}/ed-node/shared-storage:/shared-storage
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "${EXTERNAL_HOST:-localhost}:host-gateway"
     environment:
       - EDC_HOSTNAME=${CONNECTOR_HOST:-edc-connector-connectorcp}
       - EDC_IAM_ISSUER_ID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
@@ -1337,7 +1363,7 @@ services:
       - EDC_DATAPLANE_SIGNALING_API_URL=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:9092/api/signaling
       - EDC_DATAPLANE_TOKEN_VALIDATION_ENDPOINT=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:8083/api/control/v3/dataplane/token
       - EDC_CONTROLPLANE_VALIDATION_ENDPOINT=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:8083/api/control/v3/dataplane/token
-      - EDC_DATAPLANE_PROXY_PUBLIC_ENDPOINT=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:11001/api/public
+      - EDC_DATAPLANE_PROXY_PUBLIC_ENDPOINT=${NGINX_PROTOCOL:-http}://${EXTERNAL_HOST:-localhost}:${CONNECTORCP_NGINX_PORT:-9878}/api/public
       - EDC_DATAPLANE_API_INSTANCE_ID=${ED_NODE_DID:-did:web:edc-proxy-connectorcp%3A80:connectorcp}
       - EDC_DPF_SELECTOR_URL=http://${ED_NODE_INSTANCE_NAME:-connectorcp}:8083/api/control/v3/dataplanes
       - EDC_LOG_LEVEL=DEBUG
@@ -1501,12 +1527,23 @@ services:
     container_name: central-platform-digital-thread
     restart: unless-stopped
     depends_on:
+      connector:
+        condition: service_healthy
+      edc-proxy:
+        condition: service_healthy
+      edc-proxy-connector1:
+        condition: service_healthy
+      edc-proxy-connector2:
+        condition: service_healthy
       central-platform-graphdb:
         condition: service_healthy
       central-platform-postgres:
         condition: service_healthy
       central-platform-federated-catalog:
         condition: service_started
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "${EXTERNAL_HOST:-localhost}:host-gateway"
     env_file:
       - ${REPOS_DIR:-./repos}/central-kg/env/digital_thread.env
     volumes:
